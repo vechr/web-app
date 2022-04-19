@@ -1,10 +1,9 @@
-import { IDevice } from "./device";
-
-export interface IDashboard {
+export interface ITopic {
   id: string,
+  deviceId: string,
   name: string,
   description: string,
   createdAt?: string,
   updatedAt?: string,
-  devices?: IDevice[]
+  topicEvents: []
 }

@@ -1,3 +1,5 @@
 export * from './dashboard';
 export * from './device';
-export * from './error'
+export * from './error';
+export * from './topic';
+export * from './topicEvent';

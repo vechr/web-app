@@ -48,6 +48,11 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
           key: 'description',
         },
         {
+          title: 'Devices',
+          dataIndex: 'devices',
+          key: 'devices',
+        },
+        {
           title: 'Created At',
           dataIndex: 'createdAt',
           key: 'createdAt',
@@ -66,14 +71,16 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
     dashboardList(state) {
       return (
-        state.data.map((dashboard) => ({ id: dashboard.id, name: dashboard.name, description: dashboard.description, createdAt: new Date(dashboard.createdAt).toLocaleString('en-US'), updatedAt: new Date(dashboard.updatedAt).toLocaleString('en-US') }))
+        state.data.map((dashboard) => ({
+          id: dashboard.id,
+          name: dashboard.name,
+          description: dashboard.description,
+          createdAt: dashboard.createdAt !== undefined ? new Date(dashboard.createdAt).toLocaleString('en-US') : dashboard.createdAt,
+          updatedAt: dashboard.updatedAt !== undefined ? new Date(dashboard.updatedAt).toLocaleString('en-US') : dashboard.updatedAt,
+          devices: dashboard.devices?.map((device) => device.name)
+        }))
       );
     },
-    deviceList(state) {
-      return (
-        state.data.map((dashboard) => dashboard.devices)
-      );
-    }
   },
   actions: {
     async getDashboardList() {

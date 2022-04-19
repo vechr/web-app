@@ -24,7 +24,14 @@
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'action'">
-              <a-space :size="10">
+              <a-space
+                :size="10"
+                :style="{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }"
+              >
                 <a-button type="primary" size="small">
                   <template #icon>
                     <EditOutlined />
@@ -40,6 +47,26 @@
                     <DeleteOutlined />
                   </template>
                 </a-button>
+              </a-space>
+            </template>
+            <template v-if="column.key === 'devices'">
+              <a-space :size="10">
+                <div v-if="record.devices.length > 0">
+                  <a-tag
+                    v-for="tag in record.devices"
+                    :key="tag"
+                    :color="`#${Math.floor(Math.random() * 16777215).toString(
+                      16
+                    )}`"
+                  >
+                    {{ tag }}
+                  </a-tag>
+                </div>
+                <div v-else>
+                  <a-tag color="#f50">
+                    {{ "no device".toUpperCase() }}
+                  </a-tag>
+                </div>
               </a-space>
             </template>
           </template>
