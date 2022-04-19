@@ -56,7 +56,7 @@
               class="trigger"
               aria-disabled="true"
             />
-            <menu-fold-outlined v-else class="trigger"/>
+            <menu-fold-outlined v-else class="trigger" style="margin-left: 18px"/>
           </a-menu-item>
           
           <router-link to="/" custom v-slot="{ navigate, href }">
@@ -112,7 +112,7 @@ export default defineComponent({
   setup() {
     return {
       selectedKeys: ref<string[]>(['6']),
-      collapsed: ref<boolean>(false),
+      collapsed: ref<boolean>(true),
     };
   },
 });
