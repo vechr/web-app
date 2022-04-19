@@ -79,6 +79,7 @@
       <a-layout-content
         :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
       >
+        <Loading />
         <router-view />
       </a-layout-content>
     </a-layout>
@@ -95,6 +96,7 @@ import {
   ApartmentOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons-vue';
+import Loading from '@/components/common/Loading.vue'
 import { defineComponent, ref } from 'vue';
 export default defineComponent({
   components: {
@@ -105,10 +107,11 @@ export default defineComponent({
     MenuFoldOutlined,
     ApartmentOutlined,
     UserSwitchOutlined,
+    Loading,
   },
   setup() {
     return {
-      selectedKeys: ref<string[]>(['4']),
+      selectedKeys: ref<string[]>(['6']),
       collapsed: ref<boolean>(false),
     };
   },
