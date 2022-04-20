@@ -27,6 +27,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         description: "",
         createdAt: "",
         updatedAt: "",
+        devices: []
       },
       optionDeviceType: [],
       error: {
@@ -48,6 +49,11 @@ export const useDeviceTypeStore = defineStore('deviceType', {
           title: 'Description',
           dataIndex: 'description',
           key: 'description',
+        },
+        {
+          title: 'Devices',
+          dataIndex: 'devices',
+          key: 'devices',
         },
         {
           title: 'Created At',
@@ -72,6 +78,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
           id: deviceType.id,
           name: deviceType.name,
           description: deviceType.description,
+          devices: deviceType.devices?.map((device) => device.name),
           createdAt: deviceType.createdAt !== undefined ? new Date(deviceType.createdAt).toLocaleString('en-US') : deviceType.createdAt,
           updatedAt: deviceType.updatedAt !== undefined ? new Date(deviceType.updatedAt).toLocaleString('en-US') : deviceType.updatedAt,
         }))
