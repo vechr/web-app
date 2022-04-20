@@ -14,39 +14,41 @@
       />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <router-link to="/dashboard" custom v-slot="{ navigate, href }">
+
+        <router-link to="/device-type" custom v-slot="{ navigate, href }">
           <a-menu-item key="1" @click="navigate" :href="href">
+            <ApartmentOutlined />
+            <span>Device Type Management</span>
+          </a-menu-item>
+        </router-link>
+
+          <a-menu-item key="2" @click="navigate" :href="href">
             <dashboard-outlined />
             <span>Dashboard Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/device" custom v-slot="{ navigate, href }">
-          <a-menu-item key="2" @click="navigate" :href="href">
+          <a-menu-item key="3" @click="navigate" :href="href">
             <api-outlined />
             <span>Device Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/user" custom v-slot="{ navigate, href }">
-          <a-menu-item key="3" @click="navigate" :href="href">
+          <a-menu-item key="4" @click="navigate" :href="href">
             <user-outlined />
             <span>User Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/role" custom v-slot="{ navigate, href }">
-          <a-menu-item key="4" @click="navigate" :href="href">
+          <a-menu-item key="5" @click="navigate" :href="href">
             <UserSwitchOutlined />
             <span>Role Management</span>
           </a-menu-item>
         </router-link>
 
-        <router-link to="/device-type" custom v-slot="{ navigate, href }">
-          <a-menu-item key="5" @click="navigate" :href="href">
-            <ApartmentOutlined />
-            <span>Device Type</span>
-          </a-menu-item>
-        </router-link>
       </a-menu>
     </a-layout-sider>
     <a-layout>

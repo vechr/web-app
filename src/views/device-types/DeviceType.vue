@@ -13,6 +13,7 @@
     <a-row>
       <a-col :span="24">
         <FormCreate style="float: right; margin-bottom: 20px" />
+        <FormEdit />
       </a-col>
     </a-row>
     <a-row>
@@ -52,7 +53,11 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small">
+                <a-button 
+                  type="primary" 
+                  size="small"
+                  @click="onEdit(record)"
+                >
                   <template #icon>
                     <EditOutlined />
                   </template>
@@ -98,16 +103,22 @@ import { IDeviceType } from "@/types";
 import { storeToRefs } from "pinia";
 import { defineComponent, onBeforeMount } from "vue";
 import FormCreate from '@/components/device-types/FormCreate.vue'
+import FormEdit from '@/components/device-types/FormEdit.vue'
 
 export default defineComponent({
   name: 'DeviceType',
-  components: { DeleteOutlined, EditOutlined, FormCreate },
+  components: { DeleteOutlined, EditOutlined, FormCreate, FormEdit },
   setup() {
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
     const store = useDeviceTypeStore();
     const { deviceTypeList, deviceTypeColumns } = storeToRefs(store);
+
+    const onEdit = (record: IDeviceType) => {
+      common.setIsDrawerShow(true);
+      store.getDeviceTypeById(record.id);
+    };
 
     const onDelete = (record: IDeviceType) => {
       store.deleteDeviceTypeById(record.id);
@@ -117,12 +128,8 @@ export default defineComponent({
       store.getDeviceTypeList();
     })
 
-    return { isLoadingActive, onDelete, deviceTypeList, deviceTypeColumns }
+    return { isLoadingActive, onDelete, deviceTypeList, deviceTypeColumns, onEdit }
     
   }
 })
 </script>
-
-<style>
-
-</style>

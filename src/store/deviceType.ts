@@ -72,6 +72,14 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         }
       ]
     },
+    deviceTypeEdit(state) {
+      return (
+        {
+          name: state.dataDetails.name,
+          description: state.dataDetails.description,
+        }
+      );
+    },
     deviceTypeList(state) {
       return (
         state.data.map((deviceType) => ({
@@ -152,6 +160,27 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         })
         .catch((err) => {
           common.setIsModalShow(false);
+          common.setIsLoadingButton(false);
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
+    },
+    async updateDeviceTypeById(id: string, value: { name: string, description: string }){
+      const common = useCommonStore();
+      await axios.patch(`http://localhost:3003/device-type/${id}`, value)
+        .then((res) => {
+          common.setIsDrawerShow(false);
+          common.setIsLoadingButton(false);
+          if (res.status === 200) {
+            this.message = res.data.message;
+            const index = this.data.findIndex((x) => x.id === res.data.result.id)
+            this.data[index] = res.data.result;
+            this.error = res.data.error;
+            message.success(`${res.status} ${this.message}`);
+          }
+        })
+        .catch((err) => {
+          common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
           this.error = err.response.data.error;
           message.error(`${this.error.code} ${this.error.message}`);
