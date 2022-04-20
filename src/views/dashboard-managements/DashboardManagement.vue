@@ -13,6 +13,7 @@
     <a-row>
       <a-col :span="24">
         <FormCreate style="float: right; margin-bottom: 20px" />
+        <FormEdit />
       </a-col>
     </a-row>
     <a-row>
@@ -32,7 +33,11 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small">
+                <a-button 
+                  type="primary" 
+                  size="small"
+                  @click="onEdit(record)"
+                >
                   <template #icon>
                     <EditOutlined />
                   </template>
@@ -90,6 +95,7 @@
 
 <script lang="ts">
 import FormCreate from "@/components/dashboard-managements/FormCreate.vue";
+import FormEdit from "@/components/dashboard-managements/FormEdit.vue"
 import { useCommonStore, useDashboardManagementStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { defineComponent, onBeforeMount } from "vue";
@@ -97,7 +103,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue";
 import { IDashboard } from "@/types";
 
 export default defineComponent({
-  components: { FormCreate, DeleteOutlined, EditOutlined },
+  components: { FormCreate, DeleteOutlined, EditOutlined, FormEdit },
   name: "DashboardManagement",
   setup() {
     const store = useDashboardManagementStore();
@@ -114,7 +120,13 @@ export default defineComponent({
       store.deleteDashboardById(record.id);
     };
 
+    const onEdit = (record: IDashboard) => {
+      common.setIsDrawerShow(true);
+      store.getDashboardById(record.id);
+    }
+
     return {
+      onEdit,
       onDelete,
       isLoadingActive,
       dashboardColumns,

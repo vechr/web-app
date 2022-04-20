@@ -6,6 +6,7 @@ export const useCommonStore = defineStore('commonStore', {
       isLoadingActive: false,
       isModalShow: false,
       isLoadingButton: false,
+      isDrawerShow: false,
     }
   },
   actions: {
@@ -17,6 +18,9 @@ export const useCommonStore = defineStore('commonStore', {
     },
     setIsLoadingButton(status: boolean): void {
       this.isLoadingButton = status;
+    },
+    setIsDrawerShow(status: boolean): void {
+      this.isDrawerShow = status;
     }
   }
 });

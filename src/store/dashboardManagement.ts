@@ -69,6 +69,15 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         }
       ]
     },
+    dashboardEdit(state) {
+      return (
+        {
+          name: state.dataDetails.name,
+          description: state.dataDetails.description,
+          devices: state.dataDetails.devices?.map((device) => device.id)
+        }
+      );
+    },
     dashboardList(state) {
       return (
         state.data.map((dashboard) => ({
@@ -102,10 +111,8 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         })
     },
     async getDashboardById(id: string) {
-      const common = useCommonStore();
       await axios.get(`http://localhost:3003/dashboard/${id}`)
         .then((res) => {
-          common.setIsLoading(false);
           if (res.status === 200) {
             this.message = res.data.message;
             this.dataDetails = res.data.result;
@@ -113,7 +120,6 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
           }
         })
         .catch((err) => {
-          common.setIsLoading(false);
           this.error = err.response.data.error;
           message.error(`${this.error.code} ${this.error.message}`);
         })
@@ -133,6 +139,27 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         })
         .catch((err) => {
           common.setIsModalShow(false);
+          common.setIsLoadingButton(false);
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
+    },
+    async updateDashboardById(id: string, value: { name: string, description: string, devices: string[] }){
+      const common = useCommonStore();
+      await axios.patch(`http://localhost:3003/dashboard/${id}`, value)
+        .then((res) => {
+          common.setIsDrawerShow(false);
+          common.setIsLoadingButton(false);
+          if (res.status === 200) {
+            this.message = res.data.message;
+            const index = this.data.findIndex((x) => x.id === res.data.result.id)
+            this.data[index] = res.data.result;
+            this.error = res.data.error;
+            message.success(`${res.status} ${this.message}`);
+          }
+        })
+        .catch((err) => {
+          common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
           this.error = err.response.data.error;
           message.error(`${this.error.code} ${this.error.message}`);

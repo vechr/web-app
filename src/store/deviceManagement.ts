@@ -7,6 +7,7 @@ import { message } from "ant-design-vue";
 interface IDeviceData {
   message: string,
   data: IDevice[],
+  optionDevice: { value: string ,label: string }[],
   dataDetails: IDevice,
   error: IError
 }
@@ -19,6 +20,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     return {
       message: "",
       data: [],
+      optionDevice: [],
       dataDetails: {
         id: "",
         name: "",
@@ -105,6 +107,21 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     }
   },
   actions: {
+    async getOptionDevice() {
+      await axios.get(`http://localhost:3003/device`)
+        .then((res) => {
+          if (res.status === 200) {
+            this.message = res.data.message;
+            this.data = res.data.result;
+            this.optionDevice = this.data.map((device) => ({value: device.id, label: device.name}));
+            this.error = res.data.error;
+          }
+        })
+        .catch((err) => {
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
+    },
     async getDeviceList() {
       const common = useCommonStore();
       common.setIsLoading(true);
