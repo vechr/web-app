@@ -1,41 +1,51 @@
 <template>
-  <a-layout :style="{height: '100vh'}">
+  <a-layout :style="{ height: 'auto', minHeight: '100vh' }">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
-      <img alt="logo" src="../src/assets/logo.svg"  style="height: 60px; display: block; margin-left: auto; margin-right: auto; width: 50%;"/>
+      <img
+        alt="logo"
+        src="../src/assets/logo.svg"
+        style="
+          height: 60px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          width: 50%;
+        "
+      />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-        
         <router-link to="/dashboard" custom v-slot="{ navigate, href }">
+
+        <router-link to="/device-type" custom v-slot="{ navigate, href }">
           <a-menu-item key="1" @click="navigate" :href="href">
+            <ApartmentOutlined />
+            <span>Device Type Management</span>
+          </a-menu-item>
+        </router-link>
+
+          <a-menu-item key="2" @click="navigate" :href="href">
             <dashboard-outlined />
             <span>Dashboard Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/device" custom v-slot="{ navigate, href }">
-          <a-menu-item key="2" @click="navigate" :href="href">
+          <a-menu-item key="3" @click="navigate" :href="href">
             <api-outlined />
             <span>Device Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/user" custom v-slot="{ navigate, href }">
-          <a-menu-item key="3" @click="navigate" :href="href">
+          <a-menu-item key="4" @click="navigate" :href="href">
             <user-outlined />
             <span>User Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/role" custom v-slot="{ navigate, href }">
-          <a-menu-item key="4" @click="navigate" :href="href">
+          <a-menu-item key="5" @click="navigate" :href="href">
             <UserSwitchOutlined />
             <span>Role Management</span>
-          </a-menu-item>
-        </router-link>
-
-        <router-link to="/device-type" custom v-slot="{ navigate, href }">
-          <a-menu-item key="5" @click="navigate" :href="href">
-            <ApartmentOutlined />
-            <span>Device Type</span>
           </a-menu-item>
         </router-link>
 
@@ -56,15 +66,23 @@
               class="trigger"
               aria-disabled="true"
             />
-            <menu-fold-outlined v-else class="trigger"/>
+            <menu-fold-outlined
+              v-else
+              class="trigger"
+              style="margin-left: 18px"
+            />
           </a-menu-item>
-          
+
           <router-link to="/" custom v-slot="{ navigate, href }">
-            <a-menu-item key="6" @click="navigate" :href="href">Home</a-menu-item>
+            <a-menu-item key="6" @click="navigate" :href="href"
+              >Home</a-menu-item
+            >
           </router-link>
 
           <router-link to="/about" custom v-slot="{ navigate, href }">
-            <a-menu-item key="7" @click="navigate" :href="href">About</a-menu-item>
+            <a-menu-item key="7" @click="navigate" :href="href"
+              >About</a-menu-item
+            >
           </router-link>
 
           <router-link to="/profile" custom v-slot="{ navigate, href }">
@@ -77,8 +95,14 @@
         </a-menu>
       </a-layout-header>
       <a-layout-content
-        :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
+        :style="{
+          margin: '24px 16px',
+          padding: '24px',
+          background: '#fff',
+          minHeight: '280px',
+        }"
       >
+        <Loading />
         <router-view />
       </a-layout-content>
     </a-layout>
@@ -94,8 +118,9 @@ import {
   MenuFoldOutlined,
   ApartmentOutlined,
   UserSwitchOutlined,
-} from '@ant-design/icons-vue';
-import { defineComponent, ref } from 'vue';
+} from "@ant-design/icons-vue";
+import Loading from "@/components/common/Loading.vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   components: {
     UserOutlined,
@@ -105,11 +130,12 @@ export default defineComponent({
     MenuFoldOutlined,
     ApartmentOutlined,
     UserSwitchOutlined,
+    Loading,
   },
   setup() {
     return {
-      selectedKeys: ref<string[]>(['4']),
-      collapsed: ref<boolean>(false),
+      selectedKeys: ref<string[]>(["6"]),
+      collapsed: ref<boolean>(true),
     };
   },
 });
@@ -122,7 +148,7 @@ export default defineComponent({
 
 #toggle {
   margin: 0;
-  padding: 0;  
+  padding: 0;
 }
 #avatar {
   margin-left: auto;
@@ -153,10 +179,10 @@ export default defineComponent({
   margin: 16px 0 16px 24px;
 }
 
-[data-theme='dark'] .site-layout-content {
+[data-theme="dark"] .site-layout-content {
   background: #141414;
 }
-.ant-layout-sider-dark  {
+.ant-layout-sider-dark {
   flex: 0 0 250px !important;
   max-width: 250px !important;
   min-width: 250px !important;
