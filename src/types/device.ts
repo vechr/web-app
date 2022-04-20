@@ -1,3 +1,4 @@
+import { IDeviceType } from "./deviceType";
 import { ITopic } from "./topic";
 
 export interface IDevice {
@@ -8,5 +9,6 @@ export interface IDevice {
   isActive: boolean,
   createdAt?: string,
   updatedAt?: string,
-  topics?: ITopic[]
+  topics?: ITopic[],
+  deviceType?: IDeviceType
 }

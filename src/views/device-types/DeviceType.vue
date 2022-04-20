@@ -1,12 +1,105 @@
 <template>
-  <h3>Device Type Management</h3>  
+  <div v-if="!isLoadingActive">
+    <h2
+      :style="{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: '50px',
+      }"
+    >
+      Device Type Management
+    </h2>
+    <a-row>
+      <a-col :span="24">
+        <FormCreate style="float: right; margin-bottom: 20px" />
+      </a-col>
+    </a-row>
+    <a-row>
+      <a-col :span="24">
+        <a-table
+          v-if="deviceTypeList.length > 0"
+          :dataSource="deviceTypeList"
+          :columns="deviceTypeColumns"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'action'">
+              <a-space
+                :size="10"
+                :style="{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }"
+              >
+                <a-button type="primary" size="small">
+                  <template #icon>
+                    <EditOutlined />
+                  </template>
+                </a-button>
+                <a-button
+                  type="primary"
+                  size="small"
+                  danger
+                  @click="onDelete(record)"
+                >
+                  <template #icon>
+                    <DeleteOutlined />
+                  </template>
+                </a-button>
+              </a-space>
+            </template>
+          </template>
+        </a-table>
+        <div v-else class="center-screen">
+          <a-empty
+            image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+            :image-style="{
+              height: '60px',
+            }"
+          >
+            <template #description>
+              <span> There's no dashboard item found! </span>
+            </template>
+          </a-empty>
+        </div>
+      </a-col>
+    </a-row>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {
+  DeleteOutlined,
+  EditOutlined,
+} from "@ant-design/icons-vue";
+import { useCommonStore, useDeviceTypeStore } from "@/store";
+import { IDeviceType } from "@/types";
+import { storeToRefs } from "pinia";
+import { defineComponent, onBeforeMount } from "vue";
+import FormCreate from '@/components/device-types/FormCreate.vue'
 
 export default defineComponent({
-  name: 'DeviceType'
+  name: 'DeviceType',
+  components: { DeleteOutlined, EditOutlined, FormCreate },
+  setup() {
+    const common = useCommonStore();
+    const { isLoadingActive } = storeToRefs(common);
+
+    const store = useDeviceTypeStore();
+    const { deviceTypeList, deviceTypeColumns } = storeToRefs(store);
+
+    const onDelete = (record: IDeviceType) => {
+      store.deleteDeviceTypeById(record.id);
+    }
+
+    onBeforeMount(() => {
+      store.getDeviceTypeList();
+    })
+
+    return { isLoadingActive, onDelete, deviceTypeList, deviceTypeColumns }
+    
+  }
 })
 </script>
 

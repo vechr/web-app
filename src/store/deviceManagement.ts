@@ -27,7 +27,14 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         isActive: false,
         createdAt: "",
         updatedAt: "",
-        topics: []
+        topics: [],
+        deviceType: {
+          id: "",
+          name: "",
+          description: "",
+          createdAt: "",
+          updatedAt: "",
+        }
       },
       error: {
         code: "",
@@ -51,8 +58,8 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         },
         {
           title: 'Device Type',
-          dataIndex: 'deviceTypeId',
-          key: 'deviceTypeId',
+          dataIndex: 'deviceType',
+          key: 'deviceType',
         },
         {
           title: 'Active',
@@ -89,6 +96,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
           description: device.description,
           isActive: device.isActive,
           deviceTypeId: device.deviceTypeId,
+          deviceType: device.deviceType?.name,
           createdAt: device.createdAt !== undefined ? new Date(device.createdAt).toLocaleString('en-US') : device.createdAt,
           updatedAt: device.updatedAt !== undefined ? new Date(device.updatedAt).toLocaleString('en-US') : device.updatedAt,
           topics: device.topics?.map((topic) => topic.name)
@@ -140,7 +148,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         common.setIsLoadingButton(false);
         if (res.status === 201) {
           this.message = res.data.message;
-          this.data.push({...res.data.result, topics: []});
+          this.data.push(res.data.result);
           this.error = res.data.error;
           message.success(`${res.status} ${this.message}`);
         }

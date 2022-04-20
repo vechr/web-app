@@ -18,7 +18,7 @@
     <a-row>
       <a-col :span="24">
         <a-table
-          v-if="deviceColumns.length > 0"
+          v-if="deviceList.length > 0"
           :dataSource="deviceList"
           :columns="deviceColumns"
         >
