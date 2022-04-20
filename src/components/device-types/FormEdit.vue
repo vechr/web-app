@@ -1,7 +1,6 @@
 <template>
   <a-drawer
     title="Edit Dashboard"
-    :width="500"
     :visible="isDrawerShow"
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
@@ -55,7 +54,7 @@ export default defineComponent({
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
     const store = useDeviceTypeStore();
-    const { dataDetails ,deviceTypeEdit } = storeToRefs(store);
+    const { dataDetails, deviceTypeEdit } = storeToRefs(store);
 
     const showModal = () => {
       common.setIsModalShow(true);
@@ -67,7 +66,7 @@ export default defineComponent({
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      store.updateDeviceTypeById(dataDetails.value.id ,values);
+      store.updateDeviceTypeById(dataDetails.value.id, values);
     };
 
     const onFinishFailed = (errorInfo: any) => {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button type="primary" @click="showModal">
+    <a-button type="primary" class="responsive-bt" @click="showModal">
       <template #icon><PlusOutlined /></template>
       Create Device Type
     </a-button>

@@ -1,8 +1,7 @@
 <template>
   <div>
-    <a-button type="primary" @click="showModal">
-      <template #icon><PlusOutlined /></template>
-      Create Dashboard
+    <a-button type="primary" class="responsive-bt" @click="showModal" block>
+      <template #icon><PlusOutlined /></template>Create Dashboard
     </a-button>
     <a-modal
       v-model:visible="isModalShow"

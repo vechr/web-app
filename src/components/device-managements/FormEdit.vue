@@ -1,72 +1,81 @@
 <template>
   <a-drawer
     title="Edit Dashboard"
-    :width="500"
     :visible="isDrawerShow"
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
     @close="onClose"
   >
-      <a-form
-        layout="vertical"
-        :model="deviceEdit"
-        name="basic"
-        autocomplete="off"
-        @finish="onFinish"
-        @finishFailed="onFinishFailed"
+    <a-form
+      layout="vertical"
+      :model="deviceEdit"
+      name="basic"
+      autocomplete="off"
+      @finish="onFinish"
+      @finishFailed="onFinishFailed"
+    >
+      <a-form-item
+        label="Name"
+        name="name"
+        :rules="[{ required: true, message: 'Please input name dashboard!' }]"
       >
-        <a-form-item
-          label="Name"
-          name="name"
-          :rules="[{ required: true, message: 'Please input name dashboard!' }]"
-        >
-          <a-input v-model:value="deviceEdit.name" />
-        </a-form-item>
+        <a-input v-model:value="deviceEdit.name" />
+      </a-form-item>
 
-        <a-form-item
-          label="Description"
-          name="description"
-          :rules="[{ required: true, message: 'Please input description!' }]"
-        >
-          <a-textarea v-model:value="deviceEdit.description" />
-        </a-form-item>
+      <a-form-item
+        label="Description"
+        name="description"
+        :rules="[{ required: true, message: 'Please input description!' }]"
+      >
+        <a-textarea v-model:value="deviceEdit.description" />
+      </a-form-item>
 
-        <a-form-item
-          label="Device Status"
-          name="isActive"
-          :rules="[{ required: true, message: 'Please input status of your device!' }]"
-        >
-          <a-switch v-model:checked="deviceEdit.isActive" checked-children="Active" un-checked-children="Not Active"/>
-        </a-form-item>
+      <a-form-item
+        label="Device Status"
+        name="isActive"
+        :rules="[
+          { required: true, message: 'Please input status of your device!' },
+        ]"
+      >
+        <a-switch
+          v-model:checked="deviceEdit.isActive"
+          checked-children="Active"
+          un-checked-children="Not Active"
+        />
+      </a-form-item>
 
-        <a-form-item
-          label="Device Type"
-          name="deviceTypeId"
-          :rules="[{ required: true, message: 'Please input device type!' }]"
-        >
-          <a-select
-            v-model:value="deviceEdit.deviceTypeId"
-            show-search
-            placeholder="Select a Device Type"
-            :options="optionDeviceType"
-            :filter-option="filterOption"
-          ></a-select>
-        </a-form-item>
+      <a-form-item
+        label="Device Type"
+        name="deviceTypeId"
+        :rules="[{ required: true, message: 'Please input device type!' }]"
+      >
+        <a-select
+          v-model:value="deviceEdit.deviceTypeId"
+          show-search
+          placeholder="Select a Device Type"
+          :options="optionDeviceType"
+          :filter-option="filterOption"
+        ></a-select>
+      </a-form-item>
 
-        <a-form-item>
-          <a-button
-            type="primary"
-            :loading="isLoadingButton"
-            html-type="submit"
-            :style="{ float: 'right' }"
-            >Submit</a-button
-          >
-        </a-form-item>
-      </a-form>
+      <a-form-item>
+        <a-button
+          type="primary"
+          :loading="isLoadingButton"
+          html-type="submit"
+          :style="{ float: 'right' }"
+          >Submit</a-button
+        >
+      </a-form-item>
+    </a-form>
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useDeviceManagementStore, useDeviceTypeStore } from "@/store";
+import {
+  useCommonStore,
+  useDeviceManagementStore,
+  useDeviceTypeStore,
+} from "@/store";
 import { storeToRefs } from "pinia";
 import { defineComponent, onBeforeMount } from "vue";
 
@@ -94,11 +103,11 @@ export default defineComponent({
 
     onBeforeMount(() => {
       storeDeviceType.getOptionDeviceType();
-    })
+    });
 
     const onFinish = (values: FormState) => {
       common.setIsLoadingButton(true);
-      storeDevice.updateDeviceById(dataDetails.value.id ,values);
+      storeDevice.updateDeviceById(dataDetails.value.id, values);
     };
 
     const onFinishFailed = (errorInfo: any) => {

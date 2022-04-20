@@ -7,6 +7,7 @@
         alignItems: 'center',
         marginBottom: '50px',
       }"
+      class="responsive-text"
     >
       Dashboard Management
     </h2>
@@ -22,6 +23,7 @@
           v-if="dashboardList.length > 0"
           :dataSource="dashboardList"
           :columns="dashboardColumns"
+          :scroll="{ x: 1200 }"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'action'">
@@ -33,11 +35,7 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button 
-                  type="primary" 
-                  size="small"
-                  @click="onEdit(record)"
-                >
+                <a-button type="primary" size="small" @click="onEdit(record)">
                   <template #icon>
                     <EditOutlined />
                   </template>
@@ -95,7 +93,7 @@
 
 <script lang="ts">
 import FormCreate from "@/components/dashboard-managements/FormCreate.vue";
-import FormEdit from "@/components/dashboard-managements/FormEdit.vue"
+import FormEdit from "@/components/dashboard-managements/FormEdit.vue";
 import { useCommonStore, useDashboardManagementStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { defineComponent, onBeforeMount } from "vue";
@@ -123,7 +121,7 @@ export default defineComponent({
     const onEdit = (record: IDashboard) => {
       common.setIsDrawerShow(true);
       store.getDashboardById(record.id);
-    }
+    };
 
     return {
       onEdit,

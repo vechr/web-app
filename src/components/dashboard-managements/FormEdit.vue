@@ -1,7 +1,6 @@
 <template>
   <a-drawer
     title="Edit Dashboard"
-    :width="500"
     :visible="isDrawerShow"
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
@@ -57,9 +56,13 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useDashboardManagementStore, useDeviceManagementStore } from '@/store';
-import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
+import {
+  useCommonStore,
+  useDashboardManagementStore,
+  useDeviceManagementStore,
+} from "@/store";
+import { storeToRefs } from "pinia";
+import { defineComponent, onBeforeMount } from "vue";
 
 export default defineComponent({
   setup() {
@@ -78,7 +81,7 @@ export default defineComponent({
 
     onBeforeMount(() => {
       deviceStore.getOptionDevice();
-    })
+    });
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);

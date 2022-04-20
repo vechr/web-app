@@ -7,6 +7,7 @@
         alignItems: 'center',
         marginBottom: '50px',
       }"
+      class="responsive-text"
     >
       Device Management
     </h2>
@@ -22,6 +23,7 @@
           v-if="deviceList.length > 0"
           :dataSource="deviceList"
           :columns="deviceColumns"
+          :scroll="{ x: 1200 }"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'action'">
