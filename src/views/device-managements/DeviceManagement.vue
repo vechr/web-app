@@ -13,6 +13,7 @@
     <a-row>
       <a-col :span="24">
         <FormCreate style="float: right; margin-bottom: 20px" />
+        <FormEdit />
       </a-col>
     </a-row>
     <a-row>
@@ -32,7 +33,7 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small">
+                <a-button type="primary" size="small" @click="onEdit(record)">
                   <template #icon>
                     <EditOutlined />
                   </template>
@@ -112,11 +113,18 @@ import { useCommonStore, useDeviceManagementStore } from "@/store";
 import { IDevice } from "@/types";
 import { storeToRefs } from "pinia";
 import { defineComponent, onBeforeMount } from "vue";
-import FormCreate from '@/components/device-managements/FormCreate.vue'
+import FormCreate from "@/components/device-managements/FormCreate.vue";
+import FormEdit from "@/components/device-managements/FormEdit.vue";
 
 export default defineComponent({
   name: "DeviceManagement",
-  components: { DeleteOutlined, EditOutlined, CheckCircleFilled, FormCreate },
+  components: {
+    DeleteOutlined,
+    EditOutlined,
+    CheckCircleFilled,
+    FormCreate,
+    FormEdit,
+  },
   setup() {
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
@@ -132,7 +140,12 @@ export default defineComponent({
       store.getDeviceList();
     });
 
-    return { isLoadingActive, deviceList, deviceColumns, onDelete };
+    const onEdit = (record: IDevice) => {
+      common.setIsDrawerShow(true);
+      store.getDeviceById(record.id);
+    };
+
+    return { isLoadingActive, deviceList, deviceColumns, onDelete, onEdit };
   },
 });
 </script>

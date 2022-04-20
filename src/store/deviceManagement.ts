@@ -90,6 +90,16 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         }
       ]
     },
+    deviceEdit(state) {
+      return (
+        {
+          name: state.dataDetails.name,
+          description: state.dataDetails.description,
+          deviceTypeId: state.dataDetails.deviceType?.id,
+          isActive: state.dataDetails.isActive
+        }
+      );
+    },
     deviceList(state) {
       return (
         state.data.map((device) => ({
@@ -176,6 +186,27 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         this.error = err.response.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       })
+    },
+    async updateDeviceById(id: string, value: { name: string, description: string, isActive: boolean, deviceTypeId: string }){
+      const common = useCommonStore();
+      await axios.patch(`http://localhost:3003/device/${id}`, value)
+        .then((res) => {
+          common.setIsDrawerShow(false);
+          common.setIsLoadingButton(false);
+          if (res.status === 200) {
+            this.message = res.data.message;
+            const index = this.data.findIndex((x) => x.id === res.data.result.id)
+            this.data[index] = res.data.result;
+            this.error = res.data.error;
+            message.success(`${res.status} ${this.message}`);
+          }
+        })
+        .catch((err) => {
+          common.setIsDrawerShow(false);
+          common.setIsLoadingButton(false);
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
     },
     async deleteDeviceById(id: string) {
       await axios.delete(`http://localhost:3003/device/${id}`)
