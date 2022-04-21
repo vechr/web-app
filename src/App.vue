@@ -102,8 +102,8 @@
           minHeight: '280px',
         }"
       >
-        <Loading />
         <router-view />
+        <Loading />
       </a-layout-content>
     </a-layout>
   </a-layout>

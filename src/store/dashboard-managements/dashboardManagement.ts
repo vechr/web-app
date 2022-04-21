@@ -7,6 +7,7 @@ import { useCommonStore } from "@/store";
 interface IDashboardData {
   message: string,
   data: IDashboard[],
+  dashboardEdit: {name: string, description: string, devices: string[]}
   dataDetails: IDashboard,
   error: IError
 }
@@ -19,6 +20,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     return {
       message: "",
       data: [],
+      dashboardEdit: {name: "", description: "", devices: []},
       dataDetails: {
         id: "",
         name: "",
@@ -69,15 +71,6 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         }
       ]
     },
-    dashboardEdit(state) {
-      return (
-        {
-          name: state.dataDetails.name,
-          description: state.dataDetails.description,
-          devices: state.dataDetails.devices?.map((device) => device.id)
-        }
-      );
-    },
     dashboardList(state) {
       return (
         state.data.map((dashboard) => ({
@@ -115,6 +108,9 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;
+            this.dashboardEdit.name = res.data.result.name,
+            this.dashboardEdit.description  = res.data.result.description,
+            this.dashboardEdit.devices = res.data.result.devices?.map((device: { id: string; }) => device.id)
             this.dataDetails = res.data.result;
             this.error = res.data.error;
           }
