@@ -3,7 +3,7 @@ export interface ITopicEvent {
   topicId: string,
   name: string,
   description: string,
-  eventExpression?: any,
+  eventExpression?: object,
   createdAt?: string,
   updatedAt?: string
 }

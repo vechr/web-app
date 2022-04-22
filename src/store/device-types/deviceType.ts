@@ -8,6 +8,7 @@ import { useCommonStore } from "..";
 interface IDeviceTypeData {
   message: string,
   data: IDeviceType[],
+  deviceTypeEdit: {name: string, description: string},
   optionDeviceType: { value: string ,label: string }[],
   dataDetails: IDeviceType,
   error: IError
@@ -29,6 +30,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         updatedAt: "",
         devices: []
       },
+      deviceTypeEdit: {name: "", description: ""},
       optionDeviceType: [],
       error: {
         code: "",
@@ -71,14 +73,6 @@ export const useDeviceTypeStore = defineStore('deviceType', {
           key: 'action'
         }
       ]
-    },
-    deviceTypeEdit(state) {
-      return (
-        {
-          name: state.dataDetails.name,
-          description: state.dataDetails.description,
-        }
-      );
     },
     deviceTypeList(state) {
       return (
@@ -135,6 +129,8 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         common.setIsLoading(false);
         if (res.status === 200) {
           this.message = res.data.message;
+          this.deviceTypeEdit.name = res.data.result.name;
+          this.deviceTypeEdit.description = res.data.result.description;
           this.dataDetails = res.data.result;
           this.error = res.data.error;
         }

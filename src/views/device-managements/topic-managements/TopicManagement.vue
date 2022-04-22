@@ -1,4 +1,12 @@
 <template>
+  <a-breadcrumb>
+    <a-breadcrumb-item>
+      <router-link to="/device" custom v-slot="{ navigate, href }">
+        <a @click="navigate" :href="href">Device Management</a>
+      </router-link>
+    </a-breadcrumb-item>
+    <a-breadcrumb-item>Topic</a-breadcrumb-item>
+  </a-breadcrumb>
   <div v-if="!isLoadingActive">
     <h2
       :style="{
@@ -9,8 +17,8 @@
       }"
       class="responsive-text"
     >
-      Device Management
-    </h2>
+      Topic Management
+    </h2> 
     <a-row>
       <a-col :span="24">
         <FormCreate style="float: right; margin-bottom: 20px" />
@@ -20,14 +28,14 @@
     <a-row>
       <a-col :span="24">
         <a-table
-          v-if="deviceList.length > 0"
-          :dataSource="deviceList"
-          :columns="deviceColumns"
+          v-if="topicList.length > 0"
+          :dataSource="topicList"
+          :columns="topicColumns"
           :scroll="{ x: 1200 }"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'name'">
-              <router-link :to="{name: 'topic-managements', params: {deviceId: record.id}}" >{{record.name}}</router-link>
+              <router-link :to="{name: 'topic-event', params: {deviceId: deviceId, topicId: record.id}}" >{{record.name}}</router-link>
             </template>
             <template v-if="column.key === 'action'">
               <a-space
@@ -55,25 +63,11 @@
                 </a-button>
               </a-space>
             </template>
-            <template v-if="column.key === 'isActive'">
-              <span
-                :style="{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }"
-              >
-                <CheckCircleFilled
-                  :style="{ color: 'green' }"
-                  v-if="record.isActive"
-                />
-              </span>
-            </template>
-            <template v-if="column.key === 'topics'">
+            <template v-if="column.key === 'topicEvents'">
               <a-space :size="10">
-                <div v-if="record.topics.length > 0">
+                <div v-if="record.topicEvents.length > 0">
                   <a-tag
-                    v-for="tag in record.topics"
+                    v-for="tag in record.topicEvents"
                     :key="tag"
                     :color="`#${Math.floor(Math.random() * 16777215).toString(
                       16
@@ -112,48 +106,58 @@
 import {
   DeleteOutlined,
   EditOutlined,
-  CheckCircleFilled,
 } from "@ant-design/icons-vue";
-import { useCommonStore, useDeviceManagementStore } from "@/store";
-import { IDevice } from "@/types";
-import { storeToRefs } from "pinia";
+import FormCreate from '@/components/device-managements/topic-managements/FormCreate.vue';
+import FormEdit from '@/components/device-managements/topic-managements/FormEdit.vue';
 import { defineComponent, onBeforeMount } from "vue";
-import FormCreate from "@/components/device-managements/FormCreate.vue";
-import FormEdit from "@/components/device-managements/FormEdit.vue";
+import { useCommonStore, useTopicManagementStore } from "@/store";
+import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
+import { ITopic } from "@/types";
 
 export default defineComponent({
-  name: "DeviceManagement",
+  name: 'TopicManagement',
   components: {
     DeleteOutlined,
     EditOutlined,
-    CheckCircleFilled,
     FormCreate,
-    FormEdit,
+    FormEdit
   },
   setup() {
+    const route = useRoute();
+    const deviceId = route.params.deviceId;
+
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
-    const store = useDeviceManagementStore();
-    const { deviceList, deviceColumns } = storeToRefs(store);
-
-    const onDelete = (record: IDevice) => {
-      store.deleteDeviceById(record.id);
-    };
+    const topicStore = useTopicManagementStore()
+    const { topicList, topicColumns } = storeToRefs(topicStore);
 
     onBeforeMount(() => {
-      store.getDeviceList();
-    });
+      topicStore.getTopicList(deviceId);
+    })
 
-    const onEdit = (record: IDevice) => {
-      common.setIsDrawerShow(true);
-      store.getDeviceById(record.id);
+    const onDelete = (record: ITopic) => {
+      topicStore.deleteTopicById(deviceId ,record.id);
     };
 
-    return { isLoadingActive, deviceList, deviceColumns, onDelete, onEdit };
-  },
+    const onEdit = (record: ITopic) => {
+      common.setIsDrawerShow(true);
+      topicStore.getTopicById(deviceId, record.id)
+    };
+
+    return {
+      deviceId,
+      isLoadingActive,
+      topicList,
+      topicColumns,
+      onDelete,
+      onEdit
+    }
+  }
 });
 </script>
 
 <style>
+
 </style>

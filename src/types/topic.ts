@@ -1,3 +1,5 @@
+import { ITopicEvent } from "./topicEvent";
+
 export interface ITopic {
   id: string,
   deviceId: string,
@@ -5,5 +7,5 @@ export interface ITopic {
   description: string,
   createdAt?: string,
   updatedAt?: string,
-  topicEvents: []
+  topicEvents?: ITopicEvent[]
 }

@@ -7,6 +7,7 @@ import { message } from "ant-design-vue";
 interface IDeviceData {
   message: string,
   data: IDevice[],
+  deviceEdit: { name: string, description: string, deviceTypeId?: string, isActive: boolean }
   optionDevice: { value: string ,label: string }[],
   dataDetails: IDevice,
   error: IError
@@ -20,6 +21,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     return {
       message: "",
       data: [],
+      deviceEdit: { name: "", description: "", deviceTypeId: "", isActive: false },
       optionDevice: [],
       dataDetails: {
         id: "",
@@ -90,16 +92,6 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         }
       ]
     },
-    deviceEdit(state) {
-      return (
-        {
-          name: state.dataDetails.name,
-          description: state.dataDetails.description,
-          deviceTypeId: state.dataDetails.deviceType?.id,
-          isActive: state.dataDetails.isActive
-        }
-      );
-    },
     deviceList(state) {
       return (
         state.data.map((device) => ({
@@ -157,6 +149,10 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         common.setIsLoading(false);
         if (res.status === 200) {
           this.message = res.data.message;
+          this.deviceEdit.name = res.data.result.name;
+          this.deviceEdit.description = res.data.result.description,
+          this.deviceEdit.deviceTypeId = res.data.result.deviceType?.id,
+          this.deviceEdit.isActive = res.data.result.isActive
           this.dataDetails = res.data.result;
           this.error = res.data.error;
         }

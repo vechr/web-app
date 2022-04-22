@@ -11,6 +11,8 @@
     "ant-design-vue": "^3.2.0",
     "axios": "^0.26.1",
     "core-js": "^3.8.3",
+    "json-editor-vue3": "^1.0.6",
+    "json-tree-view-vue3": "^0.1.16",
     "pinia": "^2.0.13",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
