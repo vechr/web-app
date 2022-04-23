@@ -6,6 +6,7 @@ import { useCommonStore } from "@/store";
 
 interface IDashboardData {
   message: string,
+  dataFull: IDashboard[],
   data: IDashboard[],
   dashboardEdit: {name: string, description: string, devices: string[]}
   dataDetails: IDashboard,
@@ -19,6 +20,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
   state: () => {
     return {
       message: "",
+      dataFull: [],
       data: [],
       dashboardEdit: {name: "", description: "", devices: []},
       dataDetails: {
@@ -85,6 +87,24 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
   },
   actions: {
+    async getDashboardFullList() {
+      const common = useCommonStore();
+      common.setIsLoading(true);
+      await axios.get(`http://localhost:3003/dashboard/details`)
+        .then((res) => {
+          common.setIsLoading(false);
+          if (res.status === 200) {
+            this.message = res.data.message;
+            this.dataFull = res.data.result;
+            this.error = res.data.error;
+          }
+        })
+        .catch((err) => {
+          common.setIsLoading(false);
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
+    },
     async getDashboardList() {
       const common = useCommonStore();
       common.setIsLoading(true);
