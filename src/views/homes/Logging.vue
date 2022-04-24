@@ -15,7 +15,7 @@
   <a-table
     v-if="data.length > 0"
     :dataSource="data"
-    :columns="loggingColumns"
+    :columns="columns"
     :scroll="{ x: 1200 }"
   >
   </a-table>
@@ -36,28 +36,49 @@
 <script lang="ts">
 import { defineComponent } from "vue-demi";
 import { connect, NatsConnection, StringCodec } from "nats.ws";
-import { watchEffect } from "vue";
+import { onBeforeUnmount, watchEffect } from "vue";
 import { useLoggingStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import { message as notif } from "ant-design-vue";
+import { message as notif, TableColumnType } from "ant-design-vue";
+
+type TableDataType = {
+  no: number;
+  message: string;
+};
+
+const columns: TableColumnType<TableDataType>[] = [
+  {
+    title: 'No',
+    dataIndex: 'no',
+    key: 'no',
+    defaultSortOrder: 'descend',
+    sorter: (a: TableDataType, b: TableDataType) => a.no - b.no,
+    width: 20,
+  },
+  {
+    title: 'Message',
+    dataIndex: 'message',
+    key: 'message'
+  },
+];
 
 export default defineComponent({
   name: "Logging",
   setup() {
+    let nc: NatsConnection;
+
     const route = useRoute();
     const topicName = route.params.topicName;
     const dashboardId = route.params.dashboardId;
     const deviceId = route.params.deviceId;
 
     const storeLogging = useLoggingStore();
-    const { urlTopic, message, statusConnection, data, loggingColumns } = storeToRefs(storeLogging);
+    const { urlTopic, message, statusConnection, data } = storeToRefs(storeLogging);
 
     urlTopic.value = `kreMES.DashboardID.${dashboardId}.DeviceID.${deviceId}.topic${topicName}`;
 
     watchEffect(async () => {
-      let nc: NatsConnection;
-
       try {
         const server = { servers: [process.env.VUE_APP_NATS_WS] };
         nc = await connect(server);
@@ -82,18 +103,24 @@ export default defineComponent({
 
         nc.publish(
           `${dashboardId}.status.connection`,
-          sc.encode(`Connected to the server!`)
+          sc.encode(`Connected to the server, start listening on topic ${typeof topicName == "string" ? topicName.replace('.', '/') : topicName}!`)
         );
         statusConnection.value.process = "Start";
       } catch (error) {
         notif.error("Server can't be reached!");
       }
-      finally {
-        (async () => await nc.close());
-      }
     });
 
-    return { data, message, statusConnection, urlTopic, topicName, loggingColumns };
+    onBeforeUnmount(async () => {
+      try {
+        await nc.close();
+        notif.info('Connection closed!');
+      } catch {
+        notif.error("Server error while close the connection!");
+      }
+    })
+
+    return { data, message, statusConnection, urlTopic, topicName, columns };
   },
 });
 </script>

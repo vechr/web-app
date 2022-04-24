@@ -25,22 +25,6 @@ export const useLoggingStore = defineStore('logging', {
       }
     } as ILoggingData
   },
-  getters: {
-    loggingColumns() {
-      return [
-        {
-          title: 'No',
-          dataIndex: 'no',
-          key: 'no'
-        },
-        {
-          title: 'Message',
-          dataIndex: 'message',
-          key: 'message',
-        }
-      ]
-    },
-  },
   actions: {
     async resetData() {
       this.data = [];
