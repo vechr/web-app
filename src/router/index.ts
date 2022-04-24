@@ -9,12 +9,18 @@ import DeviceType from '@/views/device-types/DeviceType.vue'
 import RoleManagement from '@/views/roles-managements/RoleManagement.vue'
 import TopicManagement from '@/views/device-managements/topic-managements/TopicManagement.vue'
 import TopicEvent from '@/views/device-managements/topic-managements/topic-events/TopicEvents.vue'
+import Logging from '@/views/homes/Logging.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/dashboard/:dashboardId/device/:deviceId/topic/:topicName/logging',
+    name: 'logging',
+    component: Logging
   },
   {
     path: '/about',

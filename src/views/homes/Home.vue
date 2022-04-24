@@ -1,20 +1,14 @@
 <template>
-  <h2
-    :style="{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '50px',
-    }"
-    class="responsive-text"
+  <a-divider
+    style="font-size: 30px; !important"
   >
     Dashboard
-  </h2>
+  </a-divider>
   <div v-if="dataFull.length > 0">
     <div v-for="(data, index) in dataFull" :key="data" style="padding: 2px">
       <a-row >
         <a-col :xs="24" :xl="8" v-for="(value) in dataFull.slice(index*3, (index+1)*3)" :key="value">
-          <a-card hoverable>
+          <a-card style="-webkit-box-shadow: 0px 0px 13px 1px rgba(154,154,154,0.2); box-shadow: 0px 0px 13px 1px rgba(154,154,154,0.2);">
             <a-card-meta :title="value.name" :description="value.description">
               <template #avatar>
                 <a-avatar style="background-color: #00D1FF;"><template #icon><dashboard-outlined /></template></a-avatar>
@@ -39,10 +33,16 @@
                         >
                           <a-typography-paragraph 
                             :copyable="{ text: `kreMES/DashboardID/${value.id}/DeviceID/${device.id}/topic${topic.name}` }"
-                            :style="{color: 'deeppink'}"
+                            :style="{color: 'deeppink', margin: '10px !important'}"
                           >
                             {{topic.name}}
                           </a-typography-paragraph>
+                          <router-link :to="{name: 'logging', params: {dashboardId: value.id, deviceId: device.id, topicName: topic.name.replace('/', '.')}}" >
+                            <a-button class="responsive-bt" type="primary" style = "margin: 0px 10px 20px 10px">
+                              <template #icon><EyeOutlined /></template>
+                              Watch
+                            </a-button>
+                          </router-link>
                         </a-tag>
                       </div>
                       <div v-else>
@@ -106,21 +106,27 @@
 import {
   ApiOutlined,
   DashboardOutlined,
-  PlusOutlined
+  PlusOutlined,
+  EyeOutlined
 } from "@ant-design/icons-vue";
-import { useDashboardManagementStore } from "@/store";
+import { useDashboardManagementStore, useLoggingStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { defineComponent, onBeforeMount } from "vue";
 
 export default defineComponent({
   name: 'Home',
-  components:{DashboardOutlined, ApiOutlined, PlusOutlined},
+  components:{DashboardOutlined, ApiOutlined, PlusOutlined, EyeOutlined},
   setup() {
     const storeDashboard = useDashboardManagementStore();
+    const storeLogging = useLoggingStore();
 
     const { dataFull } = storeToRefs(storeDashboard);
+    const { statusConnection } = storeToRefs(storeLogging)
 
     onBeforeMount(() => {
+      statusConnection.value.process = 'Finished';
+      statusConnection.value.message = "Not Connected!"
+      storeLogging.resetData();
       storeDashboard.getDashboardFullList();
     });
 
