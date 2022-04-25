@@ -32,12 +32,12 @@
                           style="margin: 20px 10px 20px 0;"
                         >
                           <a-typography-paragraph 
-                            :copyable="{ text: `kreMES/DashboardID/${value.id}/DeviceID/${device.id}/topic${topic.name}` }"
+                            :copyable="{ text: `kreMES/DashboardID/${value.id}/DeviceID/${device.id}/TopicID/${topic.id}/Topic${topic.name}` }"
                             :style="{color: 'deeppink', margin: '10px !important'}"
                           >
                             {{topic.name}}
                           </a-typography-paragraph>
-                          <router-link :to="{name: 'logging', params: {dashboardId: value.id, deviceId: device.id, topicName: topic.name.replace('/', '.')}}" >
+                          <router-link :to="{name: 'logging', params: {dashboardId: value.id, deviceId: device.id, topicId: topic.id, topicName: topic.name.replace(/\//g, '.')}}" >
                             <a-button class="responsive-bt" type="primary" style = "margin: 0px 10px 20px 10px">
                               <template #icon><EyeOutlined /></template>
                               Watch

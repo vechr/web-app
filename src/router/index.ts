@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/dashboard/:dashboardId/device/:deviceId/topic/:topicName/logging',
+    path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/logging',
     name: 'logging',
     component: Logging
   },

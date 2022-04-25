@@ -5,7 +5,7 @@
         <a @click="navigate" :href="href">Home</a>
       </router-link>
     </a-breadcrumb-item>
-    <a-breadcrumb-item>( <i>{{typeof topicName == "string" ? topicName.replace('.', '/') : topicName}}</i> )</a-breadcrumb-item>
+    <a-breadcrumb-item>( <i>{{typeof topicName == "string" ? topicName.replace(/\./g, '/') : topicName}}</i> )</a-breadcrumb-item>
   </a-breadcrumb>
   <a-divider
     style="font-size: 30px; !important"
@@ -36,7 +36,7 @@
 <script lang="ts">
 import { defineComponent } from "vue-demi";
 import { connect, NatsConnection, StringCodec } from "nats.ws";
-import { onBeforeUnmount, watchEffect } from "vue";
+import { onBeforeMount, onBeforeUnmount, watchEffect } from "vue";
 import { useLoggingStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
@@ -70,13 +70,18 @@ export default defineComponent({
 
     const route = useRoute();
     const topicName = route.params.topicName;
+    const topicId = route.params.topicId;
     const dashboardId = route.params.dashboardId;
     const deviceId = route.params.deviceId;
 
     const storeLogging = useLoggingStore();
     const { urlTopic, message, statusConnection, data } = storeToRefs(storeLogging);
 
-    urlTopic.value = `kreMES.DashboardID.${dashboardId}.DeviceID.${deviceId}.topic${topicName}`;
+    urlTopic.value = `kreMES.DashboardID.${dashboardId}.DeviceID.${deviceId}.TopicID.${topicId}.Topic${topicName}`;
+
+    onBeforeMount(() => {
+      storeLogging.getHistoricalData({dashboardId, deviceId, topicId, topic: topicName.toString().replace(/\./g, '/')});
+    })
 
     watchEffect(async () => {
       try {
@@ -103,7 +108,7 @@ export default defineComponent({
 
         nc.publish(
           `${dashboardId}.status.connection`,
-          sc.encode(`Connected to the server, start listening on topic ${typeof topicName == "string" ? topicName.replace('.', '/') : topicName}!`)
+          sc.encode(`Connected to the server, start listening on topic ${typeof topicName == "string" ? topicName.replace(/\./g, '/') : topicName}!`)
         );
         statusConnection.value.process = "Start";
       } catch (error) {

@@ -1,10 +1,14 @@
+import { message } from "ant-design-vue";
+import axios from "axios";
 import { defineStore } from "pinia";
 
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
 interface ILoggingData {
   urlTopic: string;
   data: {
     no: number,
-    message: string
+    message: any
   }[];
   message: string
   statusConnection: {
@@ -29,6 +33,17 @@ export const useLoggingStore = defineStore('logging', {
     async resetData() {
       this.data = [];
       this.message = "";
+    },
+    async getHistoricalData(payload: {dashboardId: string | string[], deviceId: string | string[], topicId: string | string[], topic: string | string[]}) {
+      await axios.post(`http://localhost:3003/device/${payload.deviceId}/topic/query`, payload)
+      .then((res) => {
+        if (res.status === 200) {
+          this.data = res.data.map((val: { _value: any; }, index: number) => ({no: index + 1, message: val._value}))
+        }
+      })
+      .catch((err) => {
+        message.error(`${err.code} ${err.message}`);
+      })
     }
   }
 })
