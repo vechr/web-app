@@ -43,6 +43,12 @@
                               Watch
                             </a-button>
                           </router-link>
+                          <router-link :to="{name: 'dashboard', params: {dashboardId: value.id, deviceId: device.id, topicId: topic.id, topicName: topic.name.replace(/\//g, '.')}}" >
+                            <a-button class="responsive-bt" type="primary" style = "margin: 0px 10px 20px 10px">
+                              <template #icon><DashboardOutlined /></template>
+                              Dashboard
+                            </a-button>
+                          </router-link>
                         </a-tag>
                       </div>
                       <div v-else>

@@ -5,6 +5,8 @@ import App from './App.vue';
 import router from './router';
 import 'ant-design-vue/dist/antd.css';
 import '@/assets/main.css';
+import 'gridstack/dist/gridstack.min.css';
+import 'gridstack/dist/h5/gridstack-dd-native';
 
 const app = createApp(App);
 app
