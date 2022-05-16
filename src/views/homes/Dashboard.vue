@@ -23,10 +23,10 @@ export default defineComponent({
     let info = ref("");
     let grid: GridStack;
     const items = [
-      { x: 2, y: 1, h: 2 },
+      { x: 2, y: 1, h: 2, w: 2 },
       { x: 2, y: 4, w: 3 },
-      { x: 4, y: 2 },
-      { x: 3, y: 1, h: 2 },
+      { x: 4, y: 2, w: 2 },
+      { x: 3, y: 1, h: 2, w: 2 },
       { x: 0, y: 6, w: 2, h: 2 },
     ];
 
@@ -55,7 +55,7 @@ export default defineComponent({
         h: Math.round(1 + 3 * Math.random()),
       };
       node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><button style="margin: 5px;" type="button" >Button Dummy</button></div></div>', node);
+      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><button class="ant-btn ant-btn-primary responsive-bt" style="margin: 5px;" type="button" >Button Dummy</button></div></div>', node);
     }
 
     return {
