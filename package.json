@@ -10,6 +10,7 @@
   "dependencies": {
     "ant-design-vue": "^3.2.0",
     "axios": "^0.26.1",
+    "chart.js": "^3.7.1",
     "core-js": "^3.8.3",
     "gridstack": "^5.0.0",
     "json-editor-vue3": "^1.0.6",
@@ -17,6 +18,7 @@
     "nats.ws": "^1.7.2",
     "pinia": "^2.0.13",
     "vue": "^3.2.13",
+    "vue-chart-3": "^3.1.8",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
