@@ -90,7 +90,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     async getTopicList<T>(deviceId: T) {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`http://localhost:3003/device/${deviceId}/topic`)
+      await axios.get(`/api/device/${deviceId}/topic`)
       .then((res) => {
         common.setIsLoading(false);
         if (res.status === 200) {
@@ -107,7 +107,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     },
     async getTopicById<T>(deviceId: T, id: string) {
       const common = useCommonStore();
-      await axios.get(`http://localhost:3003/device/${deviceId}/topic/${id}`)
+      await axios.get(`/api/device/${deviceId}/topic/${id}`)
       .then((res) => {
         common.setIsLoading(false);
         if (res.status === 200) {
@@ -126,7 +126,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     },
     async createTopic<T>(deviceId: T, value: {name: string, description: string}) {
       const common = useCommonStore();
-      await axios.post(`http://localhost:3003/device/${deviceId}/topic`, JSON.stringify(value, null, 2))
+      await axios.post(`/api/device/${deviceId}/topic`, JSON.stringify(value, null, 2))
       .then((res) => {
         common.setIsModalShow(false);
         common.setIsLoadingButton(false);
@@ -146,7 +146,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     },
     async updateTopicById<T>(deviceId: T ,id: string, value: { name: string, description: string }){
       const common = useCommonStore();
-      await axios.patch(`http://localhost:3003/device/${deviceId}/topic/${id}`, value)
+      await axios.patch(`/api/device/${deviceId}/topic/${id}`, value)
         .then((res) => {
           common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
@@ -166,7 +166,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
         })
     },
     async deleteTopicById<T>(deviceId: T, id: string) {
-      await axios.delete(`http://localhost:3003/device/${deviceId}/topic/${id}`)
+      await axios.delete(`/api/device/${deviceId}/topic/${id}`)
       .then((res) => {
         if (res.status === 200) {
           this.message = res.data.message;

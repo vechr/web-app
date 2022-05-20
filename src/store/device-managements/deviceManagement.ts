@@ -110,7 +110,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
   },
   actions: {
     async getOptionDevice() {
-      await axios.get(`http://localhost:3003/device`)
+      await axios.get(`/api/device`)
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;
@@ -127,7 +127,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     async getDeviceList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`http://localhost:3003/device`)
+      await axios.get(`/api/device`)
         .then((res) => {
           common.setIsLoading(false);
           if (res.status === 200) {
@@ -144,7 +144,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     },
     async getDeviceById(id: string) {
       const common = useCommonStore();
-      await axios.get(`http://localhost:3003/device/${id}`)
+      await axios.get(`/api/device/${id}`)
       .then((res) => {
         common.setIsLoading(false);
         if (res.status === 200) {
@@ -165,7 +165,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     },
     async createDevice(value: {name: string, description: string, isActive: boolean, deviceTypeId: string}) {
       const common = useCommonStore();
-      await axios.post(`http://localhost:3003/device`, JSON.stringify(value, null, 2))
+      await axios.post(`/api/device`, JSON.stringify(value, null, 2))
       .then((res) => {
         common.setIsModalShow(false);
         common.setIsLoadingButton(false);
@@ -185,7 +185,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     },
     async updateDeviceById(id: string, value: { name: string, description: string, isActive: boolean, deviceTypeId: string }){
       const common = useCommonStore();
-      await axios.patch(`http://localhost:3003/device/${id}`, value)
+      await axios.patch(`/api/device/${id}`, value)
         .then((res) => {
           common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
@@ -205,7 +205,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         })
     },
     async deleteDeviceById(id: string) {
-      await axios.delete(`http://localhost:3003/device/${id}`)
+      await axios.delete(`/api/device/${id}`)
       .then((res) => {
         if (res.status === 200) {
           this.message = res.data.message;

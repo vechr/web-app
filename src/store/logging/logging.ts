@@ -35,7 +35,7 @@ export const useLoggingStore = defineStore('logging', {
       this.message = "";
     },
     async getHistoricalData(payload: {dashboardId: string | string[], deviceId: string | string[], topicId: string | string[], topic: string | string[]}) {
-      await axios.post(`http://localhost:3003/device/${payload.deviceId}/topic/query`, payload)
+      await axios.post(`/api/device/${payload.deviceId}/topic/query`, payload)
       .then((res) => {
         if (res.status === 200) {
           this.data = res.data.map((val: { _value: any; }, index: number) => ({no: index + 1, message: val._value}))

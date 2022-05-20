@@ -90,7 +90,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     async getDashboardFullList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`http://localhost:3003/dashboard/details`)
+      await axios.get(`/api/dashboard/details`)
         .then((res) => {
           common.setIsLoading(false);
           if (res.status === 200) {
@@ -108,7 +108,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     async getDashboardList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`http://localhost:3003/dashboard`)
+      await axios.get(`/api/dashboard`)
         .then((res) => {
           common.setIsLoading(false);
           if (res.status === 200) {
@@ -124,7 +124,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         })
     },
     async getDashboardById(id: string) {
-      await axios.get(`http://localhost:3003/dashboard/${id}`)
+      await axios.get(`/api/dashboard/${id}`)
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;
@@ -142,7 +142,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
     async createDashboard(value: { name: string, description: string }) {
       const common = useCommonStore();
-      await axios.post(`http://localhost:3003/dashboard`, value)
+      await axios.post(`/api/dashboard`, value)
         .then((res) => {
           common.setIsModalShow(false);
           common.setIsLoadingButton(false);
@@ -162,7 +162,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
     async updateDashboardById(id: string, value: { name: string, description: string, devices: string[] }){
       const common = useCommonStore();
-      await axios.patch(`http://localhost:3003/dashboard/${id}`, value)
+      await axios.patch(`/api/dashboard/${id}`, value)
         .then((res) => {
           common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
@@ -182,7 +182,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         })
     },
     async deleteDashboardById(id: string) {
-      await axios.delete(`http://localhost:3003/dashboard/${id}`)
+      await axios.delete(`/api/dashboard/${id}`)
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;
