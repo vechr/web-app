@@ -64,6 +64,15 @@
         </a-card>
       </a-col>
     </a-row>
+    <a-row>
+      <a-col :span="12">
+        <a-card @click="addNewGaugeChart()" align="middle">
+          <DashboardOutlined /><br/> Gauge
+        </a-card>
+      </a-col>
+      <a-col :span="12">
+      </a-col>
+    </a-row>
   </div>
   </a-drawer>
   <section class="grid-stack">
@@ -71,7 +80,7 @@
 </template>
 
 <script lang="ts">
-import { PieChartTwoTone, PieChartFilled, PlusOutlined, BarChartOutlined, LineChartOutlined, DotChartOutlined, PieChartOutlined, RadarChartOutlined } from "@ant-design/icons-vue";
+import { PieChartTwoTone, PieChartFilled, PlusOutlined, BarChartOutlined, LineChartOutlined, DotChartOutlined, PieChartOutlined, RadarChartOutlined, DashboardOutlined } from "@ant-design/icons-vue";
 import { defineComponent, onMounted, ref } from "vue";
 import { GridStack } from 'gridstack';
 import Chart from 'chart.js/auto';
@@ -82,10 +91,11 @@ import doughnutPieChartData from '@/types/chart/doughnut-pie-chart';
 import polarAreaChartData from '@/types/chart/polar-chart';
 import radarChartData from '@/types/chart/radar-chart';
 import scatterChartData from '@/types/chart/scatter-chart';
+import gaugeChartData from '@/types/chart/gauge-chart';
 
 export default defineComponent({
   name: 'Dashboard',
-  components: { PieChartTwoTone, PieChartFilled, PlusOutlined, BarChartOutlined, LineChartOutlined, DotChartOutlined, PieChartOutlined, RadarChartOutlined },
+  components: { DashboardOutlined, PieChartTwoTone, PieChartFilled, PlusOutlined, BarChartOutlined, LineChartOutlined, DotChartOutlined, PieChartOutlined, RadarChartOutlined },
   setup () {
     const visible = ref<boolean>(false);
 
@@ -113,6 +123,22 @@ export default defineComponent({
         info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`;
       });
     });
+
+    function addNewGaugeChart() {
+      grid.compact();
+      const node: any = {
+        x: 12,
+        y: 5,
+        w: 5,
+        h: 4,
+      };
+      node.id = node.content = String(count.value++);
+      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
+      
+      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
+      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+      new Chart(ctx, gaugeChartData as any);
+    }
 
     function addNewScatterChart() {
       grid.compact();
@@ -252,6 +278,7 @@ export default defineComponent({
       addNewPolarAreaChart,
       addNewRadarChart,
       addNewScatterChart,
+      addNewGaugeChart,
       visible,
       afterVisibleChange,
       showDrawer,
