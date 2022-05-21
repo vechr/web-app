@@ -58,13 +58,9 @@
   max-width: 250px !important;
   min-width: 250px !important;
   width: 250px !important;
-  position: absolute;
+  position: fixed;
   z-index: 999;
-  height: 100%;
-}
-
-#app {
-  position: relative;
+  height: -webkit-fill-available;
 }
 
 .ant-layout-sider-collapsed {
@@ -95,29 +91,29 @@
   background: #fff;
 }
 
-.sidebar-mobile {
-  background-color: rgba(255, 255, 255, 0) !important;
+.close-sidebar {
+  z-index: 1000;
+  color: white;
+  font-size: medium;
+  cursor: pointer;
+  float: right;
+  margin: 10px 10px 0 0;
 }
 
 @media (min-width: 992px) {
-  #app {
-    position: relative;
-  }
 
   .ant-layout-sider-collapsed {
-    flex: 0 0 50px !important;
-    max-width: 50px !important;
     min-width: 50px !important;
     width: 50px !important;
   }
 
   .ant-layout-sider-dark {
-    position: initial;
+    position: static;
     z-index: 999;
     height: auto;
   }
 
-  .sidebar-mobile {
+  .close-sidebar {
     visibility: hidden;
   }
 }

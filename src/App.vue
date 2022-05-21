@@ -1,6 +1,7 @@
 <template>
-  <a-layout :style="{ height: 'auto', minHeight: '100vh' }">
+  <a-layout :style="{ minHeight: '100vh' }">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null">
+      <div class="close-sidebar" @click="() => (collapsed = !collapsed)"><CloseOutlined /></div><br />
       <img
         alt="logo"
         src="../src/assets/logo.svg"
@@ -41,12 +42,6 @@
             <span>Role Management</span>
           </a-menu-item>
         </router-link>
-
-        <a-menu-item class="sidebar-mobile" id="toggle" @click="() => (collapsed = !collapsed)">
-          <EyeInvisibleOutlined />
-          <span>Close</span>
-        </a-menu-item>
-
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -109,7 +104,7 @@ import {
   MenuFoldOutlined,
   ApartmentOutlined,
   UserSwitchOutlined,
-  EyeInvisibleOutlined
+  CloseOutlined
 } from "@ant-design/icons-vue";
 import Loading from "@/components/common/Loading.vue";
 import { defineComponent, ref } from "vue";
@@ -122,7 +117,7 @@ export default defineComponent({
     MenuFoldOutlined,
     ApartmentOutlined,
     UserSwitchOutlined,
-    EyeInvisibleOutlined,
+    CloseOutlined,
     Loading,
   },
   setup() {
