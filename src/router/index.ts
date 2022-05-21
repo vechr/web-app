@@ -10,12 +10,18 @@ import RoleManagement from '@/views/roles-managements/RoleManagement.vue'
 import TopicManagement from '@/views/device-managements/topic-managements/TopicManagement.vue'
 import TopicEvent from '@/views/device-managements/topic-managements/topic-events/TopicEvents.vue'
 import Logging from '@/views/homes/Logging.vue'
+import Dashboard from '@/views/homes/Dashboard.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/dashboard/:dashboardId',
+    name: 'dashboard',
+    component: Dashboard
   },
   {
     path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/logging',

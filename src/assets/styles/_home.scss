@@ -1,0 +1,45 @@
+
+.row-dashboard {
+  border-radius: 10px;
+  background: rgb(0,209,255);
+  background: linear-gradient(45deg, rgba(0,209,255,1) 42%, rgba(0,217,139,1) 100%);
+}
+
+.dashboard-card-meta {
+  span {
+    background-color: #FF67B9;
+  }
+}
+
+.dashboard-card {
+  height: 100%;
+}
+
+.dashboard-card:hover {
+  .dashboard-card-meta {
+    .ant-card-meta-detail {
+      .ant-card-meta-title {
+        color: #FF67B9 !important;
+      }
+    }
+  }
+}
+
+div.ant-typography, .ant-typography p {
+  color: #FF67B9;
+}
+
+.ant-typography {
+  padding: 5px 10px 0px 10px;
+}
+
+.ant-tag {
+  border-radius: 10px;
+  margin: 20px 10px 20px 0;
+}
+
+.device-card {
+  margin: 20px;
+  border: none;
+  background: rgba(0,0,0,0.03);
+}
