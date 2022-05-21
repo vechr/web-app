@@ -13,6 +13,14 @@
     width: 50px !important;
   }
 
+  .responsive-bt {
+    span {
+      svg {
+        margin-top: 4px !important;
+      }
+    }
+  }
+
   .ant-card-body {
     padding: 10px;
   }

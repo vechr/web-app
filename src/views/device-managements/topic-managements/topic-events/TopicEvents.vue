@@ -19,6 +19,7 @@
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: '50px',
+        marginTop: '50px'
       }"
       class="responsive-text"
     >
