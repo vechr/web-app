@@ -45,7 +45,7 @@
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 5 0 0 0">
+      <a-layout-header>
         <div class="logo" />
         <a-menu
           v-model:selectedKeys="selectedKeys"
