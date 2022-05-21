@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button type="primary" class="responsive-bt" @click="showModal" block>
+    <a-button type="primary" @click="showModal" block>
       <template #icon><PlusOutlined /></template>Create Topic Event
     </a-button>
     <a-modal

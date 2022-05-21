@@ -1,16 +1,10 @@
 <template>
-  <a-layout :style="{ height: 'auto', minHeight: '100vh' }">
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
+  <a-layout :style="{ minHeight: '100vh' }">
+    <a-layout-sider v-model:collapsed="collapsed" :trigger="null">
+      <div class="close-sidebar" @click="() => (collapsed = !collapsed)"><CloseOutlined /></div><br />
       <img
         alt="logo"
         src="../src/assets/logo.svg"
-        style="
-          height: 60px;
-          display: block;
-          margin-left: auto;
-          margin-right: auto;
-          width: 50%;
-        "
       />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <router-link to="/dashboard" custom v-slot="{ navigate, href }">
@@ -48,11 +42,10 @@
             <span>Role Management</span>
           </a-menu-item>
         </router-link>
-
       </a-menu>
     </a-layout-sider>
     <a-layout>
-      <a-layout-header style="background: #fff; padding: 5 0 0 0">
+      <a-layout-header>
         <div class="logo" />
         <a-menu
           v-model:selectedKeys="selectedKeys"
@@ -94,14 +87,7 @@
           </router-link>
         </a-menu>
       </a-layout-header>
-      <a-layout-content
-        :style="{
-          margin: '24px 16px',
-          padding: '24px',
-          background: '#fff',
-          minHeight: '280px',
-        }"
-      >
+      <a-layout-content id="main-content">
         <router-view />
         <Loading />
       </a-layout-content>
@@ -118,6 +104,7 @@ import {
   MenuFoldOutlined,
   ApartmentOutlined,
   UserSwitchOutlined,
+  CloseOutlined
 } from "@ant-design/icons-vue";
 import Loading from "@/components/common/Loading.vue";
 import { defineComponent, ref } from "vue";
@@ -130,6 +117,7 @@ export default defineComponent({
     MenuFoldOutlined,
     ApartmentOutlined,
     UserSwitchOutlined,
+    CloseOutlined,
     Loading,
   },
   setup() {
@@ -140,79 +128,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style>
-.ant-layout-content {
-  border-radius: 20px;
-}
-
-#toggle {
-  margin: 0;
-  padding: 0;
-}
-#avatar {
-  margin-left: auto;
-}
-
-#avatar.ant-menu-item-selected::after {
-  border-bottom: 2px solid rgb(201, 83, 201);
-}
-
-#toggle.ant-menu-item-selected::after {
-  border-bottom: 2px solid transparent;
-}
-
-.site-layout-content {
-  min-height: 280px;
-  padding: 24px;
-  background: #fff;
-}
-#components-layout-demo-top .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
-}
-.ant-row-rtl #components-layout-demo-top .logo {
-  float: right;
-  margin: 16px 0 16px 24px;
-}
-
-[data-theme="dark"] .site-layout-content {
-  background: #141414;
-}
-.ant-layout-sider-dark {
-  flex: 0 0 250px !important;
-  max-width: 250px !important;
-  min-width: 250px !important;
-  width: 250px !important;
-}
-.ant-layout-sider-collapsed {
-  flex: 0 0 50px !important;
-  max-width: 50px !important;
-  min-width: 50px !important;
-  width: 50px !important;
-}
-#components-layout-demo-custom-trigger .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-#components-layout-demo-custom-trigger .trigger:hover {
-  color: #1890ff;
-}
-
-#components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.3);
-  margin: 16px;
-}
-
-.site-layout .site-layout-background {
-  background: #fff;
-}
-</style>

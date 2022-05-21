@@ -83,10 +83,10 @@
                           There's no device found!
                         </span>
                       </template>
-                      <router-link to="/device" custom v-slot="{ navigate, href }">
+                      <router-link to="/dashboard" custom v-slot="{ navigate, href }">
                         <a-button type="primary" class="responsive-bt" @click="navigate" :href="href">
                           <template #icon><PlusOutlined /></template>
-                          Manage Device
+                          Manage Device in Dashboard
                         </a-button>
                       </router-link>
                     </a-empty>
