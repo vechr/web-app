@@ -19,7 +19,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/dashboard',
+    path: '/dashboard/:dashboardId',
     name: 'dashboard',
     component: Dashboard
   },
