@@ -14,6 +14,8 @@ interface IDeviceTypeData {
   error: IError
 }
 
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 
@@ -89,7 +91,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
   },
   actions: {
     async getOptionDeviceType() {
-      await axios.get(`/api/device-type`)
+      await axios.get(`/device-type`)
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;
@@ -106,7 +108,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
     async getDeviceTypeList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`/api/device-type`)
+      await axios.get(`/device-type`)
         .then((res) => {
           common.setIsLoading(false);
           if (res.status === 200) {
@@ -124,7 +126,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
     },
     async getDeviceTypeById(id: string) {
       const common = useCommonStore();
-      await axios.get(`/api/device-type/${id}`)
+      await axios.get(`/device-type/${id}`)
       .then((res) => {
         common.setIsLoading(false);
         if (res.status === 200) {
@@ -143,7 +145,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
     },
     async createDeviceType(value: { name: string, description: string}) {
       const common = useCommonStore();
-      await axios.post(`/api/device-type`, value)
+      await axios.post(`/device-type`, value)
         .then((res) => {
           common.setIsModalShow(false);
           common.setIsLoadingButton(false);
@@ -163,7 +165,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
     },
     async updateDeviceTypeById(id: string, value: { name: string, description: string }){
       const common = useCommonStore();
-      await axios.patch(`/api/device-type/${id}`, value)
+      await axios.patch(`/device-type/${id}`, value)
         .then((res) => {
           common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
@@ -183,7 +185,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         })
     },
     async deleteDeviceTypeById(id: string) {
-      await axios.delete(`/api/device-type/${id}`)
+      await axios.delete(`/device-type/${id}`)
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;

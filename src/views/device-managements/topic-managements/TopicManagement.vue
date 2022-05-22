@@ -79,7 +79,7 @@
                 </div>
                 <div v-else>
                   <a-tag color="#f50">
-                    {{ "no topics".toUpperCase() }}
+                    {{ "no topic events".toUpperCase() }}
                   </a-tag>
                 </div>
               </a-space>

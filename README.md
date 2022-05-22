@@ -1,24 +1,16 @@
 # web-app
 
-## Project setup
+## Production Build
 ```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
+docker build -f production.dockerfile -t zulfikar4568/web-app .
 ```
 
-### Compiles and minifies for production
+## Production Test
 ```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
+docker run -d --rm -it -p 8080:8080 --name prod_web-app zulfikar4568/web-app
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Interactive Terminal
+```
+docker exec -it prod_web-app /bin/sh
+```

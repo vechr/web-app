@@ -67,7 +67,7 @@
                 </div>
                 <div v-else>
                   <a-tag color="#f50">
-                    {{ "no device".toUpperCase() }}
+                    {{ "no devices".toUpperCase() }}
                   </a-tag>
                 </div>
               </a-space>

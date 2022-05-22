@@ -13,6 +13,8 @@ interface IDashboardData {
   error: IError
 }
 
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 
@@ -90,7 +92,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     async getDashboardFullList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`/api/dashboard/details`)
+      await axios.get(`/dashboard/details`)
         .then((res) => {
           common.setIsLoading(false);
           if (res.status === 200) {
@@ -108,7 +110,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     async getDashboardList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`/api/dashboard`)
+      await axios.get(`/dashboard`)
         .then((res) => {
           common.setIsLoading(false);
           if (res.status === 200) {
@@ -124,7 +126,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         })
     },
     async getDashboardById(id: string) {
-      await axios.get(`/api/dashboard/${id}`)
+      await axios.get(`/dashboard/${id}`)
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;
@@ -142,7 +144,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
     async createDashboard(value: { name: string, description: string }) {
       const common = useCommonStore();
-      await axios.post(`/api/dashboard`, value)
+      await axios.post(`/dashboard`, value)
         .then((res) => {
           common.setIsModalShow(false);
           common.setIsLoadingButton(false);
@@ -162,7 +164,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
     async updateDashboardById(id: string, value: { name: string, description: string, devices: string[] }){
       const common = useCommonStore();
-      await axios.patch(`/api/dashboard/${id}`, value)
+      await axios.patch(`/dashboard/${id}`, value)
         .then((res) => {
           common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
@@ -182,7 +184,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         })
     },
     async deleteDashboardById(id: string) {
-      await axios.delete(`/api/dashboard/${id}`)
+      await axios.delete(`/dashboard/${id}`)
         .then((res) => {
           if (res.status === 200) {
             this.message = res.data.message;

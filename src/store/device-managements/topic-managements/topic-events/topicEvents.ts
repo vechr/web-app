@@ -12,6 +12,11 @@ interface ITopicEventData {
   error: IError
 }
 
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
+
 export const useTopicEventStore = defineStore('topicEvent', {
   state: () => {
     return {
@@ -87,7 +92,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
     async getTopicEventList<T>(topicId: T) {
       const common = useCommonStore();
       common.setIsLoading(true);
-      await axios.get(`/api/topic/${topicId}/topic-events`)
+      await axios.get(`/topic/${topicId}/topic-events`)
       .then((res) => {
         common.setIsLoading(false);
         if (res.status === 200) {
@@ -104,7 +109,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
     },
     async getTopicEventById<T>(topicId: T, id: string) {
       const common = useCommonStore();
-      await axios.get(`/api/topic/${topicId}/topic-events/${id}`)
+      await axios.get(`/topic/${topicId}/topic-events/${id}`)
       .then((res) => {
         common.setIsLoading(false);
         if (res.status === 200) {
@@ -124,7 +129,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
     },
     async createTopicEvent<T>(topicId: T, value: {name: string, description: string, eventExpression: object}) {
       const common = useCommonStore();
-      await axios.post(`/api/topic/${topicId}/topic-events`, JSON.stringify(value, null, 2))
+      await axios.post(`/topic/${topicId}/topic-events`, JSON.stringify(value, null, 2))
       .then((res) => {
         common.setIsModalShow(false);
         common.setIsLoadingButton(false);
@@ -144,7 +149,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
     },
     async updateTopicEventById<T>(topicId: T ,id: string, value: { name: string, description: string, eventExpression: object }){
       const common = useCommonStore();
-      await axios.patch(`/api/topic/${topicId}/topic-events/${id}`, value)
+      await axios.patch(`/topic/${topicId}/topic-events/${id}`, value)
         .then((res) => {
           common.setIsDrawerShow(false);
           common.setIsLoadingButton(false);
@@ -164,7 +169,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
         })
     },
     async deleteTopicEventById<T>(topicId: T, id: string) {
-      await axios.delete(`/api/topic/${topicId}/topic-events/${id}`)
+      await axios.delete(`/topic/${topicId}/topic-events/${id}`)
       .then((res) => {
         if (res.status === 200) {
           this.message = res.data.message;
