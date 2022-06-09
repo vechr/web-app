@@ -1,5 +1,6 @@
 import { IError, IWidget } from "@/types";
-import { Chart } from "chart.js";
+import { Chart, registerables} from 'chart.js';
+Chart.register(...registerables);
 import L from "leaflet";
 import { GridStack, GridStackNode } from "gridstack";
 import { defineStore } from "pinia";

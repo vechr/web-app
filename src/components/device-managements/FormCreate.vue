@@ -21,7 +21,7 @@
         <a-form-item
           label="Name"
           name="name"
-          :rules="[{ required: true, message: 'Please input name dashboard!' }]"
+          :rules="[{ required: true, message: 'Please input name device!' }]"
         >
           <a-input v-model:value="formState.name" />
         </a-form-item>
