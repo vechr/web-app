@@ -1,5 +1,4 @@
 <template>
-
     <a-row>
     <a-col :span="12">
       <a-button type="primary" @click="showDrawer"><PlusOutlined/>Widget</a-button>
@@ -94,9 +93,7 @@
 <script lang="ts">
 import { EnvironmentOutlined, PieChartTwoTone, PieChartFilled, PlusOutlined, BarChartOutlined, LineChartOutlined, DotChartOutlined, PieChartOutlined, RadarChartOutlined, DashboardOutlined } from "@ant-design/icons-vue";
 import { defineComponent, onMounted, ref } from "vue";
-import { GridStack } from 'gridstack';
-import Chart from 'chart.js/auto';
-import L from "leaflet";
+import { GridStack, GridStackNode } from 'gridstack';
 import barChartData from '@/types/chart/bar-chart';
 import lineChartData from '@/types/chart/line-chart';
 import bubbleChartData from '@/types/chart/bubble-chart';
@@ -105,12 +102,13 @@ import polarAreaChartData from '@/types/chart/polar-chart';
 import radarChartData from '@/types/chart/radar-chart';
 import scatterChartData from '@/types/chart/scatter-chart';
 import gaugeChartData from '@/types/chart/gauge-chart';
-import { message } from "ant-design-vue";
+import { useWidgetStore } from "@/store/widgets/widget";
 
 export default defineComponent({
   name: 'Dashboard',
   components: { EnvironmentOutlined, DashboardOutlined, PieChartTwoTone, PieChartFilled, PlusOutlined, BarChartOutlined, LineChartOutlined, DotChartOutlined, PieChartOutlined, RadarChartOutlined },
   setup () {
+    const useWidget = useWidgetStore()
     const visible = ref<boolean>(false);
 
     const showDrawer = () => {
@@ -130,195 +128,68 @@ export default defineComponent({
         removable: true
       });
 
+      grid.on('resizestop', function(event: Event, el: any) {
+        let node: GridStackNode = el.gridstackNode;
+        console.log(node);
+      });
+
+      grid.on('added', (event: Event, items: any) => {
+        items.forEach(function(node: GridStackNode) {
+          console.log(node);
+        });
+      });
+
+      grid.on("removed", (event: Event, items: any) => {
+        items.forEach(function(node: GridStackNode) {
+          console.log(node)
+        });
+      });
+
       grid.on("dragstop", (_, element: any) => {
         const node = element.gridstackNode;
         info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`;
+        console.log(node)
       });
     });
 
     function addNewMaps() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 12,
-        h: 5,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item event-map"><div class="grid-stack-item-content map-gridstack"><div class="container-map"><div class="my-map" id="map_' + node.id + '"></div></div></div></div>', node);
-      let map = new L.Map(`map_${node.id}`, {
-        center: new L.LatLng(40.731253, -73.996139),
-        zoom: 12,
-        attributionControl: false,
-        // dragging: false
-      });
-
-      map.locate({setView: true, maxZoom: 16});
-
-      map.on('locationfound', function (e) {
-        var radius = e.accuracy;
-
-        L.marker(e.latlng).addTo(map)
-            .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-        L.circle(e.latlng, radius).addTo(map);
-      });
-
-      map.on('locationerror', function onLocationError(e) {
-          message.error(e.message);
-      });
-      
-      L.tileLayer(
-       "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-       {
-         attribution:'',
-         maxZoom: 18
-       }
-     ).addTo(map);
+      useWidget.addNewMaps(grid, String(count.value++))
     }
 
     function addNewGaugeChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 5,
-        h: 4,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, gaugeChartData as any);
+      useWidget.addNewGaugeChart(grid, String(count.value++), gaugeChartData)
     }
 
     function addNewScatterChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 6,
-        h: 4,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, scatterChartData);
+      useWidget.addNewScatterChart(grid, String(count.value++), scatterChartData)
     }
 
     function addNewRadarChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 3,
-        h: 6,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, radarChartData);
+      useWidget.addNewRadarChart(grid, String(count.value++), radarChartData)
     }
 
     function addNewPolarAreaChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 3,
-        h: 6,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, polarAreaChartData);
+      useWidget.addNewPolarAreaChart(grid, String(count.value++), polarAreaChartData)
     }
 
     function addNewPieChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 3,
-        h: 6,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, doughnutPieChartData('pie'));
-    }
-
-    function addNewDoughnutChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 3,
-        h: 6,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, doughnutPieChartData('doughnut'));
+      useWidget.addNewPieChart(grid, String(count.value++), doughnutPieChartData('pie'))
     }
 
     function addNewBubbleChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 6,
-        h: 4,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, bubbleChartData);
+      useWidget.addNewBubbleChart(grid, String(count.value++), bubbleChartData)
     }
 
     function addNewLineChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 6,
-        h: 4,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, lineChartData);
+      useWidget.addNewLineChart(grid, String(count.value++), lineChartData)
     }
 
     function addNewBarChart() {
-      grid.compact();
-      const node: any = {
-        x: 12,
-        y: 5,
-        w: 6,
-        h: 4,
-      };
-      node.id = node.content = String(count.value++);
-      grid.addWidget('<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' + node.id + '"></canvas></div></div>', node);
-      
-      const canvas = document.getElementById("myChart_" + node.id) as HTMLCanvasElement;
-      let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
-      new Chart(ctx, barChartData);
+      useWidget.addNewBarChart(grid, String(count.value++), barChartData)
+    }
+
+    function addNewDoughnutChart() {
+      useWidget.addNewDoughnutChart(grid, String(count.value++), doughnutPieChartData('doughnut'))
     }
 
     return {
