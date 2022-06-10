@@ -103,6 +103,7 @@ import radarChartData from '@/types/chart/radar-chart';
 import scatterChartData from '@/types/chart/scatter-chart';
 import gaugeChartData from '@/types/chart/gauge-chart';
 import { useWidgetStore } from "@/store/widgets/widget";
+import uuid from '@/types/uuid'
 
 export default defineComponent({
   name: 'Dashboard',
@@ -117,7 +118,6 @@ export default defineComponent({
 
     const activeKey = ref(['1', '2']);
 
-    let count = ref(0);
     let info = ref("");
     let grid: GridStack;
     onMounted(() => {
@@ -153,43 +153,43 @@ export default defineComponent({
     });
 
     function addNewMaps() {
-      useWidget.addNewMaps(grid, String(count.value++))
+      useWidget.addNewMaps(grid, uuid())
     }
 
     function addNewGaugeChart() {
-      useWidget.addNewGaugeChart(grid, String(count.value++), gaugeChartData)
+      useWidget.addNewGaugeChart(grid, uuid(), gaugeChartData)
     }
 
     function addNewScatterChart() {
-      useWidget.addNewScatterChart(grid, String(count.value++), scatterChartData)
+      useWidget.addNewScatterChart(grid, uuid(), scatterChartData)
     }
 
     function addNewRadarChart() {
-      useWidget.addNewRadarChart(grid, String(count.value++), radarChartData)
+      useWidget.addNewRadarChart(grid, uuid(), radarChartData)
     }
 
     function addNewPolarAreaChart() {
-      useWidget.addNewPolarAreaChart(grid, String(count.value++), polarAreaChartData)
+      useWidget.addNewPolarAreaChart(grid, uuid(), polarAreaChartData)
     }
 
     function addNewPieChart() {
-      useWidget.addNewPieChart(grid, String(count.value++), doughnutPieChartData('pie'))
+      useWidget.addNewPieChart(grid, uuid(), doughnutPieChartData('pie'))
     }
 
     function addNewBubbleChart() {
-      useWidget.addNewBubbleChart(grid, String(count.value++), bubbleChartData)
+      useWidget.addNewBubbleChart(grid, uuid(), bubbleChartData)
     }
 
     function addNewLineChart() {
-      useWidget.addNewLineChart(grid, String(count.value++), lineChartData)
+      useWidget.addNewLineChart(grid, uuid(), lineChartData)
     }
 
     function addNewBarChart() {
-      useWidget.addNewBarChart(grid, String(count.value++), barChartData)
+      useWidget.addNewBarChart(grid, uuid(), barChartData)
     }
 
     function addNewDoughnutChart() {
-      useWidget.addNewDoughnutChart(grid, String(count.value++), doughnutPieChartData('doughnut'))
+      useWidget.addNewDoughnutChart(grid, uuid(), doughnutPieChartData('doughnut'))
     }
 
     return {
