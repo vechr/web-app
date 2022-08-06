@@ -64,6 +64,24 @@
                 </a-button>
               </a-space>
             </template>
+            <template v-if="column.key === 'widgetType'">
+              <a-space :size="10">
+                <div v-if="record.widgetType">
+                  <a-tag
+                    :color="`#${Math.floor(Math.random() * 16777215).toString(
+                      16
+                    )}`"
+                  >
+                    {{ record.widgetType }}
+                  </a-tag>
+                </div>
+                <div v-else>
+                  <a-tag color="#2285b4">
+                    {{ "not defined".toUpperCase() }}
+                  </a-tag>
+                </div>
+              </a-space>
+            </template>
             <template v-if="column.key === 'topicEvents'">
               <a-space :size="10">
                 <div v-if="record.topicEvents.length > 0">

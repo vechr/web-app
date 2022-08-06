@@ -40,6 +40,20 @@
           <a-textarea v-model:value="formState.description" />
         </a-form-item>
 
+        <a-form-item
+          label="Widget Type"
+          name="widgetType"
+          :rules="[{ required: false, message: 'Please input widget type!' }]"
+        >
+          <a-select
+            v-model:value="formState.widgetType"
+            show-search
+            placeholder="Select a Widget Type"
+            :options="getWidgetType"
+            :filter-option="filterOption"
+          ></a-select>
+        </a-form-item>
+
         <a-form-item>
           <a-button
             type="primary"
@@ -59,10 +73,12 @@ import { useCommonStore, useTopicManagementStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { defineComponent, reactive } from "vue";
 import { useRoute } from "vue-router";
+import { useWidgetStore } from "@/store/widgets/widget";
 
 interface FormState {
   name: string;
   description: string;
+  widgetType: string;
 }
 
 export default defineComponent({
@@ -73,9 +89,15 @@ export default defineComponent({
     const deviceId = route.params.deviceId;
 
     const common = useCommonStore();
+    const widgetStore = useWidgetStore();
     const store = useTopicManagementStore();
 
+    const { getWidgetType } = storeToRefs(widgetStore)
     const { isModalShow, isLoadingButton } = storeToRefs(common);
+
+    const filterOption = (input: string, option: any) => {
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
 
     const showModal = () => {
       common.setIsModalShow(true);
@@ -84,11 +106,12 @@ export default defineComponent({
     const formState = reactive<FormState>({
       name: "",
       description: "",
+      widgetType: ""
     });
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      store.createTopic(deviceId ,values);
+      store.createTopic(deviceId, values);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -99,6 +122,8 @@ export default defineComponent({
       common.setIsModalShow(false);
     };
     return {
+      filterOption,
+      getWidgetType,
       isLoadingButton,
       formState,
       isModalShow,

@@ -27,6 +27,22 @@ export const useWidgetStore = defineStore('widget', {
       }
     } as IWidgetData
   },
+  getters: {
+    getWidgetType() {
+      return [
+        {value: "BAR", label: "BAR"},
+        {value: "BUBBLE", label: "BUBBLE"},
+        {value: "DOUGHNUT", label: "DOUGHNUT"},
+        {value: "PIE", label: "PIE"},
+        {value: "GAUGE", label: "GAUGE"},
+        {value: "LINE", label: "LINE"},
+        {value: "POLAR", label: "POLAR"},
+        {value: "RADAR", label: "RADAR"},
+        {value: "SCATTER", label: "SCATTER"},
+        {value: "MAPS", label: "MAPS"}
+      ]
+    }
+  },
   actions: {
     addNewMaps(grid: GridStack, nodeId: string) {
       grid.compact();
