@@ -28,7 +28,7 @@
             <span>Device Management</span>
           </a-menu-item>
         </router-link>
-
+        <!--
         <router-link to="/user" custom v-slot="{ navigate, href }">
           <a-menu-item key="4" @click="navigate" :href="href">
             <user-outlined />
@@ -41,7 +41,7 @@
             <UserSwitchOutlined />
             <span>Role Management</span>
           </a-menu-item>
-        </router-link>
+        </router-link>-->
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -71,12 +71,12 @@
               >Home</a-menu-item
             >
           </router-link>
-
+          <!--
           <router-link to="/about" custom v-slot="{ navigate, href }">
             <a-menu-item key="7" @click="navigate" :href="href"
               >About</a-menu-item
             >
-          </router-link>
+          </router-link>-->
 
           <router-link to="/profile" custom v-slot="{ navigate, href }">
             <a-menu-item key="8" id="avatar" @click="navigate" :href="href">
@@ -103,7 +103,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   ApartmentOutlined,
-  UserSwitchOutlined,
+  // UserSwitchOutlined,
   CloseOutlined
 } from "@ant-design/icons-vue";
 import Loading from "@/components/common/Loading.vue";
@@ -116,7 +116,7 @@ export default defineComponent({
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     ApartmentOutlined,
-    UserSwitchOutlined,
+    // UserSwitchOutlined,
     CloseOutlined,
     Loading,
   },

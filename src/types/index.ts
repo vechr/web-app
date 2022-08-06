@@ -5,3 +5,7 @@ export * from './topic';
 export * from './topicEvent';
 export * from './deviceType';
 export * from './widget';
+export * from './chart/data/bubble-type';
+export * from './chart/data/scatter-type';
+export * from './chart/data/maps-type';
+export * from './chart/data/widget-types';

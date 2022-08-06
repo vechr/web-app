@@ -37,10 +37,11 @@
 import { defineComponent } from "vue-demi";
 import { connect, NatsConnection, StringCodec } from "nats.ws";
 import { onBeforeMount, onBeforeUnmount, watchEffect } from "vue";
-import { useLoggingStore } from "@/store";
+import { useLoggingStore, useTopicManagementStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { message as notif, TableColumnType } from "ant-design-vue";
+import { ValidationHelper } from '@/helpers/validation.helper'
 
 type TableDataType = {
   no: number;
@@ -77,9 +78,15 @@ export default defineComponent({
     const storeLogging = useLoggingStore();
     const { urlTopic, message, statusConnection, data } = storeToRefs(storeLogging);
 
+    const topicStore = useTopicManagementStore()
+    const { dataDetails } = storeToRefs(topicStore)
+
+    const validationTopic = new ValidationHelper()
+
     urlTopic.value = `kreMES.DashboardID.${dashboardId}.DeviceID.${deviceId}.TopicID.${topicId}.Topic${topicName}`;
 
     onBeforeMount(() => {
+      if (typeof topicId === 'string') topicStore.getTopicById(deviceId, topicId)
       storeLogging.getHistoricalData({dashboardId, deviceId, topicId, topic: topicName.toString().replace(/\./g, '/')});
     })
 
@@ -91,7 +98,13 @@ export default defineComponent({
 
         nc.subscribe(urlTopic.value, {
           callback: (err: any, msg: any) => {
-            data.value.push({no: data.value.length + 1, message: sc.decode(msg.data)});
+            if (dataDetails.value.widgetType !== undefined) {
+              if (validationTopic.validation(dataDetails.value.widgetType, sc.decode(msg.data))) {
+                data.value.push({no: data.value.length + 1, message: sc.decode(msg.data)});
+              }
+            } else {
+              data.value.push({no: data.value.length + 1, message: sc.decode(msg.data)});
+            }
             message.value = sc.decode(msg.data);
           },
         });
