@@ -27,6 +27,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
         deviceId: "",
         name: "",
         description: "",
+        widgetType: "",
         createdAt: "",
         updatedAt: "",
         topicEvents: []
@@ -58,6 +59,11 @@ export const useTopicManagementStore = defineStore('topicManagement', {
           key: 'topicEvents'
         },
         {
+          title: 'Widget Type',
+          dataIndex: 'widgetType',
+          key: 'widgetType'
+        },
+        {
           title: 'Created At',
           dataIndex: 'createdAt',
           key: 'createdAt',
@@ -81,6 +87,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
           deviceId: topic.deviceId,
           name: topic.name,
           description: topic.description,
+          widgetType: topic.widgetType,
           createdAt: topic.createdAt !== undefined ? new Date(topic.createdAt).toLocaleString('en-US') : topic.createdAt,
           updatedAt: topic.updatedAt !== undefined ? new Date(topic.updatedAt).toLocaleString('en-US') : topic.updatedAt,
           topicEvents: topic.topicEvents?.map((topicEvent) => topicEvent.name)
@@ -126,7 +133,8 @@ export const useTopicManagementStore = defineStore('topicManagement', {
         message.error(`${this.error.code} ${this.error.message}`);
       })
     },
-    async createTopic<T>(deviceId: T, value: {name: string, description: string}) {
+    async createTopic<T>(deviceId: T, value: {name: string, description: string, widgetType?: string}) {
+      if (value.widgetType === '') delete value.widgetType
       const common = useCommonStore();
       await axios.post(`/device/${deviceId}/topic`, JSON.stringify(value, null, 2))
       .then((res) => {

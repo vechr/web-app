@@ -5,6 +5,7 @@ export interface ITopic {
   deviceId: string,
   name: string,
   description: string,
+  widgetType?: string,
   createdAt?: string,
   updatedAt?: string,
   topicEvents?: ITopicEvent[]
