@@ -45,7 +45,7 @@
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx,vue}": [
-      "yarn lint",
+      "yarn eslint",
       "yarn prettier --write"
     ]
   }
