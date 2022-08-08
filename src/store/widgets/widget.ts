@@ -1,24 +1,30 @@
-import { IError, IWidget } from "@/types";
+import { ICreateWidget, IError, IWidget } from "@/types";
 import { Chart, registerables} from 'chart.js';
 Chart.register(...registerables);
 import L from "leaflet";
 import { GridStack, GridStackNode } from "gridstack";
 import { defineStore } from "pinia";
 import { message } from "ant-design-vue";
-
-
+import axios from "axios";
 interface IWidgetData {
   message: string,
   data: IWidget[],
+  dataDetails: IWidget | null
   node: GridStackNode[]
   error: IError
 }
+
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
 
 export const useWidgetStore = defineStore('widget', {
   state: () => {
     return {
       message: '',
       data: [],
+      dataDetails: null,
       node: [],
       error: {
         code: "",
@@ -44,6 +50,18 @@ export const useWidgetStore = defineStore('widget', {
     }
   },
   actions: {
+    async createWidget(dashboardId: string, data: ICreateWidget) {
+      await axios.post(`/dashboard/${dashboardId}/widget`, data)
+        .then((res) => {
+          this.message = res.data.message;
+          this.dataDetails = res.data.result;
+          this.error = res.data.error
+        })
+        .catch((err) => {
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
+    },
     addNewMaps(grid: GridStack, nodeId: string) {
       grid.compact();
       const node: any = {
