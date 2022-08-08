@@ -1,0 +1,6 @@
+{
+  "src/**/*.{js,jsx,ts,tsx,vue,json,css,sass}": [
+    "yarn lint",
+    "yarn prettier --write"
+  ]
+}
