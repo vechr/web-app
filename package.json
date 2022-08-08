@@ -44,7 +44,7 @@
     "typescript": "~4.7.4"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx,vue}": [
+    "src/**/*.{js,jsx,ts,tsx,vue,json,css,sass}": [
       "yarn eslint",
       "yarn prettier --write"
     ]
