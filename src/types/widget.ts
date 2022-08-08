@@ -18,3 +18,15 @@ export interface IWidget {
   dashboard: IDashboard,
   topic: ITopic
 }
+
+export interface ICreateWidget {
+  name: string,
+  description?: string,
+  node: object,
+  nodeId: string,
+  widgetData: object,
+  widgetType: string,
+  hidden?: boolean,
+  persistance?: boolean,
+  topicId: string,
+}
