@@ -1,10 +1,10 @@
-import { ChartType } from "chart.js"
+import { ChartType } from 'chart.js';
 
-const lineChartType: ChartType = "scatter"
+const lineChartType: ChartType = 'scatter';
 const data = {
   datasets: [
     {
-      label: "Scatter Dataset",
+      label: 'Scatter Dataset',
       data: [
         {
           x: -10,
@@ -23,10 +23,10 @@ const data = {
           y: 5.5,
         },
       ],
-      backgroundColor: "rgb(255, 99, 132)",
+      backgroundColor: 'rgb(255, 99, 132)',
     },
   ],
-}
+};
 
 export const scatterChartData = {
   type: lineChartType,
@@ -35,11 +35,11 @@ export const scatterChartData = {
     maintainAspectRatio: false,
     scale: {
       x: {
-        type: "linear",
-        position: "bottom",
+        type: 'linear',
+        position: 'bottom',
       },
     },
   },
-}
+};
 
-export default scatterChartData
+export default scatterChartData;

@@ -104,9 +104,9 @@ import {
   ApartmentOutlined,
   // UserSwitchOutlined,
   CloseOutlined,
-} from "@ant-design/icons-vue"
-import Loading from "@/components/common/Loading.vue"
-import { defineComponent, ref } from "vue"
+} from '@ant-design/icons-vue';
+import Loading from '@/components/common/Loading.vue';
+import { defineComponent, ref } from 'vue';
 export default defineComponent({
   components: {
     UserOutlined,
@@ -121,9 +121,9 @@ export default defineComponent({
   },
   setup() {
     return {
-      selectedKeys: ref<string[]>(["6"]),
+      selectedKeys: ref<string[]>(['6']),
       collapsed: ref<boolean>(true),
-    }
+    };
   },
-})
+});
 </script>

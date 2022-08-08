@@ -90,7 +90,7 @@
                 </div>
                 <div v-else>
                   <a-tag color="#f50">
-                    {{ "no topics".toUpperCase() }}
+                    {{ 'no topics'.toUpperCase() }}
                   </a-tag>
                 </div>
               </a-space>
@@ -119,16 +119,16 @@ import {
   DeleteOutlined,
   EditOutlined,
   CheckCircleFilled,
-} from "@ant-design/icons-vue"
-import { useCommonStore, useDeviceManagementStore } from "@/store"
-import { IDevice } from "@/types"
-import { storeToRefs } from "pinia"
-import { defineComponent, onBeforeMount } from "vue"
-import FormCreate from "@/components/device-managements/FormCreate.vue"
-import FormEdit from "@/components/device-managements/FormEdit.vue"
+} from '@ant-design/icons-vue';
+import { useCommonStore, useDeviceManagementStore } from '@/store';
+import { IDevice } from '@/types';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
+import FormCreate from '@/components/device-managements/FormCreate.vue';
+import FormEdit from '@/components/device-managements/FormEdit.vue';
 
 export default defineComponent({
-  name: "DeviceManagement",
+  name: 'DeviceManagement',
   components: {
     DeleteOutlined,
     EditOutlined,
@@ -137,28 +137,28 @@ export default defineComponent({
     FormEdit,
   },
   setup() {
-    const common = useCommonStore()
-    const { isLoadingActive } = storeToRefs(common)
+    const common = useCommonStore();
+    const { isLoadingActive } = storeToRefs(common);
 
-    const store = useDeviceManagementStore()
-    const { deviceList, deviceColumns } = storeToRefs(store)
+    const store = useDeviceManagementStore();
+    const { deviceList, deviceColumns } = storeToRefs(store);
 
     const onDelete = (record: IDevice) => {
-      store.deleteDeviceById(record.id)
-    }
+      store.deleteDeviceById(record.id);
+    };
 
     onBeforeMount(() => {
-      store.getDeviceList()
-    })
+      store.getDeviceList();
+    });
 
     const onEdit = (record: IDevice) => {
-      common.setIsDrawerShow(true)
-      store.getDeviceById(record.id)
-    }
+      common.setIsDrawerShow(true);
+      store.getDeviceById(record.id);
+    };
 
-    return { isLoadingActive, deviceList, deviceColumns, onDelete, onEdit }
+    return { isLoadingActive, deviceList, deviceColumns, onDelete, onEdit };
   },
-})
+});
 </script>
 
 <style></style>

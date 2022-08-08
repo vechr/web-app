@@ -93,18 +93,18 @@
 </template>
 
 <script lang="ts">
-import { JsonTreeView } from "json-tree-view-vue3"
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue"
-import { useTopicEventStore, useCommonStore } from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent, onBeforeMount } from "vue"
-import { useRoute } from "vue-router"
-import { ITopicEvent } from "@/types"
-import FormCreate from "@/components/device-managements/topic-managements/topic-events/FormCreate.vue"
-import FormEdit from "@/components/device-managements/topic-managements/topic-events/FormEdit.vue"
+import { JsonTreeView } from 'json-tree-view-vue3';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { useTopicEventStore, useCommonStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
+import { useRoute } from 'vue-router';
+import { ITopicEvent } from '@/types';
+import FormCreate from '@/components/device-managements/topic-managements/topic-events/FormCreate.vue';
+import FormEdit from '@/components/device-managements/topic-managements/topic-events/FormEdit.vue';
 
 export default defineComponent({
-  name: "TopicEvent",
+  name: 'TopicEvent',
   components: {
     JsonTreeView,
     FormEdit,
@@ -113,28 +113,28 @@ export default defineComponent({
     EditOutlined,
   },
   setup() {
-    const route = useRoute()
-    const deviceId = route.params.deviceId
-    const topicId = route.params.topicId
+    const route = useRoute();
+    const deviceId = route.params.deviceId;
+    const topicId = route.params.topicId;
 
-    const common = useCommonStore()
-    const { isLoadingActive } = storeToRefs(common)
+    const common = useCommonStore();
+    const { isLoadingActive } = storeToRefs(common);
 
-    const topicEventStore = useTopicEventStore()
-    const { topicEventList, topicEventColumns } = storeToRefs(topicEventStore)
+    const topicEventStore = useTopicEventStore();
+    const { topicEventList, topicEventColumns } = storeToRefs(topicEventStore);
 
     onBeforeMount(() => {
-      topicEventStore.getTopicEventList(topicId)
-    })
+      topicEventStore.getTopicEventList(topicId);
+    });
 
     const onDelete = (record: ITopicEvent) => {
-      topicEventStore.deleteTopicEventById(topicId, record.id)
-    }
+      topicEventStore.deleteTopicEventById(topicId, record.id);
+    };
 
     const onEdit = (record: ITopicEvent) => {
-      common.setIsDrawerShow(true)
-      topicEventStore.getTopicEventById(topicId, record.id)
-    }
+      common.setIsDrawerShow(true);
+      topicEventStore.getTopicEventById(topicId, record.id);
+    };
 
     return {
       onDelete,
@@ -143,9 +143,9 @@ export default defineComponent({
       deviceId,
       topicEventList,
       topicEventColumns,
-    }
+    };
   },
-})
+});
 </script>
 
 <style></style>

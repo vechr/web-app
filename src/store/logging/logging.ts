@@ -1,46 +1,46 @@
-import { message } from "ant-design-vue"
-import axios from "axios"
-import { defineStore } from "pinia"
+import { message } from 'ant-design-vue';
+import axios from 'axios';
+import { defineStore } from 'pinia';
 
-axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS
-axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"
-axios.defaults.headers.post["Content-Type"] = "application/json"
-axios.defaults.headers.post["Accept"] = "application/json"
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS;
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
 interface ILoggingData {
-  urlTopic: string
+  urlTopic: string;
   data: {
-    no: number
-    message: any
-  }[]
-  message: string
+    no: number;
+    message: any;
+  }[];
+  message: string;
   statusConnection: {
-    message: string
-    process: string
-  }
+    message: string;
+    process: string;
+  };
 }
 
-export const useLoggingStore = defineStore("logging", {
+export const useLoggingStore = defineStore('logging', {
   state: () => {
     return {
-      urlTopic: "",
+      urlTopic: '',
       data: [],
-      message: "",
+      message: '',
       statusConnection: {
-        message: "Not Connected!",
-        process: "Finished",
+        message: 'Not Connected!',
+        process: 'Finished',
       },
-    } as ILoggingData
+    } as ILoggingData;
   },
   actions: {
     async resetData() {
-      this.data = []
-      this.message = ""
+      this.data = [];
+      this.message = '';
     },
     async getHistoricalData(payload: {
-      dashboardId: string | string[]
-      deviceId: string | string[]
-      topicId: string | string[]
-      topic: string | string[]
+      dashboardId: string | string[];
+      deviceId: string | string[];
+      topicId: string | string[];
+      topic: string | string[];
     }) {
       await axios
         .post(`/device/${payload.deviceId}/topic/query`, payload)
@@ -49,12 +49,12 @@ export const useLoggingStore = defineStore("logging", {
             this.data = res.data.map((val: { _value: any }, index: number) => ({
               no: index + 1,
               message: val._value,
-            }))
+            }));
           }
         })
         .catch((err) => {
-          message.error(`${err.code} ${err.message}`)
-        })
+          message.error(`${err.code} ${err.message}`);
+        });
     },
   },
-})
+});

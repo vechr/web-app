@@ -1,11 +1,11 @@
-import { ChartType } from "chart.js"
+import { ChartType } from 'chart.js';
 
-const lineChartType: ChartType = "bubble"
+const lineChartType: ChartType = 'bubble';
 
 const data = {
   datasets: [
     {
-      label: "Data Example",
+      label: 'Data Example',
       data: [
         {
           x: 20,
@@ -18,10 +18,10 @@ const data = {
           r: 10,
         },
       ],
-      backgroundColor: "rgb(255, 99, 132)",
+      backgroundColor: 'rgb(255, 99, 132)',
     },
   ],
-}
+};
 
 export const bubbleChartData = {
   type: lineChartType,
@@ -34,6 +34,6 @@ export const bubbleChartData = {
       },
     },
   },
-}
+};
 
-export default bubbleChartData
+export default bubbleChartData;

@@ -71,59 +71,59 @@
   </div>
 </template>
 <script lang="ts">
-import { PlusOutlined } from "@ant-design/icons-vue"
-import { useCommonStore, useTopicManagementStore } from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent, reactive } from "vue"
-import { useRoute } from "vue-router"
-import { useWidgetStore } from "@/store/widgets/widget"
+import { PlusOutlined } from '@ant-design/icons-vue';
+import { useCommonStore, useTopicManagementStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent, reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { useWidgetStore } from '@/store/widgets/widget';
 
 interface FormState {
-  name: string
-  description: string
-  widgetType: string
+  name: string;
+  description: string;
+  widgetType: string;
 }
 
 export default defineComponent({
-  name: "FormDashboard",
+  name: 'FormDashboard',
   components: { PlusOutlined },
   setup() {
-    const route = useRoute()
-    const deviceId = route.params.deviceId
+    const route = useRoute();
+    const deviceId = route.params.deviceId;
 
-    const common = useCommonStore()
-    const widgetStore = useWidgetStore()
-    const store = useTopicManagementStore()
+    const common = useCommonStore();
+    const widgetStore = useWidgetStore();
+    const store = useTopicManagementStore();
 
-    const { getWidgetType } = storeToRefs(widgetStore)
-    const { isModalShow, isLoadingButton } = storeToRefs(common)
+    const { getWidgetType } = storeToRefs(widgetStore);
+    const { isModalShow, isLoadingButton } = storeToRefs(common);
 
     const filterOption = (input: string, option: any) => {
-      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-    }
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
 
     const showModal = () => {
-      common.setIsModalShow(true)
-    }
+      common.setIsModalShow(true);
+    };
 
     const formState = reactive<FormState>({
-      name: "",
-      description: "",
-      widgetType: "",
-    })
+      name: '',
+      description: '',
+      widgetType: '',
+    });
 
     const onFinish = (values: any) => {
-      common.setIsLoadingButton(true)
-      store.createTopic(deviceId, values)
-    }
+      common.setIsLoadingButton(true);
+      store.createTopic(deviceId, values);
+    };
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo)
-    }
+      console.log('Failed:', errorInfo);
+    };
 
     const handleOk = () => {
-      common.setIsModalShow(false)
-    }
+      common.setIsModalShow(false);
+    };
     return {
       filterOption,
       getWidgetType,
@@ -134,9 +134,9 @@ export default defineComponent({
       handleOk,
       onFinish,
       onFinishFailed,
-    }
+    };
   },
-})
+});
 </script>
 
 <style>

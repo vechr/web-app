@@ -83,7 +83,7 @@
                 </div>
                 <div v-else>
                   <a-tag color="#2285b4">
-                    {{ "not defined".toUpperCase() }}
+                    {{ 'not defined'.toUpperCase() }}
                   </a-tag>
                 </div>
               </a-space>
@@ -103,7 +103,7 @@
                 </div>
                 <div v-else>
                   <a-tag color="#f50">
-                    {{ "no topic events".toUpperCase() }}
+                    {{ 'no topic events'.toUpperCase() }}
                   </a-tag>
                 </div>
               </a-space>
@@ -128,17 +128,17 @@
 </template>
 
 <script lang="ts">
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue"
-import FormCreate from "@/components/device-managements/topic-managements/FormCreate.vue"
-import FormEdit from "@/components/device-managements/topic-managements/FormEdit.vue"
-import { defineComponent, onBeforeMount } from "vue"
-import { useCommonStore, useTopicManagementStore } from "@/store"
-import { storeToRefs } from "pinia"
-import { useRoute } from "vue-router"
-import { ITopic } from "@/types"
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import FormCreate from '@/components/device-managements/topic-managements/FormCreate.vue';
+import FormEdit from '@/components/device-managements/topic-managements/FormEdit.vue';
+import { defineComponent, onBeforeMount } from 'vue';
+import { useCommonStore, useTopicManagementStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
+import { ITopic } from '@/types';
 
 export default defineComponent({
-  name: "TopicManagement",
+  name: 'TopicManagement',
   components: {
     DeleteOutlined,
     EditOutlined,
@@ -146,27 +146,27 @@ export default defineComponent({
     FormEdit,
   },
   setup() {
-    const route = useRoute()
-    const deviceId = route.params.deviceId
+    const route = useRoute();
+    const deviceId = route.params.deviceId;
 
-    const common = useCommonStore()
-    const { isLoadingActive } = storeToRefs(common)
+    const common = useCommonStore();
+    const { isLoadingActive } = storeToRefs(common);
 
-    const topicStore = useTopicManagementStore()
-    const { topicList, topicColumns } = storeToRefs(topicStore)
+    const topicStore = useTopicManagementStore();
+    const { topicList, topicColumns } = storeToRefs(topicStore);
 
     onBeforeMount(() => {
-      topicStore.getTopicList(deviceId)
-    })
+      topicStore.getTopicList(deviceId);
+    });
 
     const onDelete = (record: ITopic) => {
-      topicStore.deleteTopicById(deviceId, record.id)
-    }
+      topicStore.deleteTopicById(deviceId, record.id);
+    };
 
     const onEdit = (record: ITopic) => {
-      common.setIsDrawerShow(true)
-      topicStore.getTopicById(deviceId, record.id)
-    }
+      common.setIsDrawerShow(true);
+      topicStore.getTopicById(deviceId, record.id);
+    };
 
     return {
       deviceId,
@@ -175,9 +175,9 @@ export default defineComponent({
       topicColumns,
       onDelete,
       onEdit,
-    }
+    };
   },
-})
+});
 </script>
 
 <style></style>

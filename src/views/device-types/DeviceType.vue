@@ -41,7 +41,7 @@
                 </div>
                 <div v-else>
                   <a-tag color="#f50">
-                    {{ "no devices".toUpperCase() }}
+                    {{ 'no devices'.toUpperCase() }}
                   </a-tag>
                 </div>
               </a-space>
@@ -92,36 +92,36 @@
 </template>
 
 <script lang="ts">
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue"
-import { useCommonStore, useDeviceTypeStore } from "@/store"
-import { IDeviceType } from "@/types"
-import { storeToRefs } from "pinia"
-import { defineComponent, onBeforeMount } from "vue"
-import FormCreate from "@/components/device-types/FormCreate.vue"
-import FormEdit from "@/components/device-types/FormEdit.vue"
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { useCommonStore, useDeviceTypeStore } from '@/store';
+import { IDeviceType } from '@/types';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
+import FormCreate from '@/components/device-types/FormCreate.vue';
+import FormEdit from '@/components/device-types/FormEdit.vue';
 
 export default defineComponent({
-  name: "DeviceType",
+  name: 'DeviceType',
   components: { DeleteOutlined, EditOutlined, FormCreate, FormEdit },
   setup() {
-    const common = useCommonStore()
-    const { isLoadingActive } = storeToRefs(common)
+    const common = useCommonStore();
+    const { isLoadingActive } = storeToRefs(common);
 
-    const store = useDeviceTypeStore()
-    const { deviceTypeList, deviceTypeColumns } = storeToRefs(store)
+    const store = useDeviceTypeStore();
+    const { deviceTypeList, deviceTypeColumns } = storeToRefs(store);
 
     const onEdit = (record: IDeviceType) => {
-      common.setIsDrawerShow(true)
-      store.getDeviceTypeById(record.id)
-    }
+      common.setIsDrawerShow(true);
+      store.getDeviceTypeById(record.id);
+    };
 
     const onDelete = (record: IDeviceType) => {
-      store.deleteDeviceTypeById(record.id)
-    }
+      store.deleteDeviceTypeById(record.id);
+    };
 
     onBeforeMount(() => {
-      store.getDeviceTypeList()
-    })
+      store.getDeviceTypeList();
+    });
 
     return {
       isLoadingActive,
@@ -129,7 +129,7 @@ export default defineComponent({
       deviceTypeList,
       deviceTypeColumns,
       onEdit,
-    }
+    };
   },
-})
+});
 </script>

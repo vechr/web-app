@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue-demi"
+import { defineComponent, ref } from 'vue-demi'
 
 export default defineComponent({
-  name: "WidgetCreate",
+  name: 'WidgetCreate',
   setup() {
-    const configVisible = ref < boolean > false
+    const configVisible = ref<boolean>(false)
     return {
       configVisible,
     }

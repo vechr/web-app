@@ -67,7 +67,7 @@
                 </div>
                 <div v-else>
                   <a-tag color="#f50">
-                    {{ "no devices".toUpperCase() }}
+                    {{ 'no devices'.toUpperCase() }}
                   </a-tag>
                 </div>
               </a-space>
@@ -92,36 +92,36 @@
 </template>
 
 <script lang="ts">
-import FormCreate from "@/components/dashboard-managements/FormCreate.vue"
-import FormEdit from "@/components/dashboard-managements/FormEdit.vue"
-import { useCommonStore, useDashboardManagementStore } from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent, onBeforeMount } from "vue"
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue"
-import { IDashboard } from "@/types"
+import FormCreate from '@/components/dashboard-managements/FormCreate.vue';
+import FormEdit from '@/components/dashboard-managements/FormEdit.vue';
+import { useCommonStore, useDashboardManagementStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { IDashboard } from '@/types';
 
 export default defineComponent({
   components: { FormCreate, DeleteOutlined, EditOutlined, FormEdit },
-  name: "DashboardManagement",
+  name: 'DashboardManagement',
   setup() {
-    const store = useDashboardManagementStore()
-    const common = useCommonStore()
+    const store = useDashboardManagementStore();
+    const common = useCommonStore();
 
-    const { isLoadingActive } = storeToRefs(common)
-    const { dashboardList, dashboardColumns } = storeToRefs(store)
+    const { isLoadingActive } = storeToRefs(common);
+    const { dashboardList, dashboardColumns } = storeToRefs(store);
 
     onBeforeMount(() => {
-      store.getDashboardList()
-    })
+      store.getDashboardList();
+    });
 
     const onDelete = (record: IDashboard) => {
-      store.deleteDashboardById(record.id)
-    }
+      store.deleteDashboardById(record.id);
+    };
 
     const onEdit = (record: IDashboard) => {
-      common.setIsDrawerShow(true)
-      store.getDashboardById(record.id)
-    }
+      common.setIsDrawerShow(true);
+      store.getDashboardById(record.id);
+    };
 
     return {
       onEdit,
@@ -129,9 +129,9 @@ export default defineComponent({
       isLoadingActive,
       dashboardColumns,
       dashboardList,
-    }
+    };
   },
-})
+});
 </script>
 
 <style>

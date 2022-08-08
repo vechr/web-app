@@ -53,42 +53,42 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useTopicManagementStore } from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent } from "vue"
-import { useRoute } from "vue-router"
+import { useCommonStore, useTopicManagementStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent } from 'vue';
+import { useRoute } from 'vue-router';
 
 interface FormState {
-  name: string
-  description: string
+  name: string;
+  description: string;
 }
 
 export default defineComponent({
   setup() {
-    const route = useRoute()
-    const deviceId = route.params.deviceId
+    const route = useRoute();
+    const deviceId = route.params.deviceId;
 
-    const common = useCommonStore()
-    const { isDrawerShow, isLoadingButton } = storeToRefs(common)
+    const common = useCommonStore();
+    const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
-    const storeTopic = useTopicManagementStore()
-    const { topicEdit, dataDetails } = storeToRefs(storeTopic)
+    const storeTopic = useTopicManagementStore();
+    const { topicEdit, dataDetails } = storeToRefs(storeTopic);
 
     const filterOption = (input: string, option: any) => {
-      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-    }
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
     const onFinish = (values: FormState) => {
-      common.setIsLoadingButton(true)
-      storeTopic.updateTopicById(deviceId, dataDetails.value.id, values)
-    }
+      common.setIsLoadingButton(true);
+      storeTopic.updateTopicById(deviceId, dataDetails.value.id, values);
+    };
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo)
-    }
+      console.log('Failed:', errorInfo);
+    };
 
     const onClose = () => {
-      common.setIsDrawerShow(false)
-    }
+      common.setIsDrawerShow(false);
+    };
 
     return {
       topicEdit,
@@ -98,7 +98,7 @@ export default defineComponent({
       isDrawerShow,
       onFinish,
       onFinishFailed,
-    }
+    };
   },
-})
+});
 </script>

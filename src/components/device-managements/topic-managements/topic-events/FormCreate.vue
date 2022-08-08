@@ -65,53 +65,53 @@
 <script lang="ts">
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import JsonEditorVue from "json-editor-vue3"
-import { PlusOutlined } from "@ant-design/icons-vue"
-import { useCommonStore, useTopicEventStore } from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent, reactive } from "vue"
-import { useRoute } from "vue-router"
+import JsonEditorVue from 'json-editor-vue3';
+import { PlusOutlined } from '@ant-design/icons-vue';
+import { useCommonStore, useTopicEventStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent, reactive } from 'vue';
+import { useRoute } from 'vue-router';
 
 interface FormState {
-  name: string
-  description: string
-  eventExpression: object
+  name: string;
+  description: string;
+  eventExpression: object;
 }
 
 export default defineComponent({
-  name: "FormDashboard",
+  name: 'FormDashboard',
   components: { PlusOutlined, JsonEditorVue },
   setup() {
-    const route = useRoute()
-    const topicId = route.params.topicId
+    const route = useRoute();
+    const topicId = route.params.topicId;
 
-    const common = useCommonStore()
-    const store = useTopicEventStore()
+    const common = useCommonStore();
+    const store = useTopicEventStore();
 
-    const { isModalShow, isLoadingButton } = storeToRefs(common)
+    const { isModalShow, isLoadingButton } = storeToRefs(common);
 
     const showModal = () => {
-      common.setIsModalShow(true)
-    }
+      common.setIsModalShow(true);
+    };
 
     const formState = reactive<FormState>({
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       eventExpression: {},
-    })
+    });
 
     const onFinish = (values: FormState) => {
-      common.setIsLoadingButton(true)
-      store.createTopicEvent(topicId, values)
-    }
+      common.setIsLoadingButton(true);
+      store.createTopicEvent(topicId, values);
+    };
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo)
-    }
+      console.log('Failed:', errorInfo);
+    };
 
     const handleOk = () => {
-      common.setIsModalShow(false)
-    }
+      common.setIsModalShow(false);
+    };
 
     return {
       isLoadingButton,
@@ -121,9 +121,9 @@ export default defineComponent({
       handleOk,
       onFinish,
       onFinishFailed,
-    }
+    };
   },
-})
+});
 </script>
 
 <style>

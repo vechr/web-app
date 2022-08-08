@@ -60,33 +60,33 @@ import {
   useCommonStore,
   useDashboardManagementStore,
   useDeviceManagementStore,
-} from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent, onBeforeMount } from "vue"
+} from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
 
 export default defineComponent({
   setup() {
-    const common = useCommonStore()
-    const { isLoadingButton, isDrawerShow } = storeToRefs(common)
+    const common = useCommonStore();
+    const { isLoadingButton, isDrawerShow } = storeToRefs(common);
 
-    const dashboardStore = useDashboardManagementStore()
-    const { dashboardEdit, dataDetails } = storeToRefs(dashboardStore)
+    const dashboardStore = useDashboardManagementStore();
+    const { dashboardEdit, dataDetails } = storeToRefs(dashboardStore);
 
-    const deviceStore = useDeviceManagementStore()
-    const { optionDevice } = storeToRefs(deviceStore)
+    const deviceStore = useDeviceManagementStore();
+    const { optionDevice } = storeToRefs(deviceStore);
 
     const onClose = () => {
-      common.setIsDrawerShow(false)
-    }
+      common.setIsDrawerShow(false);
+    };
 
     onBeforeMount(() => {
-      deviceStore.getOptionDevice()
-    })
+      deviceStore.getOptionDevice();
+    });
 
     const onFinish = (values: any) => {
-      common.setIsLoadingButton(true)
-      dashboardStore.updateDashboardById(dataDetails.value.id, values)
-    }
+      common.setIsLoadingButton(true);
+      dashboardStore.updateDashboardById(dataDetails.value.id, values);
+    };
 
     return {
       dashboardEdit,
@@ -95,7 +95,7 @@ export default defineComponent({
       isLoadingButton,
       onFinish,
       onClose,
-    }
+    };
   },
-})
+});
 </script>

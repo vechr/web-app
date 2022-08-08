@@ -75,48 +75,48 @@ import {
   useCommonStore,
   useDeviceManagementStore,
   useDeviceTypeStore,
-} from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent, onBeforeMount } from "vue"
+} from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
 
 interface FormState {
-  name: string
-  description: string
-  isActive: boolean
-  deviceTypeId: string
+  name: string;
+  description: string;
+  isActive: boolean;
+  deviceTypeId: string;
 }
 
 export default defineComponent({
   setup() {
-    const common = useCommonStore()
-    const { isDrawerShow, isLoadingButton } = storeToRefs(common)
+    const common = useCommonStore();
+    const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
-    const storeDevice = useDeviceManagementStore()
-    const { deviceEdit, dataDetails } = storeToRefs(storeDevice)
+    const storeDevice = useDeviceManagementStore();
+    const { deviceEdit, dataDetails } = storeToRefs(storeDevice);
 
-    const storeDeviceType = useDeviceTypeStore()
-    const { optionDeviceType } = storeToRefs(storeDeviceType)
+    const storeDeviceType = useDeviceTypeStore();
+    const { optionDeviceType } = storeToRefs(storeDeviceType);
 
     const filterOption = (input: string, option: any) => {
-      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
-    }
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
 
     onBeforeMount(() => {
-      storeDeviceType.getOptionDeviceType()
-    })
+      storeDeviceType.getOptionDeviceType();
+    });
 
     const onFinish = (values: FormState) => {
-      common.setIsLoadingButton(true)
-      storeDevice.updateDeviceById(dataDetails.value.id, values)
-    }
+      common.setIsLoadingButton(true);
+      storeDevice.updateDeviceById(dataDetails.value.id, values);
+    };
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo)
-    }
+      console.log('Failed:', errorInfo);
+    };
 
     const onClose = () => {
-      common.setIsDrawerShow(false)
-    }
+      common.setIsDrawerShow(false);
+    };
 
     return {
       deviceEdit,
@@ -127,7 +127,7 @@ export default defineComponent({
       isDrawerShow,
       onFinish,
       onFinishFailed,
-    }
+    };
   },
-})
+});
 </script>

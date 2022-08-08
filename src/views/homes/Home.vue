@@ -160,29 +160,29 @@ import {
   DashboardOutlined,
   PlusOutlined,
   EyeOutlined,
-} from "@ant-design/icons-vue"
-import { useDashboardManagementStore, useLoggingStore } from "@/store"
-import { storeToRefs } from "pinia"
-import { defineComponent, onBeforeMount } from "vue"
+} from '@ant-design/icons-vue';
+import { useDashboardManagementStore, useLoggingStore } from '@/store';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
 
 export default defineComponent({
-  name: "Home",
+  name: 'Home',
   components: { DashboardOutlined, ApiOutlined, PlusOutlined, EyeOutlined },
   setup() {
-    const storeDashboard = useDashboardManagementStore()
-    const storeLogging = useLoggingStore()
+    const storeDashboard = useDashboardManagementStore();
+    const storeLogging = useLoggingStore();
 
-    const { dataFull } = storeToRefs(storeDashboard)
-    const { statusConnection } = storeToRefs(storeLogging)
+    const { dataFull } = storeToRefs(storeDashboard);
+    const { statusConnection } = storeToRefs(storeLogging);
 
     onBeforeMount(() => {
-      statusConnection.value.process = "Finished"
-      statusConnection.value.message = "Not Connected!"
-      storeLogging.resetData()
-      storeDashboard.getDashboardFullList()
-    })
+      statusConnection.value.process = 'Finished';
+      statusConnection.value.message = 'Not Connected!';
+      storeLogging.resetData();
+      storeDashboard.getDashboardFullList();
+    });
 
-    return { dataFull }
+    return { dataFull };
   },
-})
+});
 </script>
