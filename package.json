@@ -18,7 +18,7 @@
     "json-tree-view-vue3": "^0.1.16",
     "leaflet": "^1.8.0",
     "nats.ws": "^1.8.1",
-    "pinia": "^2.0.13",
+    "pinia": "^2.0.17",
     "uuid": "^8.3.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3"
