@@ -1,20 +1,19 @@
 <template>
   <a-layout :style="{ minHeight: '100vh' }">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null">
-      <div class="close-sidebar" @click="() => (collapsed = !collapsed)"><CloseOutlined /></div><br />
-      <img
-        alt="logo"
-        src="../src/assets/logo.svg"
-      />
+      <div class="close-sidebar" @click="() => (collapsed = !collapsed)">
+        <CloseOutlined />
+      </div>
+      <br />
+      <img alt="logo" src="../src/assets/logo.svg" />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <router-link to="/dashboard" custom v-slot="{ navigate, href }">
-
-        <router-link to="/device-type" custom v-slot="{ navigate, href }">
-          <a-menu-item key="1" @click="navigate" :href="href">
-            <ApartmentOutlined />
-            <span>Device Type Management</span>
-          </a-menu-item>
-        </router-link>
+          <router-link to="/device-type" custom v-slot="{ navigate, href }">
+            <a-menu-item key="1" @click="navigate" :href="href">
+              <ApartmentOutlined />
+              <span>Device Type Management</span>
+            </a-menu-item>
+          </router-link>
 
           <a-menu-item key="2" @click="navigate" :href="href">
             <dashboard-outlined />
@@ -104,10 +103,10 @@ import {
   MenuFoldOutlined,
   ApartmentOutlined,
   // UserSwitchOutlined,
-  CloseOutlined
-} from "@ant-design/icons-vue";
-import Loading from "@/components/common/Loading.vue";
-import { defineComponent, ref } from "vue";
+  CloseOutlined,
+} from "@ant-design/icons-vue"
+import Loading from "@/components/common/Loading.vue"
+import { defineComponent, ref } from "vue"
 export default defineComponent({
   components: {
     UserOutlined,
@@ -124,7 +123,7 @@ export default defineComponent({
     return {
       selectedKeys: ref<string[]>(["6"]),
       collapsed: ref<boolean>(true),
-    };
+    }
   },
-});
+})
 </script>

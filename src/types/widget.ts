@@ -1,32 +1,32 @@
-import { IDashboard } from "./dashboard";
-import { ITopic } from "./topic";
+import { IDashboard } from "./dashboard"
+import { ITopic } from "./topic"
 
 export interface IWidget {
-  id: string,
-  name: string,
-  description?: string,
-  createdAt?: string,
-  updatedAt?: string,
-  dashboardId: string,
-  node: object,
-  nodeId: string,
-  widgetData: object,
-  widgetType: string,
-  hidden?: boolean,
-  persistance?: boolean,
-  topicId: string,
-  dashboard: IDashboard,
+  id: string
+  name: string
+  description?: string
+  createdAt?: string
+  updatedAt?: string
+  dashboardId: string
+  node: object
+  nodeId: string
+  widgetData: object
+  widgetType: string
+  hidden?: boolean
+  persistance?: boolean
+  topicId: string
+  dashboard: IDashboard
   topic: ITopic
 }
 
 export interface ICreateWidget {
-  name: string,
-  description?: string,
-  node: object,
-  nodeId: string,
-  widgetData: object,
-  widgetType: string,
-  hidden?: boolean,
-  persistance?: boolean,
-  topicId: string,
+  name: string
+  description?: string
+  node: object
+  nodeId: string
+  widgetData: object
+  widgetType: string
+  hidden?: boolean
+  persistance?: boolean
+  topicId: string
 }

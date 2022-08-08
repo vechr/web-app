@@ -14,12 +14,12 @@
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: '50px',
-        marginTop: '50px'
+        marginTop: '50px',
       }"
       class="responsive-text"
     >
       Topic Management
-    </h2> 
+    </h2>
     <a-row>
       <a-col :span="24">
         <FormCreate style="float: right; margin-bottom: 20px" />
@@ -36,7 +36,13 @@
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'name'">
-              <router-link :to="{name: 'topic-event', params: {deviceId: deviceId, topicId: record.id}}" >{{record.name}}</router-link>
+              <router-link
+                :to="{
+                  name: 'topic-event',
+                  params: { deviceId: deviceId, topicId: record.id },
+                }"
+                >{{ record.name }}</router-link
+              >
             </template>
             <template v-if="column.key === 'action'">
               <a-space
@@ -122,48 +128,45 @@
 </template>
 
 <script lang="ts">
-import {
-  DeleteOutlined,
-  EditOutlined,
-} from "@ant-design/icons-vue";
-import FormCreate from '@/components/device-managements/topic-managements/FormCreate.vue';
-import FormEdit from '@/components/device-managements/topic-managements/FormEdit.vue';
-import { defineComponent, onBeforeMount } from "vue";
-import { useCommonStore, useTopicManagementStore } from "@/store";
-import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
-import { ITopic } from "@/types";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue"
+import FormCreate from "@/components/device-managements/topic-managements/FormCreate.vue"
+import FormEdit from "@/components/device-managements/topic-managements/FormEdit.vue"
+import { defineComponent, onBeforeMount } from "vue"
+import { useCommonStore, useTopicManagementStore } from "@/store"
+import { storeToRefs } from "pinia"
+import { useRoute } from "vue-router"
+import { ITopic } from "@/types"
 
 export default defineComponent({
-  name: 'TopicManagement',
+  name: "TopicManagement",
   components: {
     DeleteOutlined,
     EditOutlined,
     FormCreate,
-    FormEdit
+    FormEdit,
   },
   setup() {
-    const route = useRoute();
-    const deviceId = route.params.deviceId;
+    const route = useRoute()
+    const deviceId = route.params.deviceId
 
-    const common = useCommonStore();
-    const { isLoadingActive } = storeToRefs(common);
+    const common = useCommonStore()
+    const { isLoadingActive } = storeToRefs(common)
 
     const topicStore = useTopicManagementStore()
-    const { topicList, topicColumns } = storeToRefs(topicStore);
+    const { topicList, topicColumns } = storeToRefs(topicStore)
 
     onBeforeMount(() => {
-      topicStore.getTopicList(deviceId);
+      topicStore.getTopicList(deviceId)
     })
 
     const onDelete = (record: ITopic) => {
-      topicStore.deleteTopicById(deviceId ,record.id);
-    };
+      topicStore.deleteTopicById(deviceId, record.id)
+    }
 
     const onEdit = (record: ITopic) => {
-      common.setIsDrawerShow(true);
+      common.setIsDrawerShow(true)
       topicStore.getTopicById(deviceId, record.id)
-    };
+    }
 
     return {
       deviceId,
@@ -171,12 +174,10 @@ export default defineComponent({
       topicList,
       topicColumns,
       onDelete,
-      onEdit
+      onEdit,
     }
-  }
-});
+  },
+})
 </script>
 
-<style>
-
-</style>
+<style></style>

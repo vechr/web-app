@@ -1,17 +1,17 @@
-import { message } from "ant-design-vue";
-import axios from "axios";
-import { defineStore } from "pinia";
+import { message } from "ant-design-vue"
+import axios from "axios"
+import { defineStore } from "pinia"
 
-axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS;
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS
+axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*"
+axios.defaults.headers.post["Content-Type"] = "application/json"
+axios.defaults.headers.post["Accept"] = "application/json"
 interface ILoggingData {
-  urlTopic: string;
+  urlTopic: string
   data: {
-    no: number,
+    no: number
     message: any
-  }[];
+  }[]
   message: string
   statusConnection: {
     message: string
@@ -19,7 +19,7 @@ interface ILoggingData {
   }
 }
 
-export const useLoggingStore = defineStore('logging', {
+export const useLoggingStore = defineStore("logging", {
   state: () => {
     return {
       urlTopic: "",
@@ -27,25 +27,34 @@ export const useLoggingStore = defineStore('logging', {
       message: "",
       statusConnection: {
         message: "Not Connected!",
-        process: "Finished"
-      }
+        process: "Finished",
+      },
     } as ILoggingData
   },
   actions: {
     async resetData() {
-      this.data = [];
-      this.message = "";
+      this.data = []
+      this.message = ""
     },
-    async getHistoricalData(payload: {dashboardId: string | string[], deviceId: string | string[], topicId: string | string[], topic: string | string[]}) {
-      await axios.post(`/device/${payload.deviceId}/topic/query`, payload)
-      .then((res) => {
-        if (res.status === 200) {
-          this.data = res.data.map((val: { _value: any; }, index: number) => ({no: index + 1, message: val._value}))
-        }
-      })
-      .catch((err) => {
-        message.error(`${err.code} ${err.message}`);
-      })
-    }
-  }
+    async getHistoricalData(payload: {
+      dashboardId: string | string[]
+      deviceId: string | string[]
+      topicId: string | string[]
+      topic: string | string[]
+    }) {
+      await axios
+        .post(`/device/${payload.deviceId}/topic/query`, payload)
+        .then((res) => {
+          if (res.status === 200) {
+            this.data = res.data.map((val: { _value: any }, index: number) => ({
+              no: index + 1,
+              message: val._value,
+            }))
+          }
+        })
+        .catch((err) => {
+          message.error(`${err.code} ${err.message}`)
+        })
+    },
+  },
 })

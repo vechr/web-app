@@ -35,10 +35,12 @@
         </a-form-item>
 
         <a-form-item
-          :style="{display: 'none'}"
+          :style="{ display: 'none' }"
           label="Active"
           name="isActive"
-          :rules="[{ required: true, message: 'Please input status of your device!' }]"
+          :rules="[
+            { required: true, message: 'Please input status of your device!' },
+          ]"
         >
           <a-checkbox v-model:checked="formState.isActive">Active</a-checkbox>
         </a-form-item>
@@ -71,61 +73,65 @@
   </div>
 </template>
 <script lang="ts">
-import { PlusOutlined } from "@ant-design/icons-vue";
-import { useCommonStore, useDeviceManagementStore, useDeviceTypeStore } from "@/store";
-import { storeToRefs } from "pinia";
-import { defineComponent, onBeforeMount, reactive } from "vue";
+import { PlusOutlined } from "@ant-design/icons-vue"
+import {
+  useCommonStore,
+  useDeviceManagementStore,
+  useDeviceTypeStore,
+} from "@/store"
+import { storeToRefs } from "pinia"
+import { defineComponent, onBeforeMount, reactive } from "vue"
 
 interface FormState {
-  name: string;
-  description: string;
-  isActive: boolean;
-  deviceTypeId: string;
+  name: string
+  description: string
+  isActive: boolean
+  deviceTypeId: string
 }
 
 export default defineComponent({
   name: "FormDashboard",
   components: { PlusOutlined },
   setup() {
-    const common = useCommonStore();
-    const store = useDeviceManagementStore();
-    const storeDeviceType = useDeviceTypeStore();
+    const common = useCommonStore()
+    const store = useDeviceManagementStore()
+    const storeDeviceType = useDeviceTypeStore()
 
-    const { optionDeviceType } = storeToRefs(storeDeviceType);
+    const { optionDeviceType } = storeToRefs(storeDeviceType)
 
     const filterOption = (input: string, option: any) => {
-      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    };
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    }
 
-    const { isModalShow, isLoadingButton } = storeToRefs(common);
+    const { isModalShow, isLoadingButton } = storeToRefs(common)
 
     const showModal = () => {
-      common.setIsModalShow(true);
-    };
+      common.setIsModalShow(true)
+    }
 
     const formState = reactive<FormState>({
       name: "",
       description: "",
       isActive: true,
-      deviceTypeId: ""
-    });
+      deviceTypeId: "",
+    })
 
     onBeforeMount(() => {
-      storeDeviceType.getOptionDeviceType();
+      storeDeviceType.getOptionDeviceType()
     })
 
     const onFinish = (values: FormState) => {
-      common.setIsLoadingButton(true);
-      store.createDevice(values);
-    };
+      common.setIsLoadingButton(true)
+      store.createDevice(values)
+    }
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo);
-    };
+      console.log("Failed:", errorInfo)
+    }
 
     const handleOk = () => {
-      common.setIsModalShow(false);
-    };
+      common.setIsModalShow(false)
+    }
     return {
       optionDeviceType,
       filterOption,
@@ -136,9 +142,9 @@ export default defineComponent({
       handleOk,
       onFinish,
       onFinishFailed,
-    };
+    }
   },
-});
+})
 </script>
 
 <style>

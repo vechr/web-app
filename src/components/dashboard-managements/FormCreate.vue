@@ -47,46 +47,46 @@
   </div>
 </template>
 <script lang="ts">
-import { PlusOutlined } from "@ant-design/icons-vue";
-import { useCommonStore, useDashboardManagementStore } from "@/store";
-import { storeToRefs } from "pinia";
-import { defineComponent, reactive } from "vue";
+import { PlusOutlined } from "@ant-design/icons-vue"
+import { useCommonStore, useDashboardManagementStore } from "@/store"
+import { storeToRefs } from "pinia"
+import { defineComponent, reactive } from "vue"
 
 interface FormState {
-  name: string;
-  description: string;
+  name: string
+  description: string
 }
 
 export default defineComponent({
   name: "FormDashboard",
   components: { PlusOutlined },
   setup() {
-    const common = useCommonStore();
-    const store = useDashboardManagementStore();
+    const common = useCommonStore()
+    const store = useDashboardManagementStore()
 
-    const { isModalShow, isLoadingButton } = storeToRefs(common);
+    const { isModalShow, isLoadingButton } = storeToRefs(common)
 
     const showModal = () => {
-      common.setIsModalShow(true);
-    };
+      common.setIsModalShow(true)
+    }
 
     const formState = reactive<FormState>({
       name: "",
       description: "",
-    });
+    })
 
     const onFinish = (values: any) => {
-      common.setIsLoadingButton(true);
-      store.createDashboard(values);
-    };
+      common.setIsLoadingButton(true)
+      store.createDashboard(values)
+    }
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo);
-    };
+      console.log("Failed:", errorInfo)
+    }
 
     const handleOk = () => {
-      common.setIsModalShow(false);
-    };
+      common.setIsModalShow(false)
+    }
     return {
       isLoadingButton,
       formState,
@@ -95,9 +95,9 @@ export default defineComponent({
       handleOk,
       onFinish,
       onFinishFailed,
-    };
+    }
   },
-});
+})
 </script>
 
 <style>

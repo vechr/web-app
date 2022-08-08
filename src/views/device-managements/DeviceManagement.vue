@@ -27,7 +27,13 @@
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'name'">
-              <router-link :to="{name: 'topic-managements', params: {deviceId: record.id}}" >{{record.name}}</router-link>
+              <router-link
+                :to="{
+                  name: 'topic-managements',
+                  params: { deviceId: record.id },
+                }"
+                >{{ record.name }}</router-link
+              >
             </template>
             <template v-if="column.key === 'action'">
               <a-space
@@ -113,13 +119,13 @@ import {
   DeleteOutlined,
   EditOutlined,
   CheckCircleFilled,
-} from "@ant-design/icons-vue";
-import { useCommonStore, useDeviceManagementStore } from "@/store";
-import { IDevice } from "@/types";
-import { storeToRefs } from "pinia";
-import { defineComponent, onBeforeMount } from "vue";
-import FormCreate from "@/components/device-managements/FormCreate.vue";
-import FormEdit from "@/components/device-managements/FormEdit.vue";
+} from "@ant-design/icons-vue"
+import { useCommonStore, useDeviceManagementStore } from "@/store"
+import { IDevice } from "@/types"
+import { storeToRefs } from "pinia"
+import { defineComponent, onBeforeMount } from "vue"
+import FormCreate from "@/components/device-managements/FormCreate.vue"
+import FormEdit from "@/components/device-managements/FormEdit.vue"
 
 export default defineComponent({
   name: "DeviceManagement",
@@ -131,29 +137,28 @@ export default defineComponent({
     FormEdit,
   },
   setup() {
-    const common = useCommonStore();
-    const { isLoadingActive } = storeToRefs(common);
+    const common = useCommonStore()
+    const { isLoadingActive } = storeToRefs(common)
 
-    const store = useDeviceManagementStore();
-    const { deviceList, deviceColumns } = storeToRefs(store);
+    const store = useDeviceManagementStore()
+    const { deviceList, deviceColumns } = storeToRefs(store)
 
     const onDelete = (record: IDevice) => {
-      store.deleteDeviceById(record.id);
-    };
+      store.deleteDeviceById(record.id)
+    }
 
     onBeforeMount(() => {
-      store.getDeviceList();
-    });
+      store.getDeviceList()
+    })
 
     const onEdit = (record: IDevice) => {
-      common.setIsDrawerShow(true);
-      store.getDeviceById(record.id);
-    };
+      common.setIsDrawerShow(true)
+      store.getDeviceById(record.id)
+    }
 
-    return { isLoadingActive, deviceList, deviceColumns, onDelete, onEdit };
+    return { isLoadingActive, deviceList, deviceColumns, onDelete, onEdit }
   },
-});
+})
 </script>
 
-<style>
-</style>
+<style></style>

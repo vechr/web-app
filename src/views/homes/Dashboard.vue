@@ -152,27 +152,27 @@ import {
   PieChartOutlined,
   RadarChartOutlined,
   DashboardOutlined,
-} from "@ant-design/icons-vue";
-import { defineComponent, onBeforeMount, onMounted, reactive, ref } from "vue";
-import { GridStack, GridStackNode } from "gridstack";
-import barChartData from "@/types/chart/bar-chart";
-import lineChartData from "@/types/chart/line-chart";
-import bubbleChartData from "@/types/chart/bubble-chart";
-import doughnutPieChartData from "@/types/chart/doughnut-pie-chart";
-import polarAreaChartData from "@/types/chart/polar-chart";
-import radarChartData from "@/types/chart/radar-chart";
-import scatterChartData from "@/types/chart/scatter-chart";
-import gaugeChartData from "@/types/chart/gauge-chart";
-import { useWidgetStore } from "@/store/widgets/widget";
-import uuid from "@/types/uuid";
-import { EWidget } from "@/types";
-import { SelectProps } from "ant-design-vue";
-import { useDashboardManagementStore } from "@/store";
-import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
+} from "@ant-design/icons-vue"
+import { defineComponent, onBeforeMount, onMounted, reactive, ref } from "vue"
+import { GridStack, GridStackNode } from "gridstack"
+import barChartData from "@/types/chart/bar-chart"
+import lineChartData from "@/types/chart/line-chart"
+import bubbleChartData from "@/types/chart/bubble-chart"
+import doughnutPieChartData from "@/types/chart/doughnut-pie-chart"
+import polarAreaChartData from "@/types/chart/polar-chart"
+import radarChartData from "@/types/chart/radar-chart"
+import scatterChartData from "@/types/chart/scatter-chart"
+import gaugeChartData from "@/types/chart/gauge-chart"
+import { useWidgetStore } from "@/store/widgets/widget"
+import uuid from "@/types/uuid"
+import { EWidget } from "@/types"
+import { SelectProps } from "ant-design-vue"
+import { useDashboardManagementStore } from "@/store"
+import { storeToRefs } from "pinia"
+import { useRoute } from "vue-router"
 
 interface FormState {
-  topicId: string;
+  topicId: string
 }
 
 export default defineComponent({
@@ -190,92 +190,92 @@ export default defineComponent({
     RadarChartOutlined,
   },
   setup() {
-    const useWidget = useWidgetStore();
-    const visible = ref<boolean>(false);
+    const useWidget = useWidgetStore()
+    const visible = ref<boolean>(false)
 
     // Dashboard Data
-    const storeDashboard = useDashboardManagementStore();
-    const { dataFull } = storeToRefs(storeDashboard);
+    const storeDashboard = useDashboardManagementStore()
+    const { dataFull } = storeToRefs(storeDashboard)
 
     // Config Data
-    const configVisible = ref<boolean>(false);
-    const titleConfig = ref<string>("");
-    const widgetSelection = ref<string>("");
-    const options = ref<SelectProps["options"]>([]);
+    const configVisible = ref<boolean>(false)
+    const titleConfig = ref<string>("")
+    const widgetSelection = ref<string>("")
+    const options = ref<SelectProps["options"]>([])
 
     // Get Dashboard
-    const route = useRoute();
-    const dashboardId = route.params.dashboardId;
+    const route = useRoute()
+    const dashboardId = route.params.dashboardId
 
     // On Create
     const onFinish = (values: any) => {
-      console.log(values);
+      console.log(values)
       switch (widgetSelection.value) {
         case EWidget.BAR: {
-          useWidget.addNewBarChart(grid, uuid(), barChartData);
-          break;
+          useWidget.addNewBarChart(grid, uuid(), barChartData)
+          break
         }
         case EWidget.BUBBLE: {
-          useWidget.addNewBubbleChart(grid, uuid(), bubbleChartData);
-          break;
+          useWidget.addNewBubbleChart(grid, uuid(), bubbleChartData)
+          break
         }
         case EWidget.DOUGHNUT: {
           useWidget.addNewDoughnutChart(
             grid,
             uuid(),
             doughnutPieChartData("doughnut")
-          );
-          break;
+          )
+          break
         }
         case EWidget.PIE: {
-          useWidget.addNewPieChart(grid, uuid(), doughnutPieChartData("pie"));
-          break;
+          useWidget.addNewPieChart(grid, uuid(), doughnutPieChartData("pie"))
+          break
         }
         case EWidget.GAUGE: {
-          useWidget.addNewGaugeChart(grid, uuid(), gaugeChartData);
-          break;
+          useWidget.addNewGaugeChart(grid, uuid(), gaugeChartData)
+          break
         }
         case EWidget.LINE: {
-          useWidget.addNewLineChart(grid, uuid(), lineChartData);
-          break;
+          useWidget.addNewLineChart(grid, uuid(), lineChartData)
+          break
         }
         case EWidget.POLAR: {
-          useWidget.addNewPolarAreaChart(grid, uuid(), polarAreaChartData);
-          break;
+          useWidget.addNewPolarAreaChart(grid, uuid(), polarAreaChartData)
+          break
         }
         case EWidget.RADAR: {
-          useWidget.addNewRadarChart(grid, uuid(), radarChartData);
-          break;
+          useWidget.addNewRadarChart(grid, uuid(), radarChartData)
+          break
         }
         case EWidget.SCATTER: {
-          useWidget.addNewScatterChart(grid, uuid(), scatterChartData);
-          break;
+          useWidget.addNewScatterChart(grid, uuid(), scatterChartData)
+          break
         }
         case EWidget.MAPS: {
-          useWidget.addNewMaps(grid, uuid());
-          break;
+          useWidget.addNewMaps(grid, uuid())
+          break
         }
       }
-      configVisible.value = false;
-      visible.value = false;
-      formState.topicId = "";
-    };
+      configVisible.value = false
+      visible.value = false
+      formState.topicId = ""
+    }
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo);
-    };
+      console.log("Failed:", errorInfo)
+    }
 
     const formState = reactive<FormState>({
       topicId: "",
-    });
+    })
 
     const handleChange = (value: string) => {
-      console.log(`selected ${value}`);
-    };
+      console.log(`selected ${value}`)
+    }
 
     const onConfigClose = () => {
-      formState.topicId = "";
-    };
+      formState.topicId = ""
+    }
 
     const handleFocus = () => {
       options.value = dataFull.value
@@ -288,111 +288,111 @@ export default defineComponent({
               value: topic.id,
               label: topic.name,
             })),
-        }));
-    };
+        }))
+    }
 
     const showDrawer = () => {
-      visible.value = true;
-    };
+      visible.value = true
+    }
 
-    const activeKey = ref(["1", "2"]);
+    const activeKey = ref(["1", "2"])
 
     onBeforeMount(async () => {
-      await storeDashboard.getDashboardFullList();
-    });
+      await storeDashboard.getDashboardFullList()
+    })
 
-    let info = ref("");
-    let grid: GridStack;
+    let info = ref("")
+    let grid: GridStack
     onMounted(() => {
       grid = GridStack.init({
         float: false,
         cellHeight: "70px",
         minRow: 7,
         removable: true,
-      });
+      })
 
       grid.on("resizestop", function (event: Event, el: any) {
-        let node: GridStackNode = el.gridstackNode;
-        console.log(node);
-      });
+        let node: GridStackNode = el.gridstackNode
+        console.log(node)
+      })
 
       grid.on("added", (event: Event, items: any) => {
         items.forEach(function (node: GridStackNode) {
-          console.log(node);
-        });
-      });
+          console.log(node)
+        })
+      })
 
       grid.on("removed", (event: Event, items: any) => {
         items.forEach(function (node: GridStackNode) {
-          console.log(node);
-        });
-      });
+          console.log(node)
+        })
+      })
 
       grid.on("dragstop", (_, element: any) => {
-        const node = element.gridstackNode;
-        info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`;
-        console.log(node);
-      });
-    });
+        const node = element.gridstackNode
+        info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`
+        console.log(node)
+      })
+    })
 
     function addNewMaps() {
-      configVisible.value = true;
-      titleConfig.value = "Maps";
-      widgetSelection.value = EWidget.MAPS;
+      configVisible.value = true
+      titleConfig.value = "Maps"
+      widgetSelection.value = EWidget.MAPS
     }
 
     function addNewGaugeChart() {
-      configVisible.value = true;
-      titleConfig.value = "Gauge Chart";
-      widgetSelection.value = EWidget.GAUGE;
+      configVisible.value = true
+      titleConfig.value = "Gauge Chart"
+      widgetSelection.value = EWidget.GAUGE
     }
 
     function addNewScatterChart() {
-      configVisible.value = true;
-      titleConfig.value = "Scatter Chart";
-      widgetSelection.value = EWidget.SCATTER;
+      configVisible.value = true
+      titleConfig.value = "Scatter Chart"
+      widgetSelection.value = EWidget.SCATTER
     }
 
     function addNewRadarChart() {
-      configVisible.value = true;
-      titleConfig.value = "Radar Chart";
-      widgetSelection.value = EWidget.RADAR;
+      configVisible.value = true
+      titleConfig.value = "Radar Chart"
+      widgetSelection.value = EWidget.RADAR
     }
 
     function addNewPolarAreaChart() {
-      configVisible.value = true;
-      titleConfig.value = "Polar Chart";
-      widgetSelection.value = EWidget.POLAR;
+      configVisible.value = true
+      titleConfig.value = "Polar Chart"
+      widgetSelection.value = EWidget.POLAR
     }
 
     function addNewPieChart() {
-      configVisible.value = true;
-      titleConfig.value = "Pie Chart";
-      widgetSelection.value = EWidget.PIE;
+      configVisible.value = true
+      titleConfig.value = "Pie Chart"
+      widgetSelection.value = EWidget.PIE
     }
 
     function addNewBubbleChart() {
-      configVisible.value = true;
-      titleConfig.value = "Bubble Chart";
-      widgetSelection.value = EWidget.BUBBLE;
+      configVisible.value = true
+      titleConfig.value = "Bubble Chart"
+      widgetSelection.value = EWidget.BUBBLE
     }
 
     function addNewLineChart() {
-      configVisible.value = true;
-      titleConfig.value = "Line Chart";
-      widgetSelection.value = EWidget.LINE;
+      configVisible.value = true
+      titleConfig.value = "Line Chart"
+      widgetSelection.value = EWidget.LINE
     }
 
     function addNewBarChart() {
-      configVisible.value = true;
-      titleConfig.value = "Bar Chart";
-      widgetSelection.value = EWidget.BAR;
+      configVisible.value = true
+      titleConfig.value = "Bar Chart"
+      widgetSelection.value = EWidget.BAR
     }
 
     function addNewDoughnutChart() {
-      configVisible.value = true;
-      titleConfig.value = "Doughnut Chart";
-      widgetSelection.value = EWidget.DOUGHNUT;
+      configVisible.value = true
+      titleConfig.value = "Doughnut Chart"
+      widgetSelection.value = EWidget.DOUGHNUT
     }
 
     return {
@@ -419,7 +419,7 @@ export default defineComponent({
       visible,
       showDrawer,
       activeKey,
-    };
+    }
   },
-});
+})
 </script>

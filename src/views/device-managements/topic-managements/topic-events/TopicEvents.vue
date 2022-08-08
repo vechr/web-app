@@ -6,7 +6,11 @@
       </router-link>
     </a-breadcrumb-item>
     <a-breadcrumb-item>
-      <router-link :to="{name: 'topic-managements', params: {deviceId: deviceId}}" custom v-slot="{ navigate, href }">
+      <router-link
+        :to="{ name: 'topic-managements', params: { deviceId: deviceId } }"
+        custom
+        v-slot="{ navigate, href }"
+      >
         <a @click="navigate" :href="href">Topic Management</a>
       </router-link>
     </a-breadcrumb-item>
@@ -19,12 +23,12 @@
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: '50px',
-        marginTop: '50px'
+        marginTop: '50px',
       }"
       class="responsive-text"
     >
       Topic Event
-    </h2> 
+    </h2>
     <a-row>
       <a-col :span="24">
         <FormCreate style="float: right; margin-bottom: 20px" />
@@ -41,7 +45,7 @@
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'eventExpression'">
-              <JsonTreeView :data="JSON.stringify(record.eventExpression)"/>
+              <JsonTreeView :data="JSON.stringify(record.eventExpression)" />
             </template>
             <template v-if="column.key === 'action'">
               <a-space
@@ -89,21 +93,18 @@
 </template>
 
 <script lang="ts">
-import { JsonTreeView } from "json-tree-view-vue3";
-import {
-  DeleteOutlined,
-  EditOutlined,
-} from "@ant-design/icons-vue";
-import { useTopicEventStore, useCommonStore } from "@/store";
-import { storeToRefs } from "pinia";
-import { defineComponent, onBeforeMount } from "vue";
-import { useRoute } from "vue-router";
-import { ITopicEvent } from '@/types';
-import FormCreate from '@/components/device-managements/topic-managements/topic-events/FormCreate.vue'
-import FormEdit from '@/components/device-managements/topic-managements/topic-events/FormEdit.vue'
+import { JsonTreeView } from "json-tree-view-vue3"
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons-vue"
+import { useTopicEventStore, useCommonStore } from "@/store"
+import { storeToRefs } from "pinia"
+import { defineComponent, onBeforeMount } from "vue"
+import { useRoute } from "vue-router"
+import { ITopicEvent } from "@/types"
+import FormCreate from "@/components/device-managements/topic-managements/topic-events/FormCreate.vue"
+import FormEdit from "@/components/device-managements/topic-managements/topic-events/FormEdit.vue"
 
-export default defineComponent ({
-  name: 'TopicEvent',
+export default defineComponent({
+  name: "TopicEvent",
   components: {
     JsonTreeView,
     FormEdit,
@@ -112,28 +113,28 @@ export default defineComponent ({
     EditOutlined,
   },
   setup() {
-    const route = useRoute();
-    const deviceId = route.params.deviceId;
-    const topicId = route.params.topicId;
+    const route = useRoute()
+    const deviceId = route.params.deviceId
+    const topicId = route.params.topicId
 
-    const common = useCommonStore();
-    const { isLoadingActive } = storeToRefs(common);
+    const common = useCommonStore()
+    const { isLoadingActive } = storeToRefs(common)
 
-    const topicEventStore = useTopicEventStore();
-    const { topicEventList, topicEventColumns } = storeToRefs(topicEventStore);
+    const topicEventStore = useTopicEventStore()
+    const { topicEventList, topicEventColumns } = storeToRefs(topicEventStore)
 
     onBeforeMount(() => {
-      topicEventStore.getTopicEventList(topicId);
+      topicEventStore.getTopicEventList(topicId)
     })
 
     const onDelete = (record: ITopicEvent) => {
-      topicEventStore.deleteTopicEventById(topicId ,record.id);
-    };
+      topicEventStore.deleteTopicEventById(topicId, record.id)
+    }
 
     const onEdit = (record: ITopicEvent) => {
-      common.setIsDrawerShow(true);
+      common.setIsDrawerShow(true)
       topicEventStore.getTopicEventById(topicId, record.id)
-    };
+    }
 
     return {
       onDelete,
@@ -141,12 +142,10 @@ export default defineComponent ({
       isLoadingActive,
       deviceId,
       topicEventList,
-      topicEventColumns
+      topicEventColumns,
     }
-  }
-});
+  },
+})
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -43,39 +43,39 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useDeviceTypeStore } from "@/store";
-import { storeToRefs } from "pinia";
-import { defineComponent } from "vue";
+import { useCommonStore, useDeviceTypeStore } from "@/store"
+import { storeToRefs } from "pinia"
+import { defineComponent } from "vue"
 
 export default defineComponent({
   name: "FormDashboard",
   setup() {
-    const common = useCommonStore();
-    const { isDrawerShow, isLoadingButton } = storeToRefs(common);
+    const common = useCommonStore()
+    const { isDrawerShow, isLoadingButton } = storeToRefs(common)
 
-    const store = useDeviceTypeStore();
-    const { dataDetails, deviceTypeEdit } = storeToRefs(store);
+    const store = useDeviceTypeStore()
+    const { dataDetails, deviceTypeEdit } = storeToRefs(store)
 
     const showModal = () => {
-      common.setIsModalShow(true);
-    };
+      common.setIsModalShow(true)
+    }
 
     const onClose = () => {
-      common.setIsDrawerShow(false);
-    };
+      common.setIsDrawerShow(false)
+    }
 
     const onFinish = (values: any) => {
-      common.setIsLoadingButton(true);
-      store.updateDeviceTypeById(dataDetails.value.id, values);
-    };
+      common.setIsLoadingButton(true)
+      store.updateDeviceTypeById(dataDetails.value.id, values)
+    }
 
     const onFinishFailed = (errorInfo: any) => {
-      console.log("Failed:", errorInfo);
-    };
+      console.log("Failed:", errorInfo)
+    }
 
     const handleOk = () => {
-      common.setIsModalShow(false);
-    };
+      common.setIsModalShow(false)
+    }
     return {
       deviceTypeEdit,
       onClose,
@@ -85,7 +85,7 @@ export default defineComponent({
       handleOk,
       onFinish,
       onFinishFailed,
-    };
+    }
   },
-});
+})
 </script>

@@ -1,27 +1,41 @@
 <template>
-  <a-divider
-    style="font-size: 30px; !important"
-  >
-    Dashboard
-  </a-divider>
+  <a-divider style="font-size: 30px; !important"> Dashboard </a-divider>
   <div v-if="dataFull.length > 0">
     <div v-for="(data, index) in dataFull" :key="data" style="padding: 2px">
-      <a-row class="row-dashboard" >
-        <a-col :xs="24" :xl="8" v-for="(value) in dataFull.slice(index*3, (index+1)*3)" :key="value">
+      <a-row class="row-dashboard">
+        <a-col
+          :xs="24"
+          :xl="8"
+          v-for="value in dataFull.slice(index * 3, (index + 1) * 3)"
+          :key="value"
+        >
           <a-card class="dashboard-card" hoverable>
-            <router-link :to="{name: 'dashboard', params: {dashboardId: value.id}}" >
-              <a-card-meta class="dashboard-card-meta" :title="value.name" :description="value.description">
+            <router-link
+              :to="{ name: 'dashboard', params: { dashboardId: value.id } }"
+            >
+              <a-card-meta
+                class="dashboard-card-meta"
+                :title="value.name"
+                :description="value.description"
+              >
                 <template #avatar>
-                  <a-avatar><template #icon><dashboard-outlined /></template></a-avatar>
+                  <a-avatar
+                    ><template #icon><dashboard-outlined /></template
+                  ></a-avatar>
                 </template>
               </a-card-meta>
               <div v-if="value.devices !== undefined">
                 <div v-if="value.devices.length > 0">
                   <div v-for="device in value.devices" :key="device">
                     <a-card class="device-card">
-                      <a-card-meta :title="device.name" :description="device.description">
+                      <a-card-meta
+                        :title="device.name"
+                        :description="device.description"
+                      >
                         <template #avatar>
-                          <a-avatar style="background-color: #00D98B;"><template #icon><ApiOutlined /></template></a-avatar>
+                          <a-avatar style="background-color: #00d98b"
+                            ><template #icon><ApiOutlined /></template
+                          ></a-avatar>
                         </template>
                       </a-card-meta>
                       <div v-if="device.topics !== undefined">
@@ -31,13 +45,29 @@
                             :key="topic"
                             :color="`#000`"
                           >
-                            <a-typography-paragraph 
-                              :copyable="{ text: `kreMES/DashboardID/${value.id}/DeviceID/${device.id}/TopicID/${topic.id}/Topic${topic.name}` }"
+                            <a-typography-paragraph
+                              :copyable="{
+                                text: `kreMES/DashboardID/${value.id}/DeviceID/${device.id}/TopicID/${topic.id}/Topic${topic.name}`,
+                              }"
                             >
-                              {{topic.name}}
+                              {{ topic.name }}
                             </a-typography-paragraph>
-                            <router-link :to="{name: 'logging', params: {dashboardId: value.id, deviceId: device.id, topicId: topic.id, topicName: topic.name.replace(/\//g, '.')}}" >
-                              <a-button class="responsive-bt" type="primary" style = "margin: 0px 10px 20px 10px">
+                            <router-link
+                              :to="{
+                                name: 'logging',
+                                params: {
+                                  dashboardId: value.id,
+                                  deviceId: device.id,
+                                  topicId: topic.id,
+                                  topicName: topic.name.replace(/\//g, '.'),
+                                },
+                              }"
+                            >
+                              <a-button
+                                class="responsive-bt"
+                                type="primary"
+                                style="margin: 0px 10px 20px 10px"
+                              >
                                 <template #icon><EyeOutlined /></template>
                                 Watch
                               </a-button>
@@ -45,7 +75,7 @@
                           </a-tag>
                         </div>
                         <div v-else>
-                          <a-card  style="margin: 20px;">
+                          <a-card style="margin: 20px">
                             <a-empty
                               image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
                               :image-style="{
@@ -53,11 +83,14 @@
                               }"
                             >
                               <template #description>
-                                <span>
-                                  There's no topic found!
-                                </span>
+                                <span> There's no topic found! </span>
                               </template>
-                              <router-link :to="{name: 'topic-managements', params: {deviceId: device.id}}" >
+                              <router-link
+                                :to="{
+                                  name: 'topic-managements',
+                                  params: { deviceId: device.id },
+                                }"
+                              >
                                 <a-button class="responsive-bt" type="primary">
                                   <template #icon><PlusOutlined /></template>
                                   Manage Topic
@@ -71,7 +104,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <a-card  style="margin: 20px;">
+                  <a-card style="margin: 20px">
                     <a-empty
                       image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
                       :image-style="{
@@ -79,12 +112,19 @@
                       }"
                     >
                       <template #description>
-                        <span>
-                          There's no device found!
-                        </span>
+                        <span> There's no device found! </span>
                       </template>
-                      <router-link to="/dashboard" custom v-slot="{ navigate, href }">
-                        <a-button type="primary" class="responsive-bt" @click="navigate" :href="href">
+                      <router-link
+                        to="/dashboard"
+                        custom
+                        v-slot="{ navigate, href }"
+                      >
+                        <a-button
+                          type="primary"
+                          class="responsive-bt"
+                          @click="navigate"
+                          :href="href"
+                        >
                           <template #icon><PlusOutlined /></template>
                           Manage Device in Dashboard
                         </a-button>
@@ -119,30 +159,30 @@ import {
   ApiOutlined,
   DashboardOutlined,
   PlusOutlined,
-  EyeOutlined
-} from "@ant-design/icons-vue";
-import { useDashboardManagementStore, useLoggingStore } from "@/store";
-import { storeToRefs } from "pinia";
-import { defineComponent, onBeforeMount } from "vue";
+  EyeOutlined,
+} from "@ant-design/icons-vue"
+import { useDashboardManagementStore, useLoggingStore } from "@/store"
+import { storeToRefs } from "pinia"
+import { defineComponent, onBeforeMount } from "vue"
 
 export default defineComponent({
-  name: 'Home',
-  components:{DashboardOutlined, ApiOutlined, PlusOutlined, EyeOutlined},
+  name: "Home",
+  components: { DashboardOutlined, ApiOutlined, PlusOutlined, EyeOutlined },
   setup() {
-    const storeDashboard = useDashboardManagementStore();
-    const storeLogging = useLoggingStore();
+    const storeDashboard = useDashboardManagementStore()
+    const storeLogging = useLoggingStore()
 
-    const { dataFull } = storeToRefs(storeDashboard);
+    const { dataFull } = storeToRefs(storeDashboard)
     const { statusConnection } = storeToRefs(storeLogging)
 
     onBeforeMount(() => {
-      statusConnection.value.process = 'Finished';
+      statusConnection.value.process = "Finished"
       statusConnection.value.message = "Not Connected!"
-      storeLogging.resetData();
-      storeDashboard.getDashboardFullList();
-    });
+      storeLogging.resetData()
+      storeDashboard.getDashboardFullList()
+    })
 
-    return { dataFull };
-  }
+    return { dataFull }
+  },
 })
 </script>
