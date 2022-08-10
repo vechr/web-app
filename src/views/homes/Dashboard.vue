@@ -91,13 +91,13 @@
         <a-collapse-panel key="1" header="Chart">
           <a-row>
             <a-col :span="12">
-              <a-card @click="addNewBarChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.BAR)" align="middle">
                 <BarChartOutlined /><br />
                 Bar Chart
               </a-card>
             </a-col>
             <a-col :span="12">
-              <a-card @click="addNewLineChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.LINE)" align="middle">
                 <LineChartOutlined /><br />
                 Line Chart
               </a-card>
@@ -105,27 +105,27 @@
           </a-row>
           <a-row>
             <a-col :span="12">
-              <a-card @click="addNewBubbleChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.BUBBLE)" align="middle">
                 <DotChartOutlined /><br />
                 Bubble Chart
               </a-card>
             </a-col>
             <a-col :span="12">
-              <a-card @click="addNewDoughnutChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.DOUGHNUT)" align="middle">
                 <PieChartOutlined /><br />
                 Doughnut Chart
               </a-card>
             </a-col>
           </a-row>
           <a-row>
-            <a-col @click="addNewPieChart()" :span="12">
+            <a-col @click="selectWidget(EWidget.PIE)" :span="12">
               <a-card align="middle">
                 <PieChartFilled /><br />
                 Pie Chart
               </a-card>
             </a-col>
             <a-col :span="12">
-              <a-card @click="addNewPolarAreaChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.POLAR)" align="middle">
                 <PieChartTwoTone /><br />
                 Polar Area Chart
               </a-card>
@@ -133,13 +133,13 @@
           </a-row>
           <a-row>
             <a-col :span="12">
-              <a-card @click="addNewRadarChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.POLAR)" align="middle">
                 <RadarChartOutlined /><br />
                 Radar Chart
               </a-card>
             </a-col>
             <a-col :span="12">
-              <a-card @click="addNewScatterChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.SCATTER)" align="middle">
                 <DotChartOutlined /><br />
                 Scatter Chart
               </a-card>
@@ -147,7 +147,7 @@
           </a-row>
           <a-row>
             <a-col :span="12">
-              <a-card @click="addNewGaugeChart()" align="middle">
+              <a-card @click="selectWidget(EWidget.GAUGE)" align="middle">
                 <DashboardOutlined /><br />
                 Gauge
               </a-card>
@@ -157,7 +157,7 @@
         <a-collapse-panel key="2" header="Location">
           <a-row>
             <a-col :span="12">
-              <a-card @click="addNewMaps()" align="middle">
+              <a-card @click="selectWidget(EWidget.MAPS)" align="middle">
                 <EnvironmentOutlined /><br />
                 Maps
               </a-card>
@@ -185,14 +185,6 @@ import {
 } from '@ant-design/icons-vue';
 import { defineComponent, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import { GridStack, GridStackNode } from 'gridstack';
-import barChartData from '@/types/chart/bar-chart';
-import lineChartData from '@/types/chart/line-chart';
-import bubbleChartData from '@/types/chart/bubble-chart';
-import doughnutPieChartData from '@/types/chart/doughnut-pie-chart';
-import polarAreaChartData from '@/types/chart/polar-chart';
-import radarChartData from '@/types/chart/radar-chart';
-import scatterChartData from '@/types/chart/scatter-chart';
-import gaugeChartData from '@/types/chart/gauge-chart';
 import { useWidgetStore } from '@/store/widgets/widget';
 import uuid from '@/types/uuid';
 import { EWidget, IFormWidget } from '@/types';
@@ -200,7 +192,8 @@ import { SelectProps } from 'ant-design-vue';
 import { useDashboardManagementStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-
+import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget } from '@/helpers/widgets/charts/index';
+import { MapWidget } from '@/helpers/widgets/maps/index';
 export default defineComponent({
   name: 'Dashboard',
   components: {
@@ -216,7 +209,16 @@ export default defineComponent({
     RadarChartOutlined,
   },
   setup() {
-    const useWidget = useWidgetStore();
+    const bar = new BarChartWidget();
+    const doughnut = new DoughnutChartWidget();
+    const gauge = new GaugeChartWidget();
+    const bubble = new BubbleChartWidget();
+    const line = new LineChartWidget();
+    const pie = new PieChartWidget();
+    const polar = new PolarChartWidget();
+    const radar = new RadarChartWidget();
+    const scatter = new ScatterChartWidget();
+    const map = new MapWidget();
     const visible = ref<boolean>(false);
 
     // Dashboard Data
@@ -244,57 +246,52 @@ export default defineComponent({
       switch (widgetSelection.value) {
         case EWidget.BAR: {
           formState.widgetType = EWidget.BAR
-          useWidget.addNewBarChart(grid, uuid(), barChartData, formState);
+          bar.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.BUBBLE: {
           formState.widgetType = EWidget.BUBBLE
-          useWidget.addNewBubbleChart(grid, uuid(), bubbleChartData, formState);
+          bubble.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.DOUGHNUT: {
           formState.widgetType = EWidget.DOUGHNUT
-          useWidget.addNewDoughnutChart(
-            grid,
-            uuid(),
-            doughnutPieChartData('doughnut'),
-            formState
-          );
+          doughnut.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.PIE: {
           formState.widgetType = EWidget.PIE
-          useWidget.addNewPieChart(grid, uuid(), doughnutPieChartData('pie'), formState);
+          pie.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.GAUGE: {
           formState.widgetType = EWidget.GAUGE
-          useWidget.addNewGaugeChart(grid, uuid(), gaugeChartData, formState);
+          gauge.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.LINE: {
           formState.widgetType = EWidget.LINE
-          useWidget.addNewLineChart(grid, uuid(), lineChartData, formState);
+          line.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.POLAR: {
           formState.widgetType = EWidget.POLAR
-          useWidget.addNewPolarAreaChart(grid, uuid(), polarAreaChartData, formState);
+          polar.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.RADAR: {
           formState.widgetType = EWidget.RADAR
-          useWidget.addNewRadarChart(grid, uuid(), radarChartData, formState);
+          radar.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.SCATTER: {
           formState.widgetType = EWidget.SCATTER
-          useWidget.addNewScatterChart(grid, uuid(), scatterChartData, formState);
+          scatter.addChart(grid, uuid(), formState)
           break;
         }
         case EWidget.MAPS: {
           formState.widgetType = EWidget.MAPS
-          useWidget.addNewMaps(grid, uuid(), formState);
+          map.addMap(grid, uuid(), formState)
           break;
         }
       }
@@ -386,67 +383,15 @@ export default defineComponent({
       });
     });
 
-    function addNewMaps() {
+    function selectWidget(widget: string) {
       configVisible.value = true;
-      titleConfig.value = 'Maps';
-      widgetSelection.value = EWidget.MAPS;
-    }
-
-    function addNewGaugeChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Gauge Chart';
-      widgetSelection.value = EWidget.GAUGE;
-    }
-
-    function addNewScatterChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Scatter Chart';
-      widgetSelection.value = EWidget.SCATTER;
-    }
-
-    function addNewRadarChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Radar Chart';
-      widgetSelection.value = EWidget.RADAR;
-    }
-
-    function addNewPolarAreaChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Polar Chart';
-      widgetSelection.value = EWidget.POLAR;
-    }
-
-    function addNewPieChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Pie Chart';
-      widgetSelection.value = EWidget.PIE;
-    }
-
-    function addNewBubbleChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Bubble Chart';
-      widgetSelection.value = EWidget.BUBBLE;
-    }
-
-    function addNewLineChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Line Chart';
-      widgetSelection.value = EWidget.LINE;
-    }
-
-    function addNewBarChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Bar Chart';
-      widgetSelection.value = EWidget.BAR;
-    }
-
-    function addNewDoughnutChart() {
-      configVisible.value = true;
-      titleConfig.value = 'Doughnut Chart';
-      widgetSelection.value = EWidget.DOUGHNUT;
+      titleConfig.value = widget.charAt(0) + widget.slice(1).toLowerCase() + ' Widget';
+      widgetSelection.value = widget;
     }
 
     return {
+      EWidget,
+      selectWidget,
       onConfigClose,
       handleFocus,
       onFinishFailed,
@@ -456,16 +401,6 @@ export default defineComponent({
       titleConfig,
       configVisible,
       info,
-      addNewBarChart,
-      addNewLineChart,
-      addNewBubbleChart,
-      addNewDoughnutChart,
-      addNewPieChart,
-      addNewPolarAreaChart,
-      addNewRadarChart,
-      addNewScatterChart,
-      addNewGaugeChart,
-      addNewMaps,
       visible,
       showDrawer,
       activeKey,
