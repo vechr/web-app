@@ -31,6 +31,23 @@
         @finish="onFinish"
         @finishFailed="onFinishFailed"
       >
+
+        <a-form-item
+          label="Name"
+          name="name"
+          :rules="[{ required: true, message: 'Please input name widget!' }]"
+        >
+          <a-input v-model:value="formState.name" />
+        </a-form-item>
+
+        <a-form-item
+          label="Description"
+          name="description"
+          :rules="[{ required: true, message: 'Please input description!' }]"
+        >
+          <a-textarea v-model:value="formState.description" />
+        </a-form-item>
+
         <a-form-item
           label="Topic"
           name="topicId"
@@ -41,9 +58,22 @@
             placeholder="Select a Topic"
             style="width: 100%"
             :options="options"
-            @change="handleChange"
             @focus="handleFocus"
           ></a-select>
+        </a-form-item>
+
+        <a-form-item
+          label="Hidden"
+          name="hidden"
+        >
+          <a-switch v-model:checked="formState.hidden" checked-children="Hidden" un-checked-children="Not Hidden " />
+        </a-form-item>
+
+        <a-form-item
+          label="Persistance"
+          name="persistance"
+        >
+          <a-switch v-model:checked="formState.persistance" checked-children="Persistance" un-checked-children="Not Persistance" />
         </a-form-item>
 
         <a-form-item>
@@ -165,15 +195,11 @@ import scatterChartData from '@/types/chart/scatter-chart';
 import gaugeChartData from '@/types/chart/gauge-chart';
 import { useWidgetStore } from '@/store/widgets/widget';
 import uuid from '@/types/uuid';
-import { EWidget } from '@/types';
+import { EWidget, IFormWidget } from '@/types';
 import { SelectProps } from 'ant-design-vue';
 import { useDashboardManagementStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-
-interface FormState {
-  topicId: string;
-}
 
 export default defineComponent({
   name: 'Dashboard',
@@ -197,6 +223,9 @@ export default defineComponent({
     const storeDashboard = useDashboardManagementStore();
     const { dataFull } = storeToRefs(storeDashboard);
 
+    // Widget Data
+    const storeWidget = useWidgetStore();
+
     // Config Data
     const configVisible = ref<boolean>(false);
     const titleConfig = ref<string>('');
@@ -208,70 +237,91 @@ export default defineComponent({
     const dashboardId = route.params.dashboardId;
 
     // On Create
-    const onFinish = (values: any) => {
-      console.log(values);
+    const onFinish = (values: { topicId: string }) => {
+      formState.topicId = values.topicId
+      formState.dashboardId = typeof dashboardId === 'string' ? dashboardId : ''
+
       switch (widgetSelection.value) {
         case EWidget.BAR: {
-          useWidget.addNewBarChart(grid, uuid(), barChartData);
+          formState.widgetType = EWidget.BAR
+          useWidget.addNewBarChart(grid, uuid(), barChartData, formState);
           break;
         }
         case EWidget.BUBBLE: {
-          useWidget.addNewBubbleChart(grid, uuid(), bubbleChartData);
+          formState.widgetType = EWidget.BUBBLE
+          useWidget.addNewBubbleChart(grid, uuid(), bubbleChartData, formState);
           break;
         }
         case EWidget.DOUGHNUT: {
+          formState.widgetType = EWidget.DOUGHNUT
           useWidget.addNewDoughnutChart(
             grid,
             uuid(),
-            doughnutPieChartData('doughnut')
+            doughnutPieChartData('doughnut'),
+            formState
           );
           break;
         }
         case EWidget.PIE: {
-          useWidget.addNewPieChart(grid, uuid(), doughnutPieChartData('pie'));
+          formState.widgetType = EWidget.PIE
+          useWidget.addNewPieChart(grid, uuid(), doughnutPieChartData('pie'), formState);
           break;
         }
         case EWidget.GAUGE: {
-          useWidget.addNewGaugeChart(grid, uuid(), gaugeChartData);
+          formState.widgetType = EWidget.GAUGE
+          useWidget.addNewGaugeChart(grid, uuid(), gaugeChartData, formState);
           break;
         }
         case EWidget.LINE: {
-          useWidget.addNewLineChart(grid, uuid(), lineChartData);
+          formState.widgetType = EWidget.LINE
+          useWidget.addNewLineChart(grid, uuid(), lineChartData, formState);
           break;
         }
         case EWidget.POLAR: {
-          useWidget.addNewPolarAreaChart(grid, uuid(), polarAreaChartData);
+          formState.widgetType = EWidget.POLAR
+          useWidget.addNewPolarAreaChart(grid, uuid(), polarAreaChartData, formState);
           break;
         }
         case EWidget.RADAR: {
-          useWidget.addNewRadarChart(grid, uuid(), radarChartData);
+          formState.widgetType = EWidget.RADAR
+          useWidget.addNewRadarChart(grid, uuid(), radarChartData, formState);
           break;
         }
         case EWidget.SCATTER: {
-          useWidget.addNewScatterChart(grid, uuid(), scatterChartData);
+          formState.widgetType = EWidget.SCATTER
+          useWidget.addNewScatterChart(grid, uuid(), scatterChartData, formState);
           break;
         }
         case EWidget.MAPS: {
-          useWidget.addNewMaps(grid, uuid());
+          formState.widgetType = EWidget.MAPS
+          useWidget.addNewMaps(grid, uuid(), formState);
           break;
         }
       }
       configVisible.value = false;
       visible.value = false;
+
       formState.topicId = '';
+      formState.name = '';
+      formState.description = '';
+      formState.hidden = false;
+      formState.persistance = false;
+      formState.widgetType = '';
     };
 
     const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo);
     };
 
-    const formState = reactive<FormState>({
+    const formState = reactive<IFormWidget>({
       topicId: '',
+      name: '',
+      description: '',
+      hidden: false,
+      persistance: false,
+      dashboardId: typeof dashboardId === 'string' ? dashboardId : '',
+      widgetType: ''
     });
-
-    const handleChange = (value: string) => {
-      console.log(`selected ${value}`);
-    };
 
     const onConfigClose = () => {
       formState.topicId = '';
@@ -299,6 +349,7 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       await storeDashboard.getDashboardFullList();
+      await storeWidget.getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '',);
     });
 
     let info = ref('');
@@ -401,7 +452,6 @@ export default defineComponent({
       onFinishFailed,
       onFinish,
       formState,
-      handleChange,
       options,
       titleConfig,
       configVisible,

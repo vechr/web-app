@@ -30,3 +30,23 @@ export interface ICreateWidget {
   persistance?: boolean;
   topicId: string;
 }
+
+
+export interface IFormWidget {
+  topicId: string;
+  name: string;
+  description: string;
+  hidden: boolean;
+  persistance: boolean;
+  dashboardId: string;
+  widgetType: string;
+}
+
+export interface INode {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  id?: string;
+  content?: string;
+}
