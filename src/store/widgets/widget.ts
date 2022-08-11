@@ -1,4 +1,4 @@
-import { ICreateWidget, IError, IFormWidget, IMaps, INode, IUpdateWidget, IWidget } from '@/types';
+import { ICreateWidget, IError, IFormWidget, INode, IUpdateWidget, IWidget } from '@/types';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 import { GridStack, GridStackNode } from 'gridstack';
@@ -110,8 +110,6 @@ export const useWidgetStore = defineStore('widget', {
     createMap(grid: GridStack, nodeId: string, formData: IFormWidget, node: INode) {
       node.id = node.content = nodeId;
 
-      const mapData: IMaps = {latitude: 40.731253, longitude: -73.996139}
-
       WidgetHelper.generateMap(grid, node, nodeId);
 
       this.createWidget(formData.dashboardId, {
@@ -119,27 +117,27 @@ export const useWidgetStore = defineStore('widget', {
         node: node,
         nodeId: nodeId,
         topicId: formData.topicId,
-        widgetData: mapData,
+        widgetData: formData.widgetData,
         widgetType: formData.widgetType,
         description: formData.description,
         hidden: formData.hidden,
         persistance: formData.persistance
       });
     },
-    createChart(grid: GridStack, nodeId: string, dataChart: any, node: INode, formData: IFormWidget) {
+    createChart(grid: GridStack, nodeId: string, node: INode, formData: IFormWidget) {
       node.id = node.content = nodeId;
       this.createWidget(formData.dashboardId, {
         name: formData.name,
         node: node,
         nodeId: nodeId,
         topicId: formData.topicId,
-        widgetData: dataChart,
+        widgetData: formData.widgetData,
         widgetType: formData.widgetType,
         description: formData.description,
         hidden: formData.hidden,
         persistance: formData.persistance
       });
-      WidgetHelper.generateChart(grid, nodeId, dataChart, node)
+      WidgetHelper.generateChart(grid, nodeId, formData.widgetData, node)
     }
   },
 });

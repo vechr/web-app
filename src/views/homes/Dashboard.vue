@@ -18,8 +18,9 @@
   >
     <a-drawer
       v-model:visible="configVisible"
+      class="configurator"
       :title="`${titleConfig} Configuration`"
-      width="320"
+      width="90%"
       :closable="false"
       @close="onConfigClose"
     >
@@ -60,6 +61,21 @@
             :options="options"
             @focus="handleFocus"
           ></a-select>
+        </a-form-item>
+
+        <a-form-item
+          v-if="widgetSelection !== EWidget.MAPS"
+          label="Chart Configuration"
+          name="widgetData"
+          :rules="[
+            { required: true, message: 'Please input configuration Chart!' },
+          ]"
+        >
+          <json-editor-vue
+            class="editor"
+            name="widgetData"
+            v-model="formState.widgetData"
+          />
         </a-form-item>
 
         <a-form-item
@@ -171,6 +187,9 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import JsonEditorVue from 'json-editor-vue3';
 import {
   EnvironmentOutlined,
   PieChartTwoTone,
@@ -195,6 +214,8 @@ import { useRoute } from 'vue-router';
 import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget } from '@/helpers/widgets/charts/index';
 import { MapWidget } from '@/helpers/widgets/maps/index';
 import { WidgetHelper } from '@/helpers/widgets/widget.helper';
+import { barChartData, bubbleChartData, doughnutPieChartData, gaugeChartData, lineChartData, polarAreaChartData, radarChartData, scatterChartData } from '@/types/chart/index';
+
 export default defineComponent({
   name: 'Dashboard',
   components: {
@@ -208,6 +229,7 @@ export default defineComponent({
     DotChartOutlined,
     PieChartOutlined,
     RadarChartOutlined,
+    JsonEditorVue,
   },
   setup() {
     const bar = new BarChartWidget();
@@ -319,7 +341,8 @@ export default defineComponent({
       hidden: false,
       persistance: false,
       dashboardId: typeof dashboardId === 'string' ? dashboardId : '',
-      widgetType: ''
+      widgetType: '',
+      widgetData: {}
     });
 
     const onConfigClose = () => {
@@ -433,9 +456,53 @@ export default defineComponent({
       configVisible.value = true;
       titleConfig.value = widget.charAt(0) + widget.slice(1).toLowerCase() + ' Widget';
       widgetSelection.value = widget;
+
+      switch (widgetSelection.value) {
+        case EWidget.BAR: {
+          formState.widgetData = barChartData
+          break;
+        }
+        case EWidget.BUBBLE: {
+          formState.widgetData = bubbleChartData
+          break;
+        }
+        case EWidget.DOUGHNUT: {
+          formState.widgetData = doughnutPieChartData('doughnut')
+          break;
+        }
+        case EWidget.PIE: {
+          formState.widgetData = doughnutPieChartData('pie')
+          break;
+        }
+        case EWidget.GAUGE: {
+          formState.widgetData = gaugeChartData
+          break;
+        }
+        case EWidget.LINE: {
+          formState.widgetData = lineChartData
+          break;
+        }
+        case EWidget.POLAR: {
+          formState.widgetData = polarAreaChartData
+          break;
+        }
+        case EWidget.RADAR: {
+          formState.widgetData = radarChartData
+          break;
+        }
+        case EWidget.SCATTER: {
+          formState.widgetData = scatterChartData
+          break;
+        }
+        case EWidget.MAPS: {
+          formState.widgetData = {latitude: 40.731253, longitude: -73.996139}
+          break;
+        }
+      }
     }
 
     return {
+      widgetSelection,
       EWidget,
       selectWidget,
       onConfigClose,

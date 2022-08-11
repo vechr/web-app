@@ -49,6 +49,7 @@ export interface IFormWidget {
   persistance: boolean;
   dashboardId: string;
   widgetType: string;
+  widgetData: object;
 }
 
 export interface INode {
