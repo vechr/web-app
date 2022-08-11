@@ -110,7 +110,7 @@ export const useWidgetStore = defineStore('widget', {
     createMap(grid: GridStack, nodeId: string, formData: IFormWidget, node: INode) {
       node.id = node.content = nodeId;
 
-      WidgetHelper.generateMap(grid, node, nodeId);
+      WidgetHelper.generateMap(grid, node, nodeId, formData.name);
 
       this.createWidget(formData.dashboardId, {
         name: formData.name,
@@ -137,7 +137,7 @@ export const useWidgetStore = defineStore('widget', {
         hidden: formData.hidden,
         persistance: formData.persistance
       });
-      WidgetHelper.generateChart(grid, nodeId, formData.widgetData, node)
+      WidgetHelper.generateChart(grid, nodeId, formData.widgetData, node, formData.name)
     }
   },
 });

@@ -5,13 +5,13 @@ import L from 'leaflet';
 import { message } from 'ant-design-vue';
 
 export class WidgetHelper {
-  public static generateChart(grid: GridStack, nodeId: string, dataChart: any, node: INode): void {
+  public static generateChart(grid: GridStack, nodeId: string, dataChart: any, node: INode, nameWidget: string): void {
     node.id = node.content = nodeId;
     grid.compact();
     grid.addWidget(
-      '<div class="grid-stack-item"><div class="grid-stack-item-content"><canvas id="myChart_' +
+      `<div class="grid-stack-item"><div class="grid-stack-item-content"><h1>${nameWidget}</h1><div style="height: 90%;"><canvas id="myChart_` +
       node.id +
-      '"></canvas></div></div>',
+      '"></canvas></div></div></div>',
       node
     );
 
@@ -22,13 +22,13 @@ export class WidgetHelper {
     new Chart(ctx, dataChart);
   }
 
-  public static generateMap(grid: GridStack, node: INode, nodeId: string): void {
+  public static generateMap(grid: GridStack, node: INode, nodeId: string, nameWidget: string): void {
     node.id = node.content = nodeId;
     grid.compact();
     grid.addWidget(
-      '<div class="grid-stack-item event-map"><div class="grid-stack-item-content map-gridstack"><div class="container-map"><div class="my-map" id="map_' +
+      `<div class="grid-stack-item event-map"><div class="grid-stack-item-content map-gridstack"><h1>${nameWidget}</h1><div style="height: 90%;"><div class="container-map"><div class="my-map" id="map_` +
       node.id +
-      '"></div></div></div></div>',
+      '"></div></div></div></div></div>',
       node
     );
     

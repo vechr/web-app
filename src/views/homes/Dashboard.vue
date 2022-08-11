@@ -374,9 +374,9 @@ export default defineComponent({
       await storeWidget.getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '').then(() => {
         data.value.forEach(element => {
           if (element.widgetType === EWidget.MAPS) {
-            WidgetHelper.generateMap(grid, element.node, element.nodeId)
+            WidgetHelper.generateMap(grid, element.node, element.nodeId, element.name)
           } else {
-            WidgetHelper.generateChart(grid, element.nodeId, element.widgetData, element.node)
+            WidgetHelper.generateChart(grid, element.nodeId, element.widgetData, element.node, element.name)
           }
         });
       });
