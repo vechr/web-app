@@ -187,13 +187,14 @@ import { defineComponent, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import { GridStack, GridStackNode } from 'gridstack';
 import { useWidgetStore } from '@/store/widgets/widget';
 import uuid from '@/types/uuid';
-import { EWidget, IFormWidget } from '@/types';
+import { EWidget, IFormWidget, IWidget } from '@/types';
 import { SelectProps } from 'ant-design-vue';
 import { useDashboardManagementStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget } from '@/helpers/widgets/charts/index';
 import { MapWidget } from '@/helpers/widgets/maps/index';
+import { WidgetHelper } from '@/helpers/widgets/widget.helper';
 export default defineComponent({
   name: 'Dashboard',
   components: {
@@ -227,6 +228,7 @@ export default defineComponent({
 
     // Widget Data
     const storeWidget = useWidgetStore();
+    const { data } = storeToRefs(storeWidget)
 
     // Config Data
     const configVisible = ref<boolean>(false);
@@ -346,7 +348,15 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       await storeDashboard.getDashboardFullList();
-      await storeWidget.getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '',);
+      await storeWidget.getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '').then(() => {
+        data.value.forEach(element => {
+          if (element.widgetType === EWidget.MAPS) {
+            WidgetHelper.generateMap(grid, element.node, element.nodeId)
+          } else {
+            WidgetHelper.generateChart(grid, element.nodeId, element.widgetData, element.node)
+          }
+        });
+      });
     });
 
     let info = ref('');
@@ -359,27 +369,63 @@ export default defineComponent({
         removable: true,
       });
 
-      grid.on('resizestop', function (event: Event, el: any) {
+      grid.on('resizestop', async (_: Event, el: any) => {
         let node: GridStackNode = el.gridstackNode;
-        console.log(node);
+        const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
+        if(preDelete !== undefined) {
+          await storeWidget.updateWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id, {
+            name: preDelete.name,
+            description: preDelete.description,
+            node: {
+              x: node.x !== undefined ? node.x : 0,
+              y: node.y !== undefined ? node.y : 0,
+              w: node.w !== undefined ? node.w : 0,
+              h: node.h !== undefined ? node.h : 0,
+              id: preDelete.node.id,
+              content: preDelete.node.content
+            },
+            widgetData: preDelete.widgetData,
+            hidden: preDelete.hidden,
+            persistance: preDelete.persistance
+          })
+        }
       });
 
-      grid.on('added', (event: Event, items: any) => {
+      grid.on('added', (_: Event, items: any) => {
         items.forEach(function (node: GridStackNode) {
           console.log(node);
         });
       });
 
-      grid.on('removed', (event: Event, items: any) => {
-        items.forEach(function (node: GridStackNode) {
-          console.log(node);
+      grid.on('removed', (_: Event, items: any) => {
+        items.forEach(async (node: GridStackNode) => {
+          const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
+          if(preDelete !== undefined) {
+            await storeWidget.deleteWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id)
+          }
         });
       });
 
-      grid.on('dragstop', (_, element: any) => {
+      grid.on('dragstop', async (_, element: any) => {
         const node = element.gridstackNode;
-        info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`;
-        console.log(node);
+        const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
+        if(preDelete !== undefined) {
+          await storeWidget.updateWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id, {
+            name: preDelete.name,
+            description: preDelete.description,
+            node: {
+              x: node.x,
+              y: node.y,
+              w: node.w,
+              h: node.h,
+              id: preDelete.node.id,
+              content: preDelete.node.content
+            },
+            widgetData: preDelete.widgetData,
+            hidden: preDelete.hidden,
+            persistance: preDelete.persistance
+          })
+        }
       });
     });
 

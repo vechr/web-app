@@ -8,7 +8,7 @@ export interface IWidget {
   createdAt?: string;
   updatedAt?: string;
   dashboardId: string;
-  node: object;
+  node: INode;
   nodeId: string;
   widgetData: object;
   widgetType: string;
@@ -22,13 +22,22 @@ export interface IWidget {
 export interface ICreateWidget {
   name: string;
   description?: string;
-  node: object;
+  node: INode;
   nodeId: string;
   widgetData: object;
   widgetType: string;
   hidden?: boolean;
   persistance?: boolean;
   topicId: string;
+}
+
+export interface IUpdateWidget {
+  name?: string;
+  description?: string;
+  node?: INode;
+  widgetData?: object;
+  hidden?: boolean;
+  persistance?: boolean;
 }
 
 

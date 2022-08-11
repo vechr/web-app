@@ -1,4 +1,4 @@
-import { ICreateWidget, IError, IFormWidget, IMaps, INode, IWidget } from '@/types';
+import { ICreateWidget, IError, IFormWidget, IMaps, INode, IUpdateWidget, IWidget } from '@/types';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 import { GridStack, GridStackNode } from 'gridstack';
@@ -50,6 +50,36 @@ export const useWidgetStore = defineStore('widget', {
     },
   },
   actions: {
+    async updateWidgetById(dashboardId: string, widgetId: string, data: IUpdateWidget) {
+      await axios.patch(`/dashboard/${dashboardId}/widget/${widgetId}`, data)
+        .then((res) => {
+          this.dataDetails = res.data.result;
+          this.message = res.data.message;
+          const index = this.data.findIndex(
+            (x) => x.id === res.data.result.id
+          );
+          this.data[index] = res.data.result;
+          message.success(this.message);
+          
+        })
+        .catch((err) => {
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
+    },
+    async deleteWidgetById(dashboardId: string, widgetId: string) {
+      await axios.delete(`/dashboard/${dashboardId}/widget/${widgetId}`)
+        .then((res) => {
+          this.dataDetails = res.data.result;
+          this.message = res.data.message;
+          message.success(this.message);
+          this.data = this.data.filter((val) => val.id !== this.dataDetails?.id)
+        })
+        .catch((err) => {
+          this.error = err.response.data.error;
+          message.error(`${this.error.code} ${this.error.message}`);
+        })
+    },
     async getAllWidgets(dashboardId: string) {
       await axios.get(`/dashboard/${dashboardId}/widget`)
         .then((res) => {
@@ -70,7 +100,7 @@ export const useWidgetStore = defineStore('widget', {
           this.dataDetails = res.data.result;
           this.error = res.data.error;
           this.data.push(res.data.result);
-          message.info(this.message)
+          message.success(this.message)
         })
         .catch((err) => {
           this.error = err.response.data.error;
