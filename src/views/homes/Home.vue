@@ -1,7 +1,7 @@
 <template>
   <a-divider style="font-size: 30px; !important"> Dashboard </a-divider>
   <div v-if="dataFull.length > 0">
-    <div v-for="(data, index) in dataFull" :key="data" style="padding: 2px">
+    <div v-for="(data, index) in dataFull" :key="data.id" style="padding: 2px">
       <a-row class="row-dashboard">
         <a-col
           :xs="24"
@@ -26,7 +26,7 @@
               </a-card-meta>
               <div v-if="value.devices !== undefined">
                 <div v-if="value.devices.length > 0">
-                  <div v-for="device in value.devices" :key="device">
+                  <div v-for="device in value.devices" :key="device.id">
                     <a-card class="device-card">
                       <a-card-meta
                         :title="device.name"
