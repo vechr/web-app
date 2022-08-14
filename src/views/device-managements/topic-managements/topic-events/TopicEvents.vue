@@ -121,7 +121,7 @@ export default defineComponent({
     const { isLoadingActive } = storeToRefs(common);
 
     const topicEventStore = useTopicEventStore();
-    const { topicEventList, topicEventColumns } = storeToRefs(topicEventStore);
+    const { topicEventEdit, topicEventList, topicEventColumns } = storeToRefs(topicEventStore);
 
     onBeforeMount(() => {
       topicEventStore.getTopicEventList(topicId);
@@ -133,7 +133,17 @@ export default defineComponent({
 
     const onEdit = (record: ITopicEvent) => {
       common.setIsDrawerShow(true);
-      topicEventStore.getTopicEventById(topicId, record.id);
+      const topicEventFound: ITopicEvent | undefined = topicEventList.value.find(val => val.id ==  record.id)
+      if (topicEventFound !== undefined) {
+        topicEventEdit.value.id = topicEventFound.id
+        topicEventEdit.value.description = topicEventFound.description
+        topicEventEdit.value.name = topicEventFound.name
+        if (topicEventFound.eventExpression !== undefined) {
+          topicEventEdit.value.eventExpression = topicEventFound.eventExpression
+        } else {
+          topicEventEdit.value.eventExpression = {}
+        }
+      }
     };
 
     return {

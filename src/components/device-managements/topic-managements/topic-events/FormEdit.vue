@@ -37,11 +37,13 @@
         name="eventExpression"
         :rules="[{ required: true, message: 'Please input Event Expression!' }]"
       >
-        <json-editor-vue
-          class="editor"
-          name="eventExpression"
-          v-model="topicEventEdit.eventExpression"
-        />
+          <vue-jsoneditor
+            height="600" 
+            :mode="'text'"
+            :fullWidthButton="false"
+            v-model:json="topicEventEdit.eventExpression" 
+            @change="onChange"
+          />
       </a-form-item>
 
       <a-form-item>
@@ -57,13 +59,12 @@
   </a-drawer>
 </template>
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import JsonEditorVue from 'json-editor-vue3';
+import vueJsoneditor from 'vue3-ts-jsoneditor';
 import { useCommonStore, useTopicEventStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
+import { isJsonString } from '@/utils/jsonCheck';
 
 interface FormState {
   name: string;
@@ -73,7 +74,7 @@ interface FormState {
 
 export default defineComponent({
   name: 'FormEdit',
-  components: { JsonEditorVue },
+  components: { vueJsoneditor },
   setup() {
     const route = useRoute();
     const topicId = route.params.topicId;
@@ -82,13 +83,13 @@ export default defineComponent({
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
     const storeTopicEvent = useTopicEventStore();
-    const { topicEventEdit, dataDetails } = storeToRefs(storeTopicEvent);
+    const { topicEventEdit } = storeToRefs(storeTopicEvent);
 
     const onFinish = (values: FormState) => {
       common.setIsLoadingButton(true);
       storeTopicEvent.updateTopicEventById(
         topicId,
-        dataDetails.value.id,
+        topicEventEdit.value.id,
         values
       );
     };
@@ -101,7 +102,14 @@ export default defineComponent({
       common.setIsDrawerShow(false);
     };
 
+    const onChange = (value: any) => {
+      if (isJsonString(value.text)) {
+        topicEventEdit.value.eventExpression = JSON.parse(value.text)
+      }
+    }
+
     return {
+      onChange,
       topicEventEdit,
       onClose,
       isLoadingButton,

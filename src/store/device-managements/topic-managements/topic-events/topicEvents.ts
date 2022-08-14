@@ -9,6 +9,7 @@ interface ITopicEventData {
   data: ITopicEvent[];
   dataDetails: ITopicEvent;
   topicEventEdit: {
+    id: string;
     name: string;
     description: string;
     eventExpression: object;
@@ -35,7 +36,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
         createdAt: '',
         updatedAt: '',
       },
-      topicEventEdit: { name: '', description: '', eventExpression: {} },
+      topicEventEdit: { id: '' ,name: '', description: '', eventExpression: {} },
       error: {
         code: '',
         message: '',
@@ -124,10 +125,6 @@ export const useTopicEventStore = defineStore('topicEvent', {
           common.setIsLoading(false);
           if (res.status === 200) {
             this.message = res.data.message;
-            this.topicEventEdit.name = res.data.result.name;
-            this.topicEventEdit.description = res.data.result.description;
-            this.topicEventEdit.eventExpression =
-              res.data.result.eventExpression;
             this.dataDetails = res.data.result;
             this.error = res.data.error;
           }

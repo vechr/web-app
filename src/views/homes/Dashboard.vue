@@ -71,10 +71,12 @@
             { required: true, message: 'Please input configuration Chart!' },
           ]"
         >
-          <json-editor-vue
-            class="editor"
-            name="widgetData"
-            v-model="formState.widgetData"
+          <vue-jsoneditor
+            height="600" 
+            :mode="'text'"
+            :fullWidthButton="false"
+            v-model:json="formState.widgetData" 
+            @change="onChange"
           />
         </a-form-item>
 
@@ -187,9 +189,7 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import JsonEditorVue from 'json-editor-vue3';
+import vueJsoneditor from 'vue3-ts-jsoneditor';
 import {
   EnvironmentOutlined,
   PieChartTwoTone,
@@ -215,6 +215,7 @@ import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidge
 import { MapWidget } from '@/helpers/widgets/maps/index';
 import { WidgetHelper } from '@/helpers/widgets/widget.helper';
 import { barChartData, bubbleChartData, doughnutPieChartData, gaugeChartData, lineChartData, polarAreaChartData, radarChartData, scatterChartData } from '@/types/chart/index';
+import { isJsonString } from '@/utils/jsonCheck';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -229,7 +230,7 @@ export default defineComponent({
     DotChartOutlined,
     PieChartOutlined,
     RadarChartOutlined,
-    JsonEditorVue,
+    vueJsoneditor,
   },
   setup() {
     const bar = new BarChartWidget();
@@ -344,6 +345,12 @@ export default defineComponent({
       widgetType: '',
       widgetData: {}
     });
+
+    const onChange = (value: any) => {
+      if (isJsonString(value.text)) {
+        formState.widgetData = JSON.parse(value.text)
+      }
+    }
 
     const onConfigClose = () => {
       formState.topicId = '';
@@ -502,6 +509,7 @@ export default defineComponent({
     }
 
     return {
+      onChange,
       widgetSelection,
       EWidget,
       selectWidget,

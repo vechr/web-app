@@ -42,10 +42,12 @@
             { required: true, message: 'Please input Event Expression!' },
           ]"
         >
-          <json-editor-vue
-            class="editor"
-            name="eventExpression"
-            v-model="formState.eventExpression"
+          <vue-jsoneditor
+            height="600"
+            :fullWidthButton="false"
+            :mode="'text'"
+            v-model:json="formState.eventExpression" 
+            @change="onChange"
           />
         </a-form-item>
 
@@ -63,14 +65,13 @@
   </div>
 </template>
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import JsonEditorVue from 'json-editor-vue3';
+import vueJsoneditor from 'vue3-ts-jsoneditor';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { useCommonStore, useTopicEventStore } from '@/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
 import { useRoute } from 'vue-router';
+import { isJsonString } from '@/utils/jsonCheck';
 
 interface FormState {
   name: string;
@@ -80,7 +81,7 @@ interface FormState {
 
 export default defineComponent({
   name: 'FormDashboard',
-  components: { PlusOutlined, JsonEditorVue },
+  components: { PlusOutlined, vueJsoneditor },
   setup() {
     const route = useRoute();
     const topicId = route.params.topicId;
@@ -113,7 +114,14 @@ export default defineComponent({
       common.setIsModalShow(false);
     };
 
+    const onChange = (value: any) => {
+      if (isJsonString(value.text)) {
+        formState.eventExpression = JSON.parse(value.text)
+      }
+    }
+
     return {
+      onChange,
       isLoadingButton,
       formState,
       isModalShow,
@@ -132,8 +140,5 @@ export default defineComponent({
 }
 .ant-modal-content {
   border-radius: 10px !important;
-}
-.jsoneditor-poweredBy {
-  font-size: 0 !important;
 }
 </style>
