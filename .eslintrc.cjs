@@ -17,5 +17,5 @@ module.exports = {
     'vue/multi-word-component-names': 0,
     '@typescript-eslint/no-explicit-any': 'off',
     'quotes': ['error', 'single'],
-  },
+  }
 };

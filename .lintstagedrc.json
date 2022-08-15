@@ -1,3 +1,3 @@
 {
-  "*.{js,jsx,ts,tsx,vue,json,css,sass}": ["eslint --config ./.eslintrc.js  --fix"]
+  "src/**/*.{js,jsx,ts,tsx,vue}": ["eslint src/** --config ./.eslintrc.cjs  --fix"]
 }

@@ -17,7 +17,7 @@ interface ITopicEventData {
   error: IError;
 }
 
-axios.defaults.baseURL = process.env.VUE_APP_SERVICE_THINGS;
+axios.defaults.baseURL = import.meta.env.VUE_APP_SERVICE_THINGS
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';

@@ -101,7 +101,7 @@ export default defineComponent({
 
     watchEffect(async () => {
       try {
-        const server = { servers: [process.env.VUE_APP_NATS_WS] };
+        const server = { servers: [import.meta.env.VUE_APP_NATS_WS] };
         nc = await connect(server);
         const sc = StringCodec();
 

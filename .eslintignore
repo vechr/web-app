@@ -1,1 +1,4 @@
 package.json
+*.svg
+*.scss
+*.css
