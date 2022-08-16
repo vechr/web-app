@@ -1,10 +1,10 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import Antd from 'ant-design-vue';
-import App from './App.vue';
-import router from './router';
+import App from './ui/App.vue';
+import router from './ui/router';
 import 'ant-design-vue/dist/antd.css';
-import '@/assets/styles/app.scss';
+import './ui/assets/styles/app.scss';
 import 'gridstack/dist/gridstack.min.css';
 import 'gridstack/dist/h5/gridstack-dd-native';
 import 'leaflet/dist/leaflet.css';
