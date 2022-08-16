@@ -1,4 +1,4 @@
-import { EWidget, IBubble, IMaps, IScatter } from '@/types/index';
+import { EWidget, IBubble, IMaps, IScatter } from '@/domain';
 
 export class ValidationHelper {
   validation(widgetType: string, data: string): boolean {
