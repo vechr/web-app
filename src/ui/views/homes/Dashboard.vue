@@ -483,28 +483,6 @@ export default defineComponent({
         removable: true,
       });
 
-      grid.on('resizestop', async (_: Event, el: any) => {
-        let node: GridStackNode = el.gridstackNode;
-        const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
-        if(preDelete !== undefined) {
-          await storeWidget.updateWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id, {
-            name: preDelete.name,
-            description: preDelete.description,
-            node: {
-              x: node.x !== undefined ? node.x : 0,
-              y: node.y !== undefined ? node.y : 0,
-              w: node.w !== undefined ? node.w : 0,
-              h: node.h !== undefined ? node.h : 0,
-              id: preDelete.node.id,
-              content: preDelete.node.content
-            },
-            widgetData: preDelete.widgetData,
-            hidden: preDelete.hidden,
-            persistance: preDelete.persistance
-          })
-        }
-      });
-
       grid.on('removed', (_: Event, items: any) => {
         items.forEach(async (node: GridStackNode) => {
           const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
@@ -514,26 +492,27 @@ export default defineComponent({
         });
       });
 
-      grid.on('dragstop', async (_, element: any) => {
-        const node = element.gridstackNode;
-        const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
-        if(preDelete !== undefined) {
-          await storeWidget.updateWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id, {
-            name: preDelete.name,
-            description: preDelete.description,
-            node: {
-              x: node.x,
-              y: node.y,
-              w: node.w,
-              h: node.h,
-              id: preDelete.node.id,
-              content: preDelete.node.content
-            },
-            widgetData: preDelete.widgetData,
-            hidden: preDelete.hidden,
-            persistance: preDelete.persistance
-          })
-        }
+      grid.on('change', (_: Event, items: any) => {
+        items.forEach(async (node: GridStackNode) => {
+          const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
+          if(preDelete !== undefined) {
+            await storeWidget.updateWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id, {
+              name: preDelete.name,
+              description: preDelete.description,
+              node: {
+                x: node.x !== undefined ? node.x : 0,
+                y: node.y !== undefined ? node.y : 0,
+                w: node.w !== undefined ? node.w : 0,
+                h: node.h !== undefined ? node.h : 0,
+                id: preDelete.node.id,
+                content: preDelete.node.content
+              },
+              widgetData: preDelete.widgetData,
+              hidden: preDelete.hidden,
+              persistance: preDelete.persistance
+            })
+          }
+        });
       });
     });
 
