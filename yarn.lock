@@ -6674,10 +6674,10 @@ vue-types@^3.0.0:
   dependencies:
     is-plain-object "3.0.1"
 
-vue3-ts-jsoneditor@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/vue3-ts-jsoneditor/-/vue3-ts-jsoneditor-2.3.3.tgz#d6786e65227549bc71b47c47b3f5d9a15693b233"
-  integrity sha512-AOhJcbSJimuFjpwe7PGcOtLaGQ1OzTRZBsfcI01s3X89mJsL+0wgCu0pFiWxXnVVTkhSRiYaUVw07d8m9RFYvA==
+vue3-ts-jsoneditor@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/vue3-ts-jsoneditor/-/vue3-ts-jsoneditor-2.4.0.tgz#daa51d31dad4f5db4b3e266d5495c470b31f8178"
+  integrity sha512-zYJD/iZY+EnESM5WVGLiYpa8x6TU1f4QMM2H5qra6giT4bHyD8diak00XMo6guKXNmJc2zzqBksIVM1ipEVFyw==
   dependencies:
     vanilla-jsoneditor "^0.6.2"
     vue "^3.2.37"
