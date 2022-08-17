@@ -12,8 +12,7 @@ export interface IWidget {
   nodeId: string;
   widgetData: any;
   widgetType: string;
-  hidden?: boolean;
-  persistance?: boolean;
+  shiftData?: boolean;
   topicId: string;
   dashboard: IDashboard;
   topic: ITopic;
@@ -26,8 +25,7 @@ export interface ICreateWidget {
   nodeId: string;
   widgetData: any;
   widgetType: string;
-  hidden?: boolean;
-  persistance?: boolean;
+  shiftData?: boolean;
   topicId: string;
 }
 
@@ -36,8 +34,7 @@ export interface IUpdateWidget {
   description?: string;
   node?: INode;
   widgetData?: any;
-  hidden?: boolean;
-  persistance?: boolean;
+  shiftData?: boolean;
 }
 
 
@@ -45,8 +42,7 @@ export interface IFormWidget {
   topicId: string;
   name: string;
   description: string;
-  hidden: boolean;
-  persistance: boolean;
+  shiftData?: boolean;
   dashboardId: string;
   widgetType: string;
   widgetData: any;

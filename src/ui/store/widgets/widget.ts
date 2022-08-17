@@ -102,8 +102,7 @@ export const useWidgetStore = defineStore('widget', {
         widgetData: formData.widgetData,
         widgetType: formData.widgetType,
         description: formData.description,
-        hidden: formData.hidden,
-        persistance: formData.persistance
+        shiftData: formData.shiftData,
       });
     },
     createChart(grid: GridStack, nodeId: string, node: INode, formData: IFormWidget) {
@@ -116,8 +115,7 @@ export const useWidgetStore = defineStore('widget', {
         widgetData: formData.widgetData,
         widgetType: formData.widgetType,
         description: formData.description,
-        hidden: formData.hidden,
-        persistance: formData.persistance
+        shiftData: formData.shiftData,
       });
       WidgetService.generateChart(grid, nodeId, formData.widgetData, node, formData.name)
     }

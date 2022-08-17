@@ -81,17 +81,11 @@
         </a-form-item>
 
         <a-form-item
-          label="Hidden"
-          name="hidden"
+          label="Shifted the Data"
+          name="shiftData"
+          v-if="widgetSelection !== EWidget.GAUGE && widgetSelection !== EWidget.BAR && widgetSelection !== EWidget.LINE"
         >
-          <a-switch v-model:checked="formState.hidden" checked-children="Hidden" un-checked-children="Not Hidden " />
-        </a-form-item>
-
-        <a-form-item
-          label="Persistance"
-          name="persistance"
-        >
-          <a-switch v-model:checked="formState.persistance" checked-children="Persistance" un-checked-children="Not Persistance" />
+          <a-switch v-model:checked="formState.shiftData" checked-children="Shifted" un-checked-children="Unshifted" />
         </a-form-item>
 
         <a-form-item>
@@ -151,7 +145,7 @@
           </a-row>
           <a-row>
             <a-col :span="12">
-              <a-card @click="selectWidget(EWidget.POLAR)" align="middle">
+              <a-card @click="selectWidget(EWidget.RADAR)" align="middle">
                 <RadarChartOutlined /><br />
                 Radar Chart
               </a-card>
@@ -336,8 +330,7 @@ export default defineComponent({
       formState.topicId = '';
       formState.name = '';
       formState.description = '';
-      formState.hidden = false;
-      formState.persistance = false;
+      formState.shiftData = true;
       formState.widgetType = '';
     };
 
@@ -349,8 +342,7 @@ export default defineComponent({
       topicId: '',
       name: '',
       description: '',
-      hidden: false,
-      persistance: false,
+      shiftData: true,
       dashboardId: typeof dashboardId === 'string' ? dashboardId : '',
       widgetType: '',
       widgetData: {}
@@ -411,7 +403,7 @@ export default defineComponent({
           if (!dashboard) return;
           dashboard.devices?.forEach(device => {
             device.topics?.forEach((topic) => {
-              // console.log(`kreMES.DashboardID.${dashboardId}.DeviceID.${device.id}.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`)
+              console.log(`kreMES.DashboardID.${dashboardId}.DeviceID.${device.id}.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`)
               nc.subscribe(`kreMES.DashboardID.${dashboardId}.DeviceID.${device.id}.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`, {
                 callback: (err: any, msg: any) => {
                   if (data.value.length === 0) return;
@@ -439,7 +431,7 @@ export default defineComponent({
                         } else {
                           if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
                             WidgetService.componentWidget['myChart_' + element.nodeId].data.datasets.forEach((dataset: any) => {
-                              dataset.data = dataBuilder(dataset.data, JSON.parse(sc.decode(msg.data)), true)
+                              dataset.data = dataBuilder(dataset.data, JSON.parse(sc.decode(msg.data)), element.shiftData != undefined ? element.shiftData : true)
                             });
                           WidgetService.componentWidget['myChart_' + element.nodeId].update();
                           }
@@ -524,8 +516,7 @@ export default defineComponent({
                 content: preDelete.node.content
               },
               widgetData: preDelete.widgetData,
-              hidden: preDelete.hidden,
-              persistance: preDelete.persistance
+              shiftData: preDelete.shiftData
             })
           }
         });
