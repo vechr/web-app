@@ -10,7 +10,7 @@ export interface IWidget {
   dashboardId: string;
   node: INode;
   nodeId: string;
-  widgetData: object;
+  widgetData: any;
   widgetType: string;
   hidden?: boolean;
   persistance?: boolean;
@@ -24,7 +24,7 @@ export interface ICreateWidget {
   description?: string;
   node: INode;
   nodeId: string;
-  widgetData: object;
+  widgetData: any;
   widgetType: string;
   hidden?: boolean;
   persistance?: boolean;
@@ -35,7 +35,7 @@ export interface IUpdateWidget {
   name?: string;
   description?: string;
   node?: INode;
-  widgetData?: object;
+  widgetData?: any;
   hidden?: boolean;
   persistance?: boolean;
 }
@@ -49,7 +49,7 @@ export interface IFormWidget {
   persistance: boolean;
   dashboardId: string;
   widgetType: string;
-  widgetData: object;
+  widgetData: any;
 }
 
 export interface INode {

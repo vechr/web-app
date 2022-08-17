@@ -1,51 +1,54 @@
 import { ChartType } from 'chart.js';
 
+
 const lineChartType: ChartType = 'doughnut';
+export const afterDrawCallback = (chart: {
+  config: {
+    data: {
+      datasets: {
+        needleValue: any;
+        data: any[];
+      }[];
+    };
+  };
+  ctx: any;
+  canvas: {
+    offsetWidth: any;
+    offsetHeight: any;
+  };
+}) => {
+  const needleValue = chart.config.data.datasets[0].needleValue;
+  const dataTotal = chart.config.data.datasets[0].data.reduce(
+    (a, b) => a + b,
+    0
+  );
+  const angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
+  const ctx = chart.ctx;
+  const cw = chart.canvas.offsetWidth;
+  const ch = chart.canvas.offsetHeight;
+  const cx = cw / 2;
+  const cy = ch - 6;
+
+  ctx.translate(cx, cy);
+  ctx.rotate(angle);
+  ctx.beginPath();
+  ctx.moveTo(0, -3);
+  ctx.lineTo(ch - 20, 0);
+  ctx.lineTo(0, 3);
+  ctx.fillStyle = 'rgb(0, 0, 0)';
+  ctx.fill();
+  ctx.rotate(-angle);
+  ctx.translate(-cx, -cy);
+  ctx.beginPath();
+  ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 export const gaugeChartData = {
   type: lineChartType,
   plugins: [
     {
-      afterDraw: (chart: {
-        config: {
-          data: {
-            datasets: {
-              needleValue: any;
-              data: any[];
-            }[];
-          };
-        };
-        ctx: any;
-        canvas: {
-          offsetWidth: any;
-          offsetHeight: any;
-        };
-      }) => {
-        const needleValue = chart.config.data.datasets[0].needleValue;
-        const dataTotal = chart.config.data.datasets[0].data.reduce(
-          (a, b) => a + b,
-          0
-        );
-        const angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
-        const ctx = chart.ctx;
-        const cw = chart.canvas.offsetWidth;
-        const ch = chart.canvas.offsetHeight;
-        const cx = cw / 2;
-        const cy = ch - 6;
-
-        ctx.translate(cx, cy);
-        ctx.rotate(angle);
-        ctx.beginPath();
-        ctx.moveTo(0, -3);
-        ctx.lineTo(ch - 20, 0);
-        ctx.lineTo(0, 3);
-        ctx.fillStyle = 'rgb(0, 0, 0)';
-        ctx.fill();
-        ctx.rotate(-angle);
-        ctx.translate(-cx, -cy);
-        ctx.beginPath();
-        ctx.arc(cx, cy, 5, 0, Math.PI * 2);
-        ctx.fill();
-      },
+      afterDraw: afterDrawCallback
     },
   ],
   data: {

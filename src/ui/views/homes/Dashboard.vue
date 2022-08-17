@@ -211,7 +211,7 @@ import { SelectProps } from 'ant-design-vue';
 import { useDashboardManagementStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget, WidgetValidationService } from '@/services';
+import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget, WidgetValidationService, afterDrawCallback } from '@/services';
 import { MapWidget, WidgetService } from '@/services';
 import { barChartData, bubbleChartData, doughnutPieChartData, gaugeChartData, lineChartData, polarAreaChartData, radarChartData, scatterChartData } from '@/services';
 import { isJsonString } from '@/utils/jsonCheck';
@@ -390,6 +390,13 @@ export default defineComponent({
         data.value.forEach(element => {
           if (element.widgetType === EWidget.MAPS) {
             WidgetService.generateMap(grid, element.node, element.nodeId, element.name)
+          } else if (element.widgetType === EWidget.GAUGE) {
+            element.widgetData.plugins = [
+              {
+                afterDraw: afterDrawCallback
+              },
+            ]
+            WidgetService.generateChart(grid, element.nodeId, element.widgetData, element.node, element.name)
           } else {
             WidgetService.generateChart(grid, element.nodeId, element.widgetData, element.node, element.name)
           }
@@ -419,6 +426,13 @@ export default defineComponent({
                             let marker = WidgetService.componentWidget['map_' + element.nodeId]
                             var newLatLng = new L.LatLng(JSON.parse(sc.decode(msg.data)).latitude, JSON.parse(sc.decode(msg.data)).longitude);
                             marker.setLatLng(newLatLng)
+                          }
+                        } else if (element.widgetType === EWidget.GAUGE) {
+                          if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
+                            WidgetService.componentWidget['myChart_' + element.nodeId].data.datasets.forEach((dataset: any) => {
+                              dataset.needleValue = JSON.parse(sc.decode(msg.data));
+                            });
+                            WidgetService.componentWidget['myChart_' + element.nodeId].update();
                           }
                         } else {
                           if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
