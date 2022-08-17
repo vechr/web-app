@@ -5,8 +5,8 @@
       <a-row class="row-dashboard">
         <a-col
           :xs="24"
-          :xl="8"
-          v-for="value in dataFull.slice(index * 3, (index + 1) * 3)"
+          :xl="12"
+          v-for="value in dataFull.slice(index * 2, (index + 1) * 2)"
           :key="value"
         >
           <a-card class="dashboard-card" hoverable>
