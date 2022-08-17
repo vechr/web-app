@@ -398,39 +398,45 @@ export default defineComponent({
           const server = { servers: [import.meta.env.VUE_APP_NATS_WS] };
           nc = await connect(server);
           const sc = StringCodec();
-
-          if (data.value.length > 0) {
-            data.value.forEach(element => {
-              // console.log(`kreMES.DashboardID.${dashboardId}.DeviceID.${element.topic.deviceId}.TopicID.${element.topicId}.Topic${element.topic.name.replace(/\//g, '.')}`)
-              nc.subscribe(`kreMES.DashboardID.${dashboardId}.DeviceID.${element.topic.deviceId}.TopicID.${element.topicId}.Topic${element.topic.name.replace(/\//g, '.')}`, {
-              callback: (err: any, msg: any) => {
-                if (element.widgetType !== undefined) {
-                  if (
-                    validationTopic.validation(
-                      element.widgetType,
-                      sc.decode(msg.data)
-                    )
-                  ) {
-                    if (element.widgetType === EWidget.MAPS) {
-                      if ( WidgetService.componentWidget['map_' + element.nodeId] !== undefined ) {
-                        let marker = WidgetService.componentWidget['map_' + element.nodeId]
-                        var newLatLng = new L.LatLng(JSON.parse(sc.decode(msg.data)).latitude, JSON.parse(sc.decode(msg.data)).longitude);
-                        marker.setLatLng(newLatLng)
-                      }
-                    } else {
-                      if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
-                        WidgetService.componentWidget['myChart_' + element.nodeId].data.datasets.forEach((dataset: any) => {
-                          dataset.data = dataBuilder(dataset.data, JSON.parse(sc.decode(msg.data)), true)
-                        });
-                      WidgetService.componentWidget['myChart_' + element.nodeId].update();
+          let dashboard = dataFull.value.find(val => val.id === dashboardId);
+          if (!dashboard) return;
+          dashboard.devices?.forEach(device => {
+            device.topics?.forEach((topic) => {
+              // console.log(`kreMES.DashboardID.${dashboardId}.DeviceID.${device.id}.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`)
+              nc.subscribe(`kreMES.DashboardID.${dashboardId}.DeviceID.${device.id}.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`, {
+                callback: (err: any, msg: any) => {
+                  if (data.value.length === 0) return;
+                  data.value.filter(val => val.dashboardId === dashboard?.id && val.topicId === topic.id && val.topic.deviceId === device.id).forEach(element => {
+                    if (element.widgetType !== undefined) {
+                      if (
+                        validationTopic.validation(
+                          element.widgetType,
+                          sc.decode(msg.data)
+                        )
+                      ) {
+                        if (element.widgetType === EWidget.MAPS) {
+                          if ( WidgetService.componentWidget['map_' + element.nodeId] !== undefined ) {
+                            let marker = WidgetService.componentWidget['map_' + element.nodeId]
+                            var newLatLng = new L.LatLng(JSON.parse(sc.decode(msg.data)).latitude, JSON.parse(sc.decode(msg.data)).longitude);
+                            marker.setLatLng(newLatLng)
+                          }
+                        } else {
+                          if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
+                            WidgetService.componentWidget['myChart_' + element.nodeId].data.datasets.forEach((dataset: any) => {
+                              dataset.data = dataBuilder(dataset.data, JSON.parse(sc.decode(msg.data)), true)
+                            });
+                          WidgetService.componentWidget['myChart_' + element.nodeId].update();
+                          }
+                        }
                       }
                     }
-                  }
+                  })
+                  if (err) notif.error(err)
                 }
-              },
+              });
             });
-            })
-          }
+          });
+          
 
           nc.subscribe(`${dashboardId}.status.connection`, {
             callback: (err: any, msg: any) => {
@@ -439,6 +445,7 @@ export default defineComponent({
                 notif.success(statusConnection.value.message);
                 statusConnection.value.process = 'Finished';
               }
+              if (err) notif.error(err)
             },
           });
 
