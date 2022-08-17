@@ -1,6 +1,6 @@
 import { EWidget, IBubble, IMaps, IScatter } from '@/domain';
 
-export class ValidationHelper {
+export class WidgetValidationService {
   validation(widgetType: string, data: string): boolean {
     try {
       if (

@@ -202,19 +202,23 @@ import {
   RadarChartOutlined,
   DashboardOutlined,
 } from '@ant-design/icons-vue';
-import { defineComponent, onBeforeMount, onMounted, reactive, ref } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { GridStack, GridStackNode } from 'gridstack';
-import { useWidgetStore } from '@/ui/store';
+import { useLoggingStore, useWidgetStore } from '@/ui/store';
 import uuid from '@/utils/uuid';
 import { EWidget, IFormWidget, IWidget } from '@/domain';
 import { SelectProps } from 'ant-design-vue';
 import { useDashboardManagementStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget } from '@/services';
+import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget, WidgetValidationService } from '@/services';
 import { MapWidget, WidgetService } from '@/services';
 import { barChartData, bubbleChartData, doughnutPieChartData, gaugeChartData, lineChartData, polarAreaChartData, radarChartData, scatterChartData } from '@/services';
 import { isJsonString } from '@/utils/jsonCheck';
+import L from 'leaflet';
+import { dataBuilder } from '@/services';
+import { connect, NatsConnection, StringCodec } from 'nats.ws';
+import { message as notif } from 'ant-design-vue';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -232,6 +236,11 @@ export default defineComponent({
     vueJsoneditor,
   },
   setup() {
+    let nc: NatsConnection;
+    const storeLogging = useLoggingStore();
+    const { statusConnection } =
+      storeToRefs(storeLogging);
+    
     const bar = new BarChartWidget();
     const doughnut = new DoughnutChartWidget();
     const gauge = new GaugeChartWidget();
@@ -377,7 +386,7 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       await storeDashboard.getDashboardFullList();
-      await storeWidget.getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '').then(() => {
+      await storeWidget.getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '').then(async () => {
         data.value.forEach(element => {
           if (element.widgetType === EWidget.MAPS) {
             WidgetService.generateMap(grid, element.node, element.nodeId, element.name)
@@ -385,7 +394,76 @@ export default defineComponent({
             WidgetService.generateChart(grid, element.nodeId, element.widgetData, element.node, element.name)
           }
         });
+        try {
+          const server = { servers: [import.meta.env.VUE_APP_NATS_WS] };
+          nc = await connect(server);
+          const sc = StringCodec();
+
+          if (data.value.length > 0) {
+            data.value.forEach(element => {
+              // console.log(`kreMES.DashboardID.${dashboardId}.DeviceID.${element.topic.deviceId}.TopicID.${element.topicId}.Topic${element.topic.name.replace(/\//g, '.')}`)
+              nc.subscribe(`kreMES.DashboardID.${dashboardId}.DeviceID.${element.topic.deviceId}.TopicID.${element.topicId}.Topic${element.topic.name.replace(/\//g, '.')}`, {
+              callback: (err: any, msg: any) => {
+                if (element.widgetType !== undefined) {
+                  if (
+                    validationTopic.validation(
+                      element.widgetType,
+                      sc.decode(msg.data)
+                    )
+                  ) {
+                    if (element.widgetType === EWidget.MAPS) {
+                      if ( WidgetService.componentWidget['map_' + element.nodeId] !== undefined ) {
+                        let marker = WidgetService.componentWidget['map_' + element.nodeId]
+                        var newLatLng = new L.LatLng(JSON.parse(sc.decode(msg.data)).latitude, JSON.parse(sc.decode(msg.data)).longitude);
+                        marker.setLatLng(newLatLng)
+                      }
+                    } else {
+                      if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
+                        WidgetService.componentWidget['myChart_' + element.nodeId].data.datasets.forEach((dataset: any) => {
+                          dataset.data = dataBuilder(dataset.data, JSON.parse(sc.decode(msg.data)), true)
+                        });
+                      WidgetService.componentWidget['myChart_' + element.nodeId].update();
+                      }
+                    }
+                  }
+                }
+              },
+            });
+            })
+          }
+
+          nc.subscribe(`${dashboardId}.status.connection`, {
+            callback: (err: any, msg: any) => {
+              statusConnection.value.message = sc.decode(msg.data);
+              if (statusConnection.value.process == 'Start') {
+                notif.success(statusConnection.value.message);
+                statusConnection.value.process = 'Finished';
+              }
+            },
+          });
+
+          nc.publish(
+            `${dashboardId}.status.connection`,
+            sc.encode(
+              'Connected to the server'
+            )
+          );
+          statusConnection.value.process = 'Start';
+        } catch (error) {
+          notif.error('Server can\'t be reached!');
+        }
       });
+    });
+
+    const validationTopic = new WidgetValidationService();
+
+    onBeforeUnmount(async () => {
+      try {
+        await nc.close();
+        notif.info('Connection closed!');
+      } catch {
+        notif.error('Server error while close the connection!');
+      }
     });
 
     let info = ref('');
@@ -418,12 +496,6 @@ export default defineComponent({
             persistance: preDelete.persistance
           })
         }
-      });
-
-      grid.on('added', (_: Event, items: any) => {
-        items.forEach(function (node: GridStackNode) {
-          console.log(node);
-        });
       });
 
       grid.on('removed', (_: Event, items: any) => {

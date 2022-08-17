@@ -5,6 +5,7 @@ import L from 'leaflet';
 import { message } from 'ant-design-vue';
 
 export class WidgetService {
+  public static componentWidget: {[key:string]:any} = {}; 
   public static generateChart(grid: GridStack, nodeId: string, dataChart: any, node: INode, nameWidget: string): void {
     node.id = node.content = nodeId;
     grid.compact();
@@ -19,7 +20,7 @@ export class WidgetService {
       'myChart_' + node.id
     ) as HTMLCanvasElement;
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-    new Chart(ctx, dataChart);
+    WidgetService.componentWidget['myChart_' + nodeId] = new Chart(ctx, dataChart);
   }
 
   public static generateMap(grid: GridStack, node: INode, nodeId: string, nameWidget: string): void {
@@ -43,10 +44,10 @@ export class WidgetService {
     
     map.on('locationfound', function (e) {
       const radius: number = e.accuracy;
-      
-      L.marker(e.latlng)
+
+      WidgetService.componentWidget['map_' + nodeId] = L.marker(e.latlng)
         .addTo(map)
-        .bindPopup('You are within ' + radius + ' meters from this point')
+        .bindPopup('Your location in here')
         .openPopup();
 
       L.circle(e.latlng, radius).addTo(map);
