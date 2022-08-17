@@ -62,7 +62,7 @@
 import vueJsoneditor from 'vue3-ts-jsoneditor';
 import { useCommonStore, useTopicEventStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { isJsonString } from '@/utils/jsonCheck';
 
@@ -78,6 +78,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const topicId = String(route.params.topicId);
+    const json = ref({})
 
     const common = useCommonStore();
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
@@ -85,7 +86,12 @@ export default defineComponent({
     const storeTopicEvent = useTopicEventStore();
     const { topicEventEdit } = storeToRefs(storeTopicEvent);
 
+    onBeforeMount(() => {
+      json.value = topicEventEdit.value.eventExpression
+    });
+
     const onFinish = (values: FormState) => {
+      values.eventExpression = json.value
       common.setIsLoadingButton(true);
       storeTopicEvent.updateTopicEventById(
         topicId,
@@ -104,7 +110,7 @@ export default defineComponent({
 
     const onChange = (value: any) => {
       if (isJsonString(value.text)) {
-        topicEventEdit.value.eventExpression = JSON.parse(value.text)
+        json.value = JSON.parse(value.text)
       }
     }
 

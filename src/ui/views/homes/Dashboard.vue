@@ -266,6 +266,7 @@ export default defineComponent({
     const titleConfig = ref<string>('');
     const widgetSelection = ref<string>('');
     const options = ref<SelectProps['options']>([]);
+    const json = ref({});
 
     // Get Dashboard
     const route = useRoute();
@@ -275,7 +276,8 @@ export default defineComponent({
     const onFinish = (values: { topicId: string }) => {
       formState.topicId = values.topicId
       formState.dashboardId = typeof dashboardId === 'string' ? dashboardId : ''
-
+      formState.widgetData = json.value
+      
       switch (widgetSelection.value) {
         case EWidget.BAR: {
           formState.widgetType = EWidget.BAR
@@ -356,7 +358,7 @@ export default defineComponent({
 
     const onChange = (value: any) => {
       if (isJsonString(value.text)) {
-        formState.widgetData = JSON.parse(value.text)
+        json.value = JSON.parse(value.text)
       }
     }
 
@@ -538,42 +540,52 @@ export default defineComponent({
       switch (widgetSelection.value) {
         case EWidget.BAR: {
           formState.widgetData = barChartData
+          json.value = barChartData
           break;
         }
         case EWidget.BUBBLE: {
           formState.widgetData = bubbleChartData
+          json.value = bubbleChartData
           break;
         }
         case EWidget.DOUGHNUT: {
           formState.widgetData = doughnutPieChartData('doughnut')
+          json.value = doughnutPieChartData('doughnut')
           break;
         }
         case EWidget.PIE: {
           formState.widgetData = doughnutPieChartData('pie')
+          json.value = doughnutPieChartData('pie')
           break;
         }
         case EWidget.GAUGE: {
           formState.widgetData = gaugeChartData
+          json.value = gaugeChartData
           break;
         }
         case EWidget.LINE: {
           formState.widgetData = lineChartData
+          json.value = lineChartData
           break;
         }
         case EWidget.POLAR: {
           formState.widgetData = polarAreaChartData
+          json.value = polarAreaChartData
           break;
         }
         case EWidget.RADAR: {
           formState.widgetData = radarChartData
+          json.value = radarChartData
           break;
         }
         case EWidget.SCATTER: {
           formState.widgetData = scatterChartData
+          json.value = scatterChartData
           break;
         }
         case EWidget.MAPS: {
           formState.widgetData = {latitude: 40.731253, longitude: -73.996139}
+          json.value = {latitude: 40.731253, longitude: -73.996139}
           break;
         }
       }

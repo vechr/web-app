@@ -69,7 +69,7 @@ import vueJsoneditor from 'vue3-ts-jsoneditor';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { useCommonStore, useTopicEventStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { isJsonString } from '@/utils/jsonCheck';
 
@@ -88,6 +88,7 @@ export default defineComponent({
 
     const common = useCommonStore();
     const store = useTopicEventStore();
+    const json = ref({})
 
     const { isModalShow, isLoadingButton } = storeToRefs(common);
 
@@ -102,6 +103,7 @@ export default defineComponent({
     });
 
     const onFinish = (values: FormState) => {
+      values.eventExpression = json.value
       common.setIsLoadingButton(true);
       store.createTopicEvent(topicId, values);
     };
@@ -116,7 +118,7 @@ export default defineComponent({
 
     const onChange = (value: any) => {
       if (isJsonString(value.text)) {
-        formState.eventExpression = JSON.parse(value.text)
+        json.value = JSON.parse(value.text)
       }
     }
 
