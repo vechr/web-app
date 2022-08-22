@@ -6,7 +6,6 @@ import router from './ui/router';
 import 'ant-design-vue/dist/antd.css';
 import './ui/assets/styles/app.scss';
 import 'gridstack/dist/gridstack.min.css';
-import 'gridstack/dist/h5/gridstack-dd-native';
 import 'leaflet/dist/leaflet.css';
 
 // LEAFLET SETTING ICON
