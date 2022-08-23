@@ -18,7 +18,7 @@
     "gridstack": "^6.0.0",
     "json-tree-view-vue3": "^0.1.16",
     "leaflet": "^1.8.0",
-    "nats.ws": "^1.8.1",
+    "nats.ws": "^1.9.0",
     "pinia": "^2.0.20",
     "uuid": "^8.3.2",
     "vue": "^3.2.26",
