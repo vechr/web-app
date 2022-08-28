@@ -7,28 +7,28 @@ export function dashboardController() {
   async function getDashboardFullList(): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
-      url: '/dashboard/details',
+      url: '/api/v1/things/dashboard/details',
     })
   }
 
   async function getDashboardList(): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
-      url: '/dashboard'
+      url: '/api/v1/things/dashboard'
     })
   }
 
   async function getDashboardById(id: string): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
-      url: `/dashboard/${id}`
+      url: `/api/v1/things/dashboard/${id}`
     })
   }
 
   async function createDashboard(value: { name: string; description: string }): Promise<THttpResponse> {
     return await http.request({
       method: 'post',
-      url: '/dashboard',
+      url: '/api/v1/things/dashboard',
       data: value
     })
   }
@@ -39,7 +39,7 @@ export function dashboardController() {
   ): Promise<THttpResponse> {
     return await http.request({
       method: 'patch',
-      url: `/dashboard/${id}`,
+      url: `/api/v1/things/dashboard/${id}`,
       data: value
     })
   }
@@ -47,7 +47,7 @@ export function dashboardController() {
   async function deleteDashboardById(id: string): Promise<THttpResponse> {
     return await http.request({
       method: 'delete',
-      url: `/dashboard/${id}`
+      url: `/api/v1/things/dashboard/${id}`
     })
   }
 

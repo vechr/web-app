@@ -11,7 +11,7 @@ export function loggingController() {
   }) {
     return await http.request({
       method: 'post',
-      url: `/device/${payload.deviceId}/topic/query`,
+      url: `/api/v1/things/device/${payload.deviceId}/topic/query`,
       data: payload
     })
   }

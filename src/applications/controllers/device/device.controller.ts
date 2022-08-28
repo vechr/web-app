@@ -6,14 +6,14 @@ export function deviceController() {
   async function getDevices() {
     return await http.request({
       method: 'get',
-      url: '/device',
+      url: '/api/v1/things/device',
     })
   }
 
   async function getDeviceById(id: string) {
     return await http.request({
       method: 'get',
-      url: `/device/${id}`,
+      url: `/api/v1/things/device/${id}`,
     })
   }
 
@@ -25,7 +25,7 @@ export function deviceController() {
   }) {
     return await http.request({
       method: 'post',
-      url: '/device',
+      url: '/api/v1/things/device',
       data: JSON.stringify(value, null, 2)
     })
   }
@@ -41,7 +41,7 @@ export function deviceController() {
   ) {
     return await http.request({
       method: 'patch',
-      url: `/device/${id}`,
+      url: `/api/v1/things/device/${id}`,
       data: value
     })
   }
@@ -49,7 +49,7 @@ export function deviceController() {
   async function deleteDeviceById(id: string) {
     return await http.request({
       method: 'delete',
-      url: `/device/${id}`
+      url: `/api/v1/things/device/${id}`
     })
   }
 

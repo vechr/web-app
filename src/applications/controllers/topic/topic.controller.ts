@@ -6,14 +6,14 @@ export function topicController() {
   async function getTopicList(deviceId: string) {
     return await http.request({
       method: 'get',
-      url: `/device/${deviceId}/topic`,
+      url: `/api/v1/things/device/${deviceId}/topic`,
     })
   }
 
   async function getTopicById(deviceId: string, id: string) {
     return await http.request({
       method: 'get',
-      url: `/device/${deviceId}/topic/${id}`
+      url: `/api/v1/things/device/${deviceId}/topic/${id}`
     })
   }
 
@@ -23,7 +23,7 @@ export function topicController() {
   ) {
     return await http.request({
       method: 'post',
-      url: `/device/${deviceId}/topic`,
+      url: `/api/v1/things/device/${deviceId}/topic`,
       data: JSON.stringify(value, null, 2)
     })
   }
@@ -35,7 +35,7 @@ export function topicController() {
   ) {
     return await http.request({
       method: 'patch',
-      url: `/device/${deviceId}/topic/${id}`,
+      url: `/api/v1/things/device/${deviceId}/topic/${id}`,
       data: value
     })
   }
@@ -43,7 +43,7 @@ export function topicController() {
   async function deleteTopicById(deviceId: string, id: string) {
     return await http.request({
       method: 'delete',
-      url: `/device/${deviceId}/topic/${id}`,
+      url: `/api/v1/things/device/${deviceId}/topic/${id}`,
     })
   }
 

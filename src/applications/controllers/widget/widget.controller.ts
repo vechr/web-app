@@ -7,7 +7,7 @@ export function widgetController() {
   async function updateWidgetById(dashboardId: string, widgetId: string, data: IUpdateWidget) {
     return await http.request({
       method: 'patch',
-      url: `/dashboard/${dashboardId}/widget/${widgetId}`,
+      url: `/api/v1/things/dashboard/${dashboardId}/widget/${widgetId}`,
       data: data
     })
   }
@@ -15,21 +15,21 @@ export function widgetController() {
   async function deleteWidgetById(dashboardId: string, widgetId: string) {
     return await http.request({
       method: 'delete',
-      url: `/dashboard/${dashboardId}/widget/${widgetId}`
+      url: `/api/v1/things/dashboard/${dashboardId}/widget/${widgetId}`
     })
   }
 
   async function getAllWidgets(dashboardId: string) {
     return await http.request({
       method: 'get',
-      url: `/dashboard/${dashboardId}/widget`
+      url: `/api/v1/things/dashboard/${dashboardId}/widget`
     })
   }
 
   async function createWidget(dashboardId: string, data: ICreateWidget) {
     return await http.request({
       method: 'post',
-      url: `/dashboard/${dashboardId}/widget`,
+      url: `/api/v1/things/dashboard/${dashboardId}/widget`,
       data: data
     })
   }

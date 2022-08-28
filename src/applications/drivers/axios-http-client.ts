@@ -6,7 +6,6 @@ export class AxiosHttpClient implements IHttpClient {
 
   constructor(defaultBaseURL: string, defaultAccessControlAllowOrigin?: string, defaultContentType?: string, defaultAccept?: string) {
     this.myAxios.defaults.baseURL = defaultBaseURL
-    this.myAxios.defaults.headers.common['Access-Control-Allow-Origin'] = defaultAccessControlAllowOrigin ?? '*';
     this.myAxios.defaults.headers.post['Content-Type'] = defaultContentType ?? 'application/json';
     this.myAxios.defaults.headers.post['Accept'] = defaultAccept ?? 'application/json';
   }

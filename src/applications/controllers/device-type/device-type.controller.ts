@@ -7,21 +7,21 @@ export function deviceTypeController() {
   async function getDeviceTypes(): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
-      url: '/device-type',
+      url: '/api/v1/things/device-type',
     })
   }
 
   async function getDeviceTypeById(id: string): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
-      url: `/device-type/${id}`,
+      url: `/api/v1/things/device-type/${id}`,
     })
   }
 
   async function createDeviceType(value: { name: string; description: string }) {
     return await http.request({
       method: 'post',
-      url: '/device-type',
+      url: '/api/v1/things/device-type',
       data: value
     })
   }
@@ -32,7 +32,7 @@ export function deviceTypeController() {
   ) {
     return await http.request({
       method: 'patch',
-      url: `/device-type/${id}`,
+      url: `/api/v1/things/device-type/${id}`,
       data: value
     })
   }
@@ -40,7 +40,7 @@ export function deviceTypeController() {
   async function deleteDeviceTypeById(id: string) {
     return await http.request({
       method: 'delete',
-      url: `/device-type/${id}`
+      url: `/api/v1/things/device-type/${id}`
     })
   }
 
