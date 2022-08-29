@@ -6,3 +6,4 @@ export * from './topic-managements/topic-managements';
 export * from './topic-events/topic-events';
 export * from './logging/logging';
 export * from './widgets/widget';
+export * from './notification-emails/notification-emails';

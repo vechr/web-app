@@ -43,13 +43,47 @@
           ]"
         >
           <vue-jsoneditor
-            height="600"
+            height="400"
             :fullWidthButton="false"
             :mode="'text'"
             v-model:json="formState.eventExpression" 
             @change="onChange"
           />
         </a-form-item>
+
+        <a-form-item
+          label="Notification Email"
+          name="notificationEmailId"
+        >
+          <a-select
+            mode="tags"
+            style="width: 100%"
+            placeholder="Select a Notification Email"
+            :options="optionNotificationEmail"
+            v-model:value="formState.notificationEmailId"
+            show-search
+          ></a-select>
+        </a-form-item>
+
+        <a-form-item
+        label="Body Text"
+        name="bodyEmail"
+        :rules="[
+          { message: 'Please input Body Text Email!' },
+        ]"
+      >
+        <a-textarea v-model:value="formState.bodyEmail" />
+      </a-form-item>
+
+      <a-form-item
+        label="Body HTML"
+        name="htmlBodyEmail"
+        :rules="[
+          { message: 'Please input Body HTML Email!' },
+        ]"
+      >
+        <a-textarea v-model:value="formState.htmlBodyEmail" />
+      </a-form-item>
 
         <a-form-item>
           <a-button
@@ -67,9 +101,9 @@
 <script lang="ts">
 import vueJsoneditor from 'vue3-ts-jsoneditor';
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { useCommonStore, useTopicEventStore } from '@/ui/store';
+import { useCommonStore, useNotificationEmailStore, useTopicEventStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, onBeforeMount, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { isJsonString } from '@/utils/jsonCheck';
 
@@ -77,10 +111,13 @@ interface FormState {
   name: string;
   description: string;
   eventExpression: object;
+  notificationEmailId: string[],
+  bodyEmail?: string,
+  htmlBodyEmail?: string,
 }
 
 export default defineComponent({
-  name: 'FormDashboard',
+  name: 'FormCreateTopicEvent',
   components: { PlusOutlined, vueJsoneditor },
   setup() {
     const route = useRoute();
@@ -89,6 +126,9 @@ export default defineComponent({
     const common = useCommonStore();
     const store = useTopicEventStore();
     const json = ref({})
+
+    const storeNotificationStore = useNotificationEmailStore();
+    const { optionNotificationEmail } = storeToRefs(storeNotificationStore);
 
     const { isModalShow, isLoadingButton } = storeToRefs(common);
 
@@ -100,7 +140,14 @@ export default defineComponent({
       name: '',
       description: '',
       eventExpression: {},
+      notificationEmailId: [],
+      bodyEmail: '',
+      htmlBodyEmail: ''
     });
+
+    onBeforeMount(() => {
+      storeNotificationStore.getOptionNotificationEmail();
+    })
 
     const onFinish = (values: FormState) => {
       values.eventExpression = json.value
@@ -123,6 +170,7 @@ export default defineComponent({
     }
 
     return {
+      optionNotificationEmail,
       onChange,
       isLoadingButton,
       formState,

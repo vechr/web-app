@@ -21,7 +21,7 @@
         <a-form-item
           label="Name"
           name="name"
-          :rules="[{ required: true, message: 'Please input name dashboard!' }]"
+          :rules="[{ required: true, message: 'Please input name device type!' }]"
         >
           <a-input v-model:value="formState.name" />
         </a-form-item>
@@ -59,7 +59,7 @@ interface FormState {
 }
 
 export default defineComponent({
-  name: 'FormDashboard',
+  name: 'FormCreateDeviceType',
   components: { PlusOutlined },
   setup() {
     const common = useCommonStore();

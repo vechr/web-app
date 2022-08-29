@@ -58,7 +58,7 @@ interface FormState {
 }
 
 export default defineComponent({
-  name: 'FormDashboard',
+  name: 'FormCreateDashboard',
   components: { PlusOutlined },
   setup() {
     const common = useCommonStore();

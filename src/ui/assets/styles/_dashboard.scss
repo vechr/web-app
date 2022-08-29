@@ -1,9 +1,15 @@
 @import "gridstack/dist/gridstack.min.css";
 
+.option-dashboard {
+  background: #727272;
+  // background: linear-gradient(45deg, #FF67B9 42%, rgba(0,217,139,1) 100%);
+  border-radius: 10px 10px 0px 0px;
+}
+
 .grid-stack {
   background: rgb(0,209,255);
   background: linear-gradient(45deg, rgba(0,209,255,1) 42%, rgba(0,217,139,1) 100%);
-  border-radius: 10px;
+  border-radius: 0px 0px 10px 10px;
 }
 
 .grid-stack-item-content {

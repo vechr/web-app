@@ -9,6 +9,9 @@ export interface ITopicEventData {
     name: string;
     description: string;
     eventExpression: object;
+    notificationEmailId: string[];
+    bodyEmail?: string;
+    htmlBodyEmail?: string;
   };
   error: IError;
 }

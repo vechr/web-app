@@ -90,7 +90,7 @@ interface FormState {
 }
 
 export default defineComponent({
-  name: 'FormDashboard',
+  name: 'FormCreateDevice',
   components: { PlusOutlined },
   setup() {
     const common = useCommonStore();

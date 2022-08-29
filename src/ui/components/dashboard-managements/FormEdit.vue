@@ -65,6 +65,7 @@ import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
 
 export default defineComponent({
+  name: 'FormEditDashboard',
   setup() {
     const common = useCommonStore();
     const { isLoadingButton, isDrawerShow } = storeToRefs(common);

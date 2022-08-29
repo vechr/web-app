@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="Edit Dashboard"
+    title="Edit Device"
     :visible="isDrawerShow"
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
@@ -87,6 +87,7 @@ interface FormState {
 }
 
 export default defineComponent({
+  name: 'FormEditDevice',
   setup() {
     const common = useCommonStore();
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);

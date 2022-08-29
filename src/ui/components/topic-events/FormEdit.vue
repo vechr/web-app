@@ -46,6 +46,40 @@
           />
       </a-form-item>
 
+      <a-form-item
+          label="Notification Email"
+          name="notificationEmailId"
+        >
+          <a-select
+            mode="tags"
+            style="width: 100%"
+            placeholder="Select a Notification Email"
+            :options="optionNotificationEmail"
+            v-model:value="topicEventEdit.notificationEmailId"
+            show-search
+          ></a-select>
+        </a-form-item>
+
+      <a-form-item
+        label="Body Text"
+        name="bodyEmail"
+        :rules="[
+          { message: 'Please input Body Text Email!' },
+        ]"
+      >
+        <a-textarea v-model:value="topicEventEdit.bodyEmail" />
+      </a-form-item>
+
+      <a-form-item
+        label="Body HTML"
+        name="htmlBodyEmail"
+        :rules="[
+          { message: 'Please input Body HTML Email!' },
+        ]"
+      >
+        <a-textarea v-model:value="topicEventEdit.htmlBodyEmail" />
+      </a-form-item>
+
       <a-form-item>
         <a-button
           type="primary"
@@ -60,7 +94,7 @@
 </template>
 <script lang="ts">
 import vueJsoneditor from 'vue3-ts-jsoneditor';
-import { useCommonStore, useTopicEventStore } from '@/ui/store';
+import { useCommonStore, useNotificationEmailStore, useTopicEventStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -70,10 +104,13 @@ interface FormState {
   name: string;
   description: string;
   eventExpression: object;
+  notificationEmailId: string[],
+  bodyEmail?: string,
+  htmlBodyEmail?: string,
 }
 
 export default defineComponent({
-  name: 'FormEdit',
+  name: 'FormEditTopicEvent',
   components: { vueJsoneditor },
   setup() {
     const route = useRoute();
@@ -85,6 +122,10 @@ export default defineComponent({
 
     const storeTopicEvent = useTopicEventStore();
     const { topicEventEdit } = storeToRefs(storeTopicEvent);
+
+
+    const storeNotificationStore = useNotificationEmailStore();
+    const { optionNotificationEmail } = storeToRefs(storeNotificationStore);
 
     onBeforeMount(() => {
       json.value = topicEventEdit.value.eventExpression
@@ -115,6 +156,7 @@ export default defineComponent({
     }
 
     return {
+      optionNotificationEmail,
       onChange,
       topicEventEdit,
       onClose,

@@ -1,11 +1,12 @@
 <template>
   <div>
-    <a-button type="primary" @click="showModal" block>
-      <template #icon><PlusOutlined /></template>Create Topic
+    <a-button type="primary" @click="showModal">
+      <template #icon><PlusOutlined /></template>
+      Create Notification Email
     </a-button>
     <a-modal
       v-model:visible="isModalShow"
-      title="Create Topic"
+      title="Create Notification Email"
       @ok="handleOk"
       :footer="null"
     >
@@ -20,15 +21,7 @@
         <a-form-item
           label="Name"
           name="name"
-          :rules="[
-            { required: true, message: 'Please input Topic name!' },
-            {
-              required: true,
-              pattern: new RegExp(/[\/]\S*$/gm),
-              message:
-                'Please use / character at the beginning and cannot contain any spaces. For example /mytopic, /my-topic!',
-            },
-          ]"
+          :rules="[{ required: true, message: 'Please input name notification email!' }]"
         >
           <a-input v-model:value="formState.name" />
         </a-form-item>
@@ -36,25 +29,25 @@
         <a-form-item
           label="Description"
           name="description"
-          :rules="[
-            { required: true, message: 'Please input Topic description!' },
-          ]"
+          :rules="[{ required: true, message: 'Please input description!' }]"
         >
           <a-textarea v-model:value="formState.description" />
         </a-form-item>
 
         <a-form-item
-          label="Widget Type"
-          name="widgetType"
-          :rules="[{ required: false, message: 'Please input widget type!' }]"
+          label="Sender"
+          name="sender"
+          :rules="[{ required: true, pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm), message: 'Please input sender email with correct format for example: me@mail.com!' }]"
         >
-          <a-select
-            v-model:value="formState.widgetType"
-            show-search
-            placeholder="Select a Widget Type"
-            :options="getWidgetType"
-            :filter-option="filterOption"
-          ></a-select>
+          <a-input v-model:value="formState.sender" />
+        </a-form-item>
+
+        <a-form-item
+          label="Recipient"
+          name="recipient"
+          :rules="[{ required: true, pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm), message: 'Please input recipient email with correct format for example: me@mail.com!' }]"
+        >
+          <a-input v-model:value="formState.recipient" />
         </a-form-item>
 
         <a-form-item>
@@ -72,35 +65,25 @@
 </template>
 <script lang="ts">
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { useCommonStore, useTopicManagementStore } from '@/ui/store';
+import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
-import { useRoute } from 'vue-router';
-import { useWidgetStore } from '@/ui/store';
 
 interface FormState {
   name: string;
   description: string;
-  widgetType: string;
+  sender: string;
+  recipient: string;
 }
 
 export default defineComponent({
-  name: 'FormCreateTopic',
+  name: 'FormCreateNotificationEmail',
   components: { PlusOutlined },
   setup() {
-    const route = useRoute();
-    const deviceId = String(route.params.deviceId);
-
     const common = useCommonStore();
-    const widgetStore = useWidgetStore();
-    const store = useTopicManagementStore();
+    const store = useNotificationEmailStore();
 
-    const { getWidgetType } = storeToRefs(widgetStore);
     const { isModalShow, isLoadingButton } = storeToRefs(common);
-
-    const filterOption = (input: string, option: any) => {
-      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    };
 
     const showModal = () => {
       common.setIsModalShow(true);
@@ -109,12 +92,13 @@ export default defineComponent({
     const formState = reactive<FormState>({
       name: '',
       description: '',
-      widgetType: '',
+      sender: '',
+      recipient: ''
     });
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      store.createTopic(deviceId, values);
+      store.createNotificationEmail(values);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -125,8 +109,6 @@ export default defineComponent({
       common.setIsModalShow(false);
     };
     return {
-      filterOption,
-      getWidgetType,
       isLoadingButton,
       formState,
       isModalShow,

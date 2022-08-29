@@ -47,6 +47,26 @@
             <template v-if="column.key === 'eventExpression'">
               <JsonTreeView :data="JSON.stringify(record.eventExpression)" />
             </template>
+            <template v-if="column.key === 'notificationEmailId'">
+              <a-space :size="10">
+                <div v-if="record.notificationEmailId.length > 0">
+                  <a-tag
+                    v-for="tag in record.notificationEmailId"
+                    :key="tag"
+                    :color="`#${Math.floor(Math.random() * 16777215).toString(
+                      16
+                    )}`"
+                  >
+                    {{ tag }}
+                  </a-tag>
+                </div>
+                <div v-else>
+                  <a-tag color="#f50">
+                    {{ 'no Notification Email'.toUpperCase() }}
+                  </a-tag>
+                </div>
+              </a-space>
+            </template>
             <template v-if="column.key === 'action'">
               <a-space
                 :size="10"
@@ -138,6 +158,9 @@ export default defineComponent({
         topicEventEdit.value.id = topicEventFound.id
         topicEventEdit.value.description = topicEventFound.description
         topicEventEdit.value.name = topicEventFound.name
+        topicEventEdit.value.notificationEmailId = topicEventFound.notificationEmailId
+        topicEventEdit.value.bodyEmail = topicEventFound.bodyEmail
+        topicEventEdit.value.htmlBodyEmail = topicEventFound.htmlBodyEmail
         if (topicEventFound.eventExpression !== undefined) {
           topicEventEdit.value.eventExpression = topicEventFound.eventExpression
         } else {
