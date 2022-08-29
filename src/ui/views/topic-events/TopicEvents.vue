@@ -54,7 +54,7 @@
                       16
                     )}`"
                   >
-                    {{ tag }}
+                    {{ hashMapNotificationEmailList.get(tag) }}
                   </a-tag>
                 </div>
                 <div v-else>
@@ -111,7 +111,7 @@
 
 <script lang="ts">
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
-import { useTopicEventStore, useCommonStore } from '@/ui/store';
+import { useTopicEventStore, useCommonStore, useNotificationEmailStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
@@ -138,8 +138,12 @@ export default defineComponent({
     const topicEventStore = useTopicEventStore();
     const { topicEventEdit, topicEventList, topicEventColumns } = storeToRefs(topicEventStore);
 
+    const notificationEmailStore = useNotificationEmailStore();
+    const { hashMapNotificationEmailList } = storeToRefs(notificationEmailStore);
+
     onBeforeMount(() => {
       topicEventStore.getTopicEventList(topicId);
+      notificationEmailStore.getNotificationEmailList()
     });
 
     const onDelete = (record: ITopicEvent) => {
@@ -165,6 +169,7 @@ export default defineComponent({
     };
 
     return {
+      hashMapNotificationEmailList,
       onDelete,
       onEdit,
       isLoadingActive,

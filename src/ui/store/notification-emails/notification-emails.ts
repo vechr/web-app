@@ -83,6 +83,15 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
             ? new Date(notificationEmail.updatedAt).toLocaleString('en-US')
             : notificationEmail.updatedAt,
       }));
+    },
+    hashMapNotificationEmailList(state) {
+      const data = new Map();
+      if (state.data.length > 0) {
+        state.data.forEach(val => {
+          data.set(val.id, val.name)
+        });
+      }
+      return data;
     }
   },
   actions: {
