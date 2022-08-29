@@ -120,8 +120,10 @@ canvas {
 }
 
 @media (min-width: 992px) {
-  .ant-drawer-content-wrapper {
-    width: 450px !important;
+  .custom-class {
+    .ant-drawer-content-wrapper {
+      width: 450px !important;
+    }
   }
 
   .configurator {

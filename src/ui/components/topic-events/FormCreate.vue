@@ -8,6 +8,7 @@
       title="Create Topic Event"
       @ok="handleOk"
       :footer="null"
+      width="720px"
     >
       <a-form
         layout="vertical"
@@ -43,13 +44,15 @@
           ]"
         >
           <vue-jsoneditor
-            height="400"
+            height="300"
             :fullWidthButton="false"
             :mode="'text'"
             v-model:json="formState.eventExpression" 
             @change="onChange"
           />
         </a-form-item>
+
+        <a-divider>Email Notification</a-divider>
 
         <a-form-item
           label="Notification Email"
@@ -66,24 +69,24 @@
         </a-form-item>
 
         <a-form-item
-        label="Body Text"
-        name="bodyEmail"
-        :rules="[
-          { message: 'Please input Body Text Email!' },
-        ]"
-      >
-        <a-textarea v-model:value="formState.bodyEmail" />
-      </a-form-item>
-
-      <a-form-item
-        label="Body HTML"
-        name="htmlBodyEmail"
-        :rules="[
-          { message: 'Please input Body HTML Email!' },
-        ]"
-      >
-        <a-textarea v-model:value="formState.htmlBodyEmail" />
-      </a-form-item>
+          label="Body Text"
+          name="bodyEmail"
+          :rules="[
+            { message: 'Please input Body Text Email!' },
+          ]"
+        >
+          <a-textarea v-model:value="formState.bodyEmail" />
+        </a-form-item>
+        
+        <a-form-item>
+          <editor
+            :init="{
+              plugins: 'lists link image table code help wordcount',
+            height: 500
+            }"
+            v-model="formState.htmlBodyEmail"
+          />
+        </a-form-item>
 
         <a-form-item>
           <a-button
@@ -106,6 +109,7 @@ import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { isJsonString } from '@/utils/jsonCheck';
+import Editor from '@tinymce/tinymce-vue'
 
 interface FormState {
   name: string;
@@ -118,7 +122,7 @@ interface FormState {
 
 export default defineComponent({
   name: 'FormCreateTopicEvent',
-  components: { PlusOutlined, vueJsoneditor },
+  components: { PlusOutlined, vueJsoneditor, 'editor': Editor },
   setup() {
     const route = useRoute();
     const topicId = String(route.params.topicId);
@@ -151,6 +155,7 @@ export default defineComponent({
 
     const onFinish = (values: FormState) => {
       values.eventExpression = json.value
+      values.htmlBodyEmail = formState.htmlBodyEmail
       common.setIsLoadingButton(true);
       store.createTopicEvent(topicId, values);
     };

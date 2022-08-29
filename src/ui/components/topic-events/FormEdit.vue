@@ -5,6 +5,8 @@
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
     @close="onClose"
+    :width="720"
+    class="topic-event-drawer"
   >
     <a-form
       layout="vertical"
@@ -38,13 +40,15 @@
         :rules="[{ required: true, message: 'Please input Event Expression!' }]"
       >
           <vue-jsoneditor
-            height="600" 
+            height="300" 
             :mode="'text'"
             :fullWidthButton="false"
             v-model:json="topicEventEdit.eventExpression" 
             @change="onChange"
           />
       </a-form-item>
+
+      <a-divider>Email Notification</a-divider>
 
       <a-form-item
           label="Notification Email"
@@ -71,13 +75,15 @@
       </a-form-item>
 
       <a-form-item
-        label="Body HTML"
-        name="htmlBodyEmail"
-        :rules="[
-          { message: 'Please input Body HTML Email!' },
-        ]"
+        label="HTML Body Email"
       >
-        <a-textarea v-model:value="topicEventEdit.htmlBodyEmail" />
+        <editor
+          :init="{
+            plugins: 'lists link image table code help wordcount',
+            height: 500
+          }"
+          v-model="topicEventEdit.htmlBodyEmail"
+        />
       </a-form-item>
 
       <a-form-item>
@@ -99,6 +105,7 @@ import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { isJsonString } from '@/utils/jsonCheck';
+import Editor from '@tinymce/tinymce-vue'
 
 interface FormState {
   name: string;
@@ -111,7 +118,7 @@ interface FormState {
 
 export default defineComponent({
   name: 'FormEditTopicEvent',
-  components: { vueJsoneditor },
+  components: { vueJsoneditor, 'editor': Editor },
   setup() {
     const route = useRoute();
     const topicId = String(route.params.topicId);
@@ -133,6 +140,7 @@ export default defineComponent({
 
     const onFinish = (values: FormState) => {
       values.eventExpression = json.value
+      values.htmlBodyEmail = topicEventEdit.value.htmlBodyEmail
       common.setIsLoadingButton(true);
       storeTopicEvent.updateTopicEventById(
         topicId,
