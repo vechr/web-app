@@ -12,72 +12,120 @@ import TopicEvent from '@/ui/views/topic-events/TopicEvents.vue'
 import Logging from '@/ui/views/homes/Logging.vue'
 import Dashboard from '@/ui/views/homes/Dashboard.vue'
 import NotificationEmail from '@/ui/views/notification-emails/NotificationEmail.vue'
+import NotFound from '@/ui/views/common/NotFound.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: NotFound,
+    meta: {
+      layout: 'blank-layout'
+    }
+  },
+  {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/dashboard/:dashboardId',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/logging',
     name: 'logging',
-    component: Logging
+    component: Logging,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/about',
     name: 'about',
-    component: About
+    component: About,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/profile',
     name: 'profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/dashboard',
     name: 'dashboard-managements',
-    component: DashboardManagement
+    component: DashboardManagement,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/device',
     name: 'device-managements',
-    component: DeviceManagement
+    component: DeviceManagement,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/email',
     name: 'notification-email-managements',
-    component: NotificationEmail
+    component: NotificationEmail,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/device/:deviceId/topic',
     name: 'topic-managements',
-    component: TopicManagement
+    component: TopicManagement,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/device/:deviceId/topic/:topicId/topic-event',
     name: 'topic-event',
-    component: TopicEvent
+    component: TopicEvent,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/device-type',
     name: 'device-types',
-    component: DeviceType
+    component: DeviceType,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/user',
     name: 'user-managements',
-    component: UserManagement
+    component: UserManagement,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
   {
     path: '/role',
     name: 'role-managements',
-    component: RoleManagement
+    component: RoleManagement,
+    meta: {
+      layout: 'dashboard-layout'
+    }
   },
 ]
 
