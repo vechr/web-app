@@ -21,7 +21,7 @@
     "gridstack": "^6.0.0",
     "leaflet": "^1.8.0",
     "nats.ws": "^1.9.0",
-    "pinia": "^2.0.20",
+    "pinia": "^2.0.21",
     "uuid": "^8.3.2",
     "vue": "^3.2.26",
     "vue-codemirror": "^6.1.1",
