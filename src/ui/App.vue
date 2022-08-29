@@ -27,16 +27,24 @@
             <span>Device Management</span>
           </a-menu-item>
         </router-link>
+
+        <router-link to="/email" custom v-slot="{ navigate, href }">
+          <a-menu-item key="4" @click="navigate" :href="href">
+            <mail-outlined />
+            <span>Email Management</span>
+          </a-menu-item>
+        </router-link>
+
         <!--
         <router-link to="/user" custom v-slot="{ navigate, href }">
-          <a-menu-item key="4" @click="navigate" :href="href">
+          <a-menu-item key="5" @click="navigate" :href="href">
             <user-outlined />
             <span>User Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/role" custom v-slot="{ navigate, href }">
-          <a-menu-item key="5" @click="navigate" :href="href">
+          <a-menu-item key="6" @click="navigate" :href="href">
             <UserSwitchOutlined />
             <span>Role Management</span>
           </a-menu-item>
@@ -104,6 +112,7 @@ import {
   ApartmentOutlined,
   // UserSwitchOutlined,
   CloseOutlined,
+  MailOutlined
 } from '@ant-design/icons-vue';
 import Loading from '@/ui/components/common/Loading.vue';
 import { defineComponent, ref } from 'vue';
@@ -117,6 +126,7 @@ export default defineComponent({
     ApartmentOutlined,
     // UserSwitchOutlined,
     CloseOutlined,
+    MailOutlined,
     Loading,
   },
   setup() {

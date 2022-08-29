@@ -19,7 +19,7 @@ export function topicEventController() {
 
   async function createTopicEvent(
     topicId: string,
-    value: { name: string; description: string; eventExpression: object }
+    value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
   ) {
     return await http.request({
       method: 'post',
@@ -31,7 +31,7 @@ export function topicEventController() {
   async function updateTopicEventById(
     topicId: string,
     id: string,
-    value: { name: string; description: string; eventExpression: object }
+    value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
   ) {
     return await http.request({
       method: 'patch',

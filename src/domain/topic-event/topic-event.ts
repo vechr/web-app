@@ -3,7 +3,10 @@ export interface ITopicEvent {
   topicId: string,
   name: string,
   description: string,
-  eventExpression?: object,
+  eventExpression?: string,
+  notificationEmailId: string[],
+  bodyEmail?: string,
+  htmlBodyEmail?: string,
   createdAt?: string,
   updatedAt?: string
 }

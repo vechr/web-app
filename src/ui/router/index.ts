@@ -11,6 +11,7 @@ import TopicManagement from '@/ui/views/topic-managements/TopicManagement.vue'
 import TopicEvent from '@/ui/views/topic-events/TopicEvents.vue'
 import Logging from '@/ui/views/homes/Logging.vue'
 import Dashboard from '@/ui/views/homes/Dashboard.vue'
+import NotificationEmail from '@/ui/views/notification-emails/NotificationEmail.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -47,6 +48,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/device',
     name: 'device-managements',
     component: DeviceManagement
+  },
+  {
+    path: '/email',
+    name: 'notification-email-managements',
+    component: NotificationEmail
   },
   {
     path: '/device/:deviceId/topic',

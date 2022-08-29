@@ -64,6 +64,7 @@ interface FormState {
 }
 
 export default defineComponent({
+  name: 'FormEditTopic',
   setup() {
     const route = useRoute();
     const deviceId = String(route.params.deviceId);

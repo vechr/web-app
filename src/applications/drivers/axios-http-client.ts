@@ -4,7 +4,7 @@ import axios from 'axios'
 export class AxiosHttpClient implements IHttpClient {
   private myAxios = axios;
 
-  constructor(defaultBaseURL: string, defaultAccessControlAllowOrigin?: string, defaultContentType?: string, defaultAccept?: string) {
+  constructor(defaultBaseURL: string, defaultContentType?: string, defaultAccept?: string) {
     this.myAxios.defaults.baseURL = defaultBaseURL
     this.myAxios.defaults.headers.post['Content-Type'] = defaultContentType ?? 'application/json';
     this.myAxios.defaults.headers.post['Accept'] = defaultAccept ?? 'application/json';

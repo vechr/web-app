@@ -44,8 +44,25 @@
           :scroll="{ x: 1200 }"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'eventExpression'">
-              <JsonTreeView :data="JSON.stringify(record.eventExpression)" />
+            <template v-if="column.key === 'notificationEmailId'">
+              <a-space :size="10">
+                <div v-if="record.notificationEmailId.length > 0">
+                  <a-tag
+                    v-for="tag in record.notificationEmailId"
+                    :key="tag"
+                    :color="`#${Math.floor(Math.random() * 16777215).toString(
+                      16
+                    )}`"
+                  >
+                    {{ hashMapNotificationEmailList.get(tag) }}
+                  </a-tag>
+                </div>
+                <div v-else>
+                  <a-tag color="#f50">
+                    {{ 'no Notification Email'.toUpperCase() }}
+                  </a-tag>
+                </div>
+              </a-space>
             </template>
             <template v-if="column.key === 'action'">
               <a-space
@@ -93,9 +110,8 @@
 </template>
 
 <script lang="ts">
-import { JsonTreeView } from 'json-tree-view-vue3';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
-import { useTopicEventStore, useCommonStore } from '@/ui/store';
+import { useTopicEventStore, useCommonStore, useNotificationEmailStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
@@ -106,7 +122,6 @@ import FormEdit from '@/ui/components/topic-events/FormEdit.vue';
 export default defineComponent({
   name: 'TopicEvent',
   components: {
-    JsonTreeView,
     FormEdit,
     FormCreate,
     DeleteOutlined,
@@ -123,8 +138,12 @@ export default defineComponent({
     const topicEventStore = useTopicEventStore();
     const { topicEventEdit, topicEventList, topicEventColumns } = storeToRefs(topicEventStore);
 
+    const notificationEmailStore = useNotificationEmailStore();
+    const { hashMapNotificationEmailList } = storeToRefs(notificationEmailStore);
+
     onBeforeMount(() => {
       topicEventStore.getTopicEventList(topicId);
+      notificationEmailStore.getNotificationEmailList()
     });
 
     const onDelete = (record: ITopicEvent) => {
@@ -138,15 +157,19 @@ export default defineComponent({
         topicEventEdit.value.id = topicEventFound.id
         topicEventEdit.value.description = topicEventFound.description
         topicEventEdit.value.name = topicEventFound.name
+        topicEventEdit.value.notificationEmailId = topicEventFound.notificationEmailId
+        topicEventEdit.value.bodyEmail = topicEventFound.bodyEmail
+        topicEventEdit.value.htmlBodyEmail = topicEventFound.htmlBodyEmail
         if (topicEventFound.eventExpression !== undefined) {
           topicEventEdit.value.eventExpression = topicEventFound.eventExpression
         } else {
-          topicEventEdit.value.eventExpression = {}
+          topicEventEdit.value.eventExpression = ''
         }
       }
     };
 
     return {
+      hashMapNotificationEmailList,
       onDelete,
       onEdit,
       isLoadingActive,

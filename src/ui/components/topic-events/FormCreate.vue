@@ -8,6 +8,7 @@
       title="Create Topic Event"
       @ok="handleOk"
       :footer="null"
+      width="720px"
     >
       <a-form
         layout="vertical"
@@ -38,16 +39,52 @@
         <a-form-item
           label="Event Expression"
           name="eventExpression"
+          :rules="[{ required: true, message: 'Please input Event Expression!' }]"
+        >
+          <codemirror
+            v-model="formState.eventExpression"
+            placeholder="Input your expression value in here!"
+            :style="{ height: '250px' }"
+            :autofocus="true"
+            :indent-with-tab="true"
+            :tab-size="2"
+            :extensions="extensions"
+          />
+        </a-form-item>
+
+        <a-divider>Email Notification</a-divider>
+
+        <a-form-item
+          label="Notification Email"
+          name="notificationEmailId"
+        >
+          <a-select
+            mode="tags"
+            style="width: 100%"
+            placeholder="Select a Notification Email"
+            :options="optionNotificationEmail"
+            v-model:value="formState.notificationEmailId"
+            show-search
+          ></a-select>
+        </a-form-item>
+
+        <a-form-item
+          label="Body Text"
+          name="bodyEmail"
           :rules="[
-            { required: true, message: 'Please input Event Expression!' },
+            { message: 'Please input Body Text Email!' },
           ]"
         >
-          <vue-jsoneditor
-            height="600"
-            :fullWidthButton="false"
-            :mode="'text'"
-            v-model:json="formState.eventExpression" 
-            @change="onChange"
+          <a-textarea v-model:value="formState.bodyEmail" />
+        </a-form-item>
+        
+        <a-form-item>
+          <editor
+            :init="{
+              plugins: 'lists link image table code help wordcount',
+            height: 500
+            }"
+            v-model="formState.htmlBodyEmail"
           />
         </a-form-item>
 
@@ -65,30 +102,39 @@
   </div>
 </template>
 <script lang="ts">
-import vueJsoneditor from 'vue3-ts-jsoneditor';
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { useCommonStore, useTopicEventStore } from '@/ui/store';
+import { useCommonStore, useNotificationEmailStore, useTopicEventStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
-import { defineComponent, reactive, ref } from 'vue';
+import { defineComponent, onBeforeMount, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-import { isJsonString } from '@/utils/jsonCheck';
+import Editor from '@tinymce/tinymce-vue'
+import { Codemirror } from 'vue-codemirror';
+import { jsonLanguage } from '@codemirror/lang-json';
 
 interface FormState {
   name: string;
   description: string;
-  eventExpression: object;
+  eventExpression: string;
+  notificationEmailId: string[],
+  bodyEmail?: string,
+  htmlBodyEmail?: string,
 }
 
 export default defineComponent({
-  name: 'FormDashboard',
-  components: { PlusOutlined, vueJsoneditor },
+  name: 'FormCreateTopicEvent',
+  components: { PlusOutlined, 'editor': Editor, Codemirror },
   setup() {
+    // Code Editor
+    const extensions = [jsonLanguage]
+
     const route = useRoute();
     const topicId = String(route.params.topicId);
 
     const common = useCommonStore();
     const store = useTopicEventStore();
-    const json = ref({})
+
+    const storeNotificationStore = useNotificationEmailStore();
+    const { optionNotificationEmail } = storeToRefs(storeNotificationStore);
 
     const { isModalShow, isLoadingButton } = storeToRefs(common);
 
@@ -99,11 +145,19 @@ export default defineComponent({
     const formState = reactive<FormState>({
       name: '',
       description: '',
-      eventExpression: {},
+      eventExpression: '',
+      notificationEmailId: [],
+      bodyEmail: '',
+      htmlBodyEmail: ''
     });
 
+    onBeforeMount(() => {
+      storeNotificationStore.getOptionNotificationEmail();
+    })
+
     const onFinish = (values: FormState) => {
-      values.eventExpression = json.value
+      values.eventExpression = formState.eventExpression
+      values.htmlBodyEmail = formState.htmlBodyEmail
       common.setIsLoadingButton(true);
       store.createTopicEvent(topicId, values);
     };
@@ -116,14 +170,9 @@ export default defineComponent({
       common.setIsModalShow(false);
     };
 
-    const onChange = (value: any) => {
-      if (isJsonString(value.text)) {
-        json.value = JSON.parse(value.text)
-      }
-    }
-
     return {
-      onChange,
+      extensions,
+      optionNotificationEmail,
       isLoadingButton,
       formState,
       isModalShow,
