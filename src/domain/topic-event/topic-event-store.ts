@@ -8,7 +8,7 @@ export interface ITopicEventData {
     id: string;
     name: string;
     description: string;
-    eventExpression: object;
+    eventExpression: string;
     notificationEmailId: string[];
     bodyEmail?: string;
     htmlBodyEmail?: string;

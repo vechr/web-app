@@ -44,9 +44,6 @@
           :scroll="{ x: 1200 }"
         >
           <template #bodyCell="{ column, record }">
-            <template v-if="column.key === 'eventExpression'">
-              <JsonTreeView :data="JSON.stringify(record.eventExpression)" />
-            </template>
             <template v-if="column.key === 'notificationEmailId'">
               <a-space :size="10">
                 <div v-if="record.notificationEmailId.length > 0">
@@ -113,7 +110,6 @@
 </template>
 
 <script lang="ts">
-import { JsonTreeView } from 'json-tree-view-vue3';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
 import { useTopicEventStore, useCommonStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
@@ -126,7 +122,6 @@ import FormEdit from '@/ui/components/topic-events/FormEdit.vue';
 export default defineComponent({
   name: 'TopicEvent',
   components: {
-    JsonTreeView,
     FormEdit,
     FormCreate,
     DeleteOutlined,
@@ -164,7 +159,7 @@ export default defineComponent({
         if (topicEventFound.eventExpression !== undefined) {
           topicEventEdit.value.eventExpression = topicEventFound.eventExpression
         } else {
-          topicEventEdit.value.eventExpression = {}
+          topicEventEdit.value.eventExpression = ''
         }
       }
     };

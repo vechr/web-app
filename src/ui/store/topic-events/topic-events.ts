@@ -14,14 +14,14 @@ export const useTopicEventStore = defineStore('topicEvent', {
         topicId: '',
         name: '',
         description: '',
-        eventExpression: {},
+        eventExpression: '',
         notificationEmailId: [],
         bodyEmail: '',
         htmlBodyEmail: '',
         createdAt: '',
         updatedAt: '',
       },
-      topicEventEdit: { id: '' ,name: '', description: '', eventExpression: {}, notificationEmailId: [], bodyEmail: '', htmlBodyEmail: '' },
+      topicEventEdit: { id: '' ,name: '', description: '', eventExpression: '', notificationEmailId: [], bodyEmail: '', htmlBodyEmail: '' },
       error: {
         code: '',
         message: '',
@@ -126,7 +126,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
     },
     async createTopicEvent(
       topicId: string,
-      value: { name: string; description: string; eventExpression: object, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
+      value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
     ) {
       const common = useCommonStore();
       const result = await topicEventController().createTopicEvent(topicId, value);
@@ -149,7 +149,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
     async updateTopicEventById(
       topicId: string,
       id: string,
-      value: { name: string; description: string; eventExpression: object, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
+      value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
     ) {
       const common = useCommonStore();
       const result = await topicEventController().updateTopicEventById(topicId, id, value);
