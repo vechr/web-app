@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="Edit Device Type"
+    title="Edit Notification Email"
     :visible="isDrawerShow"
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
@@ -8,7 +8,7 @@
   >
     <a-form
       layout="vertical"
-      :model="deviceTypeEdit"
+      :model="notificationEmailEdit"
       name="basic"
       autocomplete="off"
       @finish="onFinish"
@@ -17,9 +17,9 @@
       <a-form-item
         label="Name"
         name="name"
-        :rules="[{ required: true, message: 'Please input name device type!' }]"
+        :rules="[{ required: true, message: 'Please input name notification email!' }]"
       >
-        <a-input v-model:value="deviceTypeEdit.name" />
+        <a-input v-model:value="notificationEmailEdit.name" />
       </a-form-item>
 
       <a-form-item
@@ -27,8 +27,24 @@
         name="description"
         :rules="[{ required: true, message: 'Please input description!' }]"
       >
-        <a-textarea v-model:value="deviceTypeEdit.description" />
+        <a-textarea v-model:value="notificationEmailEdit.description" />
       </a-form-item>
+
+      <a-form-item
+          label="Sender"
+          name="sender"
+          :rules="[{ required: true, pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm), message: 'Please input sender email with correct format for example: me@mail.com!' }]"
+        >
+          <a-input v-model:value="notificationEmailEdit.sender" />
+        </a-form-item>
+
+        <a-form-item
+          label="Sender"
+          name="sender"
+          :rules="[{ required: true, pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm), message: 'Please input recipient email with correct format for example: me@mail.com!' }]"
+        >
+          <a-input v-model:value="notificationEmailEdit.recipient" />
+        </a-form-item>
 
       <a-form-item>
         <a-button
@@ -43,18 +59,18 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
+import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'FormEditDeviceType',
+  name: 'FormEditNotificationEmail',
   setup() {
     const common = useCommonStore();
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
-    const store = useDeviceTypeStore();
-    const { dataDetails, deviceTypeEdit } = storeToRefs(store);
+    const store = useNotificationEmailStore();
+    const { notificationEmailEdit } = storeToRefs(store);
 
     const showModal = () => {
       common.setIsModalShow(true);
@@ -66,7 +82,7 @@ export default defineComponent({
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      store.updateDeviceTypeById(dataDetails.value.id, values);
+      store.updateNotificationEmailById(notificationEmailEdit.value.id, values);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -77,7 +93,7 @@ export default defineComponent({
       common.setIsModalShow(false);
     };
     return {
-      deviceTypeEdit,
+      notificationEmailEdit,
       onClose,
       isLoadingButton,
       isDrawerShow,

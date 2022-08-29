@@ -6,7 +6,13 @@
       >
     </a-col>
     <a-col style="text-align: right" :span="12">
-      <h2 class="title-dashboard">Dashboard</h2>
+      <h2 class="title-dashboard">{{dataFull.find(val => val.id === dashboardId)?.name}}</h2>
+    </a-col>
+    <a-col :span="24" class="option-dashboard">
+      <a-space>
+        <a-switch v-model:checked="enableMove" checked-children="Draggable" un-checked-children="Undraggable" />
+        <a-switch v-model:checked="enableResize" checked-children="Resizeable" un-checked-children="Unresizeable" />
+      </a-space>
     </a-col>
   </a-row>
   <a-drawer
@@ -196,7 +202,7 @@ import {
   RadarChartOutlined,
   DashboardOutlined,
 } from '@ant-design/icons-vue';
-import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { GridStack, GridStackNode } from 'gridstack';
 import { useLoggingStore, useWidgetStore } from '@/ui/store';
 import uuid from '@/utils/uuid';
@@ -235,6 +241,8 @@ export default defineComponent({
     const { statusConnection } =
       storeToRefs(storeLogging);
     
+    const enableMove = ref<boolean>(false);
+    const enableResize = ref<boolean>(false);
     const bar = new BarChartWidget();
     const doughnut = new DoughnutChartWidget();
     const gauge = new GaugeChartWidget();
@@ -480,6 +488,14 @@ export default defineComponent({
         notif.error('Server error while close the connection!');
       }
     });
+    
+    watch(enableMove, () => {
+      grid.enableMove(enableMove.value);
+    })
+
+    watch(enableResize, () => {
+      grid.enableResize(enableResize.value);
+    })
 
     let info = ref('');
     let grid: GridStack;
@@ -489,6 +505,7 @@ export default defineComponent({
         cellHeight: '70px',
         minRow: 7,
         removable: true,
+        disableDrag: true
       });
 
       grid.on('removed', (_: Event, items: any) => {
@@ -583,6 +600,10 @@ export default defineComponent({
     }
 
     return {
+      enableResize,
+      dashboardId,
+      dataFull,
+      enableMove,
       onChange,
       widgetSelection,
       EWidget,

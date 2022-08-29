@@ -1,36 +1,34 @@
-import { topicEventController } from '@/applications/controllers';
-import { ITopicEventData } from '@/domain';
-import { useCommonStore } from '@/ui/store';
+import { notificationEmailController } from '@/applications/controllers';
+import { INotificationEmailData } from '@/domain';
 import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
+import { useCommonStore } from '..';
 
-export const useTopicEventStore = defineStore('topicEvent', {
+export const useNotificationEmailStore = defineStore('notificationEmail', {
   state: () => {
     return {
       message: '',
       data: [],
       dataDetails: {
         id: '',
-        topicId: '',
-        name: '',
         description: '',
-        eventExpression: '',
-        notificationEmailId: [],
-        bodyEmail: '',
-        htmlBodyEmail: '',
+        name: '',
+        recipient: '',
+        sender: '',
         createdAt: '',
         updatedAt: '',
       },
-      topicEventEdit: { id: '' ,name: '', description: '', eventExpression: '', notificationEmailId: [], bodyEmail: '', htmlBodyEmail: '' },
+      notificationEmailEdit: {id: '', description: '', name: '', sender: '', recipient: ''},
+      optionNotificationEmail: [],
       error: {
         code: '',
         message: '',
         params: Object,
       },
-    } as ITopicEventData;
+    } as INotificationEmailData;
   },
   getters: {
-    topicEventColumns() {
+    notificationEmailTypeColumns() {
       return [
         {
           title: 'Name',
@@ -43,14 +41,14 @@ export const useTopicEventStore = defineStore('topicEvent', {
           key: 'description',
         },
         {
-          title: 'Event Expression',
-          dataIndex: 'eventExpression',
-          key: 'eventExpression',
+          title: 'Sender',
+          dataIndex: 'sender',
+          key: 'sender',
         },
         {
-          title: 'Notification Email',
-          dataIndex: 'notificationEmailId',
-          key: 'notificationEmailId',
+          title: 'Recipient',
+          dataIndex: 'recipient',
+          key: 'recipient',
         },
         {
           title: 'Created At',
@@ -69,32 +67,55 @@ export const useTopicEventStore = defineStore('topicEvent', {
         },
       ];
     },
-    topicEventList(state) {
-      return state.data.map((topicEvent) => ({
-        id: topicEvent.id,
-        topicId: topicEvent.topicId,
-        name: topicEvent.name,
-        description: topicEvent.description,
-        eventExpression: topicEvent.eventExpression,
-        notificationEmailId: topicEvent.notificationEmailId,
-        bodyEmail: topicEvent.bodyEmail,
-        htmlBodyEmail: topicEvent.htmlBodyEmail,
+    notificationEmailList(state) {
+      return state.data.map((notificationEmail) => ({
+        id: notificationEmail.id,
+        description: notificationEmail.description,
+        name: notificationEmail.name,
+        recipient: notificationEmail.recipient,
+        sender: notificationEmail.sender,
         createdAt:
-          topicEvent.createdAt !== undefined
-            ? new Date(topicEvent.createdAt).toLocaleString('en-US')
-            : topicEvent.createdAt,
+        notificationEmail.createdAt !== undefined
+            ? new Date(notificationEmail.createdAt).toLocaleString('en-US')
+            : notificationEmail.createdAt,
         updatedAt:
-          topicEvent.updatedAt !== undefined
-            ? new Date(topicEvent.updatedAt).toLocaleString('en-US')
-            : topicEvent.updatedAt,
+        notificationEmail.updatedAt !== undefined
+            ? new Date(notificationEmail.updatedAt).toLocaleString('en-US')
+            : notificationEmail.updatedAt,
       }));
     },
+    hashMapNotificationEmailList(state) {
+      const data = new Map();
+      if (state.data.length > 0) {
+        state.data.forEach(val => {
+          data.set(val.id, val.name)
+        });
+      }
+      return data;
+    }
   },
   actions: {
-    async getTopicEventList(topicId: string) {
+    async getOptionNotificationEmail() {
+      const result = await notificationEmailController().getNotificationEmailList();
+      if (result.data?.error) {
+        this.error = result.data.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
+        if (result.status === 200) {
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data = result.data?.result;
+          this.optionNotificationEmail = this.data.map((email) => ({
+            value: email.id,
+            label: email.name,
+          }));
+          this.error = result.data?.error;
+        }
+      }
+    },
+    async getNotificationEmailList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      const result = await topicEventController().getTopicEventList(topicId);
+      const result = await notificationEmailController().getNotificationEmailList();
       if (result.data?.error) {
         common.setIsLoading(false);
         this.error = result.data.error;
@@ -108,9 +129,9 @@ export const useTopicEventStore = defineStore('topicEvent', {
         }
       }
     },
-    async getTopicEventById(topicId: string, id: string) {
+    async getNotificationEmailById(id: string) {
       const common = useCommonStore();
-      const result = await topicEventController().getTopicEventById(topicId, id);
+      const result = await notificationEmailController().getNotificationEmailById(id);
       if (result.data?.error) {
         common.setIsLoading(false);
         this.error = result.data.error;
@@ -120,16 +141,20 @@ export const useTopicEventStore = defineStore('topicEvent', {
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
           this.dataDetails = result.data?.result;
+          this.notificationEmailEdit.id = this.dataDetails.id
+          this.notificationEmailEdit.name = this.dataDetails.name
+          this.notificationEmailEdit.description = this.dataDetails.description
+          this.notificationEmailEdit.sender = this.dataDetails.sender
+          this.notificationEmailEdit.recipient = this.dataDetails.recipient
           this.error = result.data?.error;
         }
       }
     },
-    async createTopicEvent(
-      topicId: string,
-      value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
+    async createNotificationEmail(
+      value: { name: string; description: string; sender: string, recipient: string }
     ) {
       const common = useCommonStore();
-      const result = await topicEventController().createTopicEvent(topicId, value);
+      const result = await notificationEmailController().createNotificationEmail(value);
       if (result.data?.error) {
         common.setIsModalShow(false);
         common.setIsLoadingButton(false);
@@ -146,13 +171,12 @@ export const useTopicEventStore = defineStore('topicEvent', {
         }
       }
     },
-    async updateTopicEventById(
-      topicId: string,
+    async updateNotificationEmailById(
       id: string,
-      value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
+      value: { name: string; description: string; sender: string, recipient: string }
     ) {
       const common = useCommonStore();
-      const result = await topicEventController().updateTopicEventById(topicId, id, value);
+      const result = await notificationEmailController().updateNotificationEmailById(id, value);
       if (result.data?.error) {
         common.setIsDrawerShow(false);
         common.setIsLoadingButton(false);
@@ -172,8 +196,8 @@ export const useTopicEventStore = defineStore('topicEvent', {
         }
       }
     },
-    async deleteTopicEventById(topicId: string, id: string) {
-      const result = await topicEventController().deleteTopicEventById(topicId, id);
+    async deleteNotificationEmailById(id: string) {
+      const result = await notificationEmailController().deleteNotificationEmailById(id);
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
@@ -187,6 +211,6 @@ export const useTopicEventStore = defineStore('topicEvent', {
           message.success(`${result.status} ${this.message}`);
         }
       }
-    },
-  },
-});
+    }
+  }
+})
