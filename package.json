@@ -13,7 +13,7 @@
     "@codemirror/lang-json": "^6.0.0",
     "@tinymce/tinymce-vue": "^5",
     "@types/leaflet": "^1.7.10",
-    "ant-design-vue": "^3.2.11",
+    "ant-design-vue": "^3.2.12",
     "axios": "^0.27.2",
     "chart.js": "^3.9.1",
     "codemirror": "^6.0.1",
