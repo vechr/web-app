@@ -5,3 +5,6 @@ dist
 **/dist
 
 .git
+
+.env
+.env.example
