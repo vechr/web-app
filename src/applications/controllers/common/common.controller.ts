@@ -3,8 +3,8 @@ export function commonController() {
     setIsLoading,
     setIsModalShow,
     setIsLoadingButton,
-    setIsDrawerShow
-  }
+    setIsDrawerShow,
+  };
 
   function setIsLoading(status: boolean): boolean {
     return status;

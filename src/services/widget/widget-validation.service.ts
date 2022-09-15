@@ -14,22 +14,22 @@ export class WidgetValidationService {
       ) {
         const result = Number(data);
         if (Number.isNaN(result)) {
-          console.error('Data wouldn\'t be store, since type is different');
+          console.error("Data wouldn't be store, since type is different");
           return false;
         }
       } else if (widgetType === EWidget.SCATTER) {
         if (!this.isScatter(JSON.parse(data))) {
-          console.error('Data wouldn\'t be store, since type is not Scatter');
+          console.error("Data wouldn't be store, since type is not Scatter");
           return false;
         }
       } else if (widgetType === EWidget.BUBBLE) {
         if (!this.isBubble(JSON.parse(data))) {
-          console.error('Data wouldn\'t be store, since type is not Bubble');
+          console.error("Data wouldn't be store, since type is not Bubble");
           return false;
         }
       } else if (widgetType === EWidget.MAPS) {
         if (!this.isMaps(JSON.parse(data))) {
-          console.error('Data wouldn\'t be store, since type is not Maps');
+          console.error("Data wouldn't be store, since type is not Maps");
           return false;
         }
       }

@@ -1,9 +1,15 @@
-import { ICreateWidget, IFormWidget, INode, IUpdateWidget, IWidgetData } from '@/domain';
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
-import { GridStack } from 'gridstack';
-import { defineStore } from 'pinia';
 import { message } from 'ant-design-vue';
+import { defineStore } from 'pinia';
+import { GridStack } from 'gridstack';
+import { Chart, registerables } from 'chart.js';
+import {
+  ICreateWidget,
+  IFormWidget,
+  INode,
+  IUpdateWidget,
+  IWidgetData,
+} from '@/domain';
+Chart.register(...registerables);
 import { WidgetService } from '@/services/widget/widget.service';
 import { widgetController } from '@/applications/controllers';
 
@@ -38,8 +44,16 @@ export const useWidgetStore = defineStore('widget', {
     },
   },
   actions: {
-    async updateWidgetById(dashboardId: string, widgetId: string, data: IUpdateWidget) {
-      const result = await widgetController().updateWidgetById(dashboardId, widgetId, data);
+    async updateWidgetById(
+      dashboardId: string,
+      widgetId: string,
+      data: IUpdateWidget,
+    ) {
+      const result = await widgetController().updateWidgetById(
+        dashboardId,
+        widgetId,
+        data,
+      );
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
@@ -47,14 +61,17 @@ export const useWidgetStore = defineStore('widget', {
         this.dataDetails = result.data?.result;
         this.message = result.data ? result.data?.message : 'Success!';
         const index = this.data.findIndex(
-          (x) => x.id === result.data?.result.id
+          (x) => x.id === result.data?.result.id,
         );
         this.data[index] = result.data?.result;
         message.success(this.message);
       }
     },
     async deleteWidgetById(dashboardId: string, widgetId: string) {
-      const result = await widgetController().deleteWidgetById(dashboardId, widgetId);
+      const result = await widgetController().deleteWidgetById(
+        dashboardId,
+        widgetId,
+      );
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
@@ -62,7 +79,7 @@ export const useWidgetStore = defineStore('widget', {
         this.dataDetails = result.data?.result;
         this.message = result.data ? result.data?.message : 'Success!';
         message.success(this.message);
-        this.data = this.data.filter((val) => val.id !== this.dataDetails?.id)
+        this.data = this.data.filter((val) => val.id !== this.dataDetails?.id);
       }
     },
     async getAllWidgets(dashboardId: string) {
@@ -76,7 +93,10 @@ export const useWidgetStore = defineStore('widget', {
         this.error = result.data?.error;
       }
     },
-    async createWidget(dashboardId: string, data: ICreateWidget): Promise<void> {
+    async createWidget(
+      dashboardId: string,
+      data: ICreateWidget,
+    ): Promise<void> {
       const result = await widgetController().createWidget(dashboardId, data);
       if (result.data?.error) {
         this.error = result.data.error;
@@ -86,10 +106,15 @@ export const useWidgetStore = defineStore('widget', {
         this.dataDetails = result.data?.result;
         this.error = result.data?.error;
         this.data.push(result.data?.result);
-        message.success(this.message)
+        message.success(this.message);
       }
     },
-    createMap(grid: GridStack, nodeId: string, formData: IFormWidget, node: INode) {
+    createMap(
+      grid: GridStack,
+      nodeId: string,
+      formData: IFormWidget,
+      node: INode,
+    ) {
       node.id = node.content = nodeId;
 
       WidgetService.generateMap(grid, node, nodeId, formData.name);
@@ -105,7 +130,12 @@ export const useWidgetStore = defineStore('widget', {
         shiftData: formData.shiftData,
       });
     },
-    createChart(grid: GridStack, nodeId: string, node: INode, formData: IFormWidget) {
+    createChart(
+      grid: GridStack,
+      nodeId: string,
+      node: INode,
+      formData: IFormWidget,
+    ) {
       node.id = node.content = nodeId;
       this.createWidget(formData.dashboardId, {
         name: formData.name,
@@ -117,7 +147,13 @@ export const useWidgetStore = defineStore('widget', {
         description: formData.description,
         shiftData: formData.shiftData,
       });
-      WidgetService.generateChart(grid, nodeId, formData.widgetData, node, formData.name)
-    }
+      WidgetService.generateChart(
+        grid,
+        nodeId,
+        formData.widgetData,
+        node,
+        formData.name,
+      );
+    },
   },
 });

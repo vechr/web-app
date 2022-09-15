@@ -7,42 +7,50 @@ export function notificationEmailController() {
     return await http.request({
       method: 'get',
       url: '/api/v1/notification/email',
-    })
+    });
   }
 
   async function getNotificationEmailById(id: string) {
     return await http.request({
       method: 'get',
-      url: `/api/v1/notification/email/${id}`
-    })
+      url: `/api/v1/notification/email/${id}`,
+    });
   }
 
-  async function createNotificationEmail(
-    value: { name: string; description: string; sender: string, recipient: string }
-  ) {
+  async function createNotificationEmail(value: {
+    name: string;
+    description: string;
+    sender: string;
+    recipient: string;
+  }) {
     return await http.request({
       method: 'post',
       url: '/api/v1/notification/email',
-      data: JSON.stringify(value, null, 2)
-    })
+      data: JSON.stringify(value, null, 2),
+    });
   }
 
   async function updateNotificationEmailById(
     id: string,
-    value: { name: string; description: string; sender: string, recipient: string }
+    value: {
+      name: string;
+      description: string;
+      sender: string;
+      recipient: string;
+    },
   ) {
     return await http.request({
       method: 'patch',
       url: `/api/v1/notification/email/${id}`,
-      data: value
-    })
+      data: value,
+    });
   }
 
   async function deleteNotificationEmailById(id: string) {
     return await http.request({
       method: 'delete',
       url: `/api/v1/notification/email/${id}`,
-    })
+    });
   }
 
   return {
@@ -50,6 +58,6 @@ export function notificationEmailController() {
     getNotificationEmailById,
     createNotificationEmail,
     updateNotificationEmailById,
-    deleteNotificationEmailById
-  }
+    deleteNotificationEmailById,
+  };
 }

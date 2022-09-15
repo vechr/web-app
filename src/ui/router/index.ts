@@ -1,18 +1,18 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import DashboardManagement from '@/ui/views/dashboard-managements/DashboardManagement.vue'
-import DeviceManagement from '@/ui/views/device-managements/DeviceManagement.vue'
-import UserManagement from '@/ui/views/user-managements/UserManagament.vue'
-import Home from '@/ui/views/homes/Home.vue'
-import About from '@/ui/views/abouts/About.vue'
-import Profile from '@/ui/views/profiles/Profile.vue'
-import DeviceType from '@/ui/views/device-types/DeviceType.vue'
-import RoleManagement from '@/ui/views/roles-managements/RoleManagement.vue'
-import TopicManagement from '@/ui/views/topic-managements/TopicManagement.vue'
-import TopicEvent from '@/ui/views/topic-events/TopicEvents.vue'
-import Logging from '@/ui/views/homes/Logging.vue'
-import Dashboard from '@/ui/views/homes/Dashboard.vue'
-import NotificationEmail from '@/ui/views/notification-emails/NotificationEmail.vue'
-import NotFound from '@/ui/views/common/NotFound.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import DashboardManagement from '@/ui/views/dashboard-managements/DashboardManagement.vue';
+import DeviceManagement from '@/ui/views/device-managements/DeviceManagement.vue';
+import UserManagement from '@/ui/views/user-managements/UserManagament.vue';
+import Home from '@/ui/views/homes/Home.vue';
+import About from '@/ui/views/abouts/About.vue';
+import Profile from '@/ui/views/profiles/Profile.vue';
+import DeviceType from '@/ui/views/device-types/DeviceType.vue';
+import RoleManagement from '@/ui/views/roles-managements/RoleManagement.vue';
+import TopicManagement from '@/ui/views/topic-managements/TopicManagement.vue';
+import TopicEvent from '@/ui/views/topic-events/TopicEvents.vue';
+import Logging from '@/ui/views/homes/Logging.vue';
+import Dashboard from '@/ui/views/homes/Dashboard.vue';
+import NotificationEmail from '@/ui/views/notification-emails/NotificationEmail.vue';
+import NotFound from '@/ui/views/common/NotFound.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,118 +20,118 @@ const routes: Array<RouteRecordRaw> = [
     name: 'not-found',
     component: NotFound,
     meta: {
-      layout: 'blank-layout'
-    }
+      layout: 'blank-layout',
+    },
   },
   {
     path: '/',
     name: 'home',
     component: Home,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/dashboard/:dashboardId',
     name: 'dashboard',
     component: Dashboard,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/logging',
     name: 'logging',
     component: Logging,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/about',
     name: 'about',
     component: About,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/profile',
     name: 'profile',
     component: Profile,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/dashboard',
     name: 'dashboard-managements',
     component: DashboardManagement,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/device',
     name: 'device-managements',
     component: DeviceManagement,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/email',
     name: 'notification-email-managements',
     component: NotificationEmail,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/device/:deviceId/topic',
     name: 'topic-managements',
     component: TopicManagement,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/device/:deviceId/topic/:topicId/topic-event',
     name: 'topic-event',
     component: TopicEvent,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/device-type',
     name: 'device-types',
     component: DeviceType,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/user',
     name: 'user-managements',
     component: UserManagement,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
   {
     path: '/role',
     name: 'role-managements',
     component: RoleManagement,
     meta: {
-      layout: 'dashboard-layout'
-    }
+      layout: 'dashboard-layout',
+    },
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

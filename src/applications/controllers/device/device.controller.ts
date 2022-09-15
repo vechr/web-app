@@ -7,14 +7,14 @@ export function deviceController() {
     return await http.request({
       method: 'get',
       url: '/api/v1/things/device',
-    })
+    });
   }
 
   async function getDeviceById(id: string) {
     return await http.request({
       method: 'get',
       url: `/api/v1/things/device/${id}`,
-    })
+    });
   }
 
   async function createDevice(value: {
@@ -26,8 +26,8 @@ export function deviceController() {
     return await http.request({
       method: 'post',
       url: '/api/v1/things/device',
-      data: JSON.stringify(value, null, 2)
-    })
+      data: JSON.stringify(value, null, 2),
+    });
   }
 
   async function updateDeviceById(
@@ -37,20 +37,20 @@ export function deviceController() {
       description: string;
       isActive: boolean;
       deviceTypeId: string;
-    }
+    },
   ) {
     return await http.request({
       method: 'patch',
       url: `/api/v1/things/device/${id}`,
-      data: value
-    })
+      data: value,
+    });
   }
 
   async function deleteDeviceById(id: string) {
     return await http.request({
       method: 'delete',
-      url: `/api/v1/things/device/${id}`
-    })
+      url: `/api/v1/things/device/${id}`,
+    });
   }
 
   return {
@@ -58,6 +58,6 @@ export function deviceController() {
     getDeviceById,
     createDevice,
     updateDeviceById,
-    deleteDeviceById
-  }
+    deleteDeviceById,
+  };
 }

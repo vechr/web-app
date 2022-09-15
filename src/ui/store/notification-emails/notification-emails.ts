@@ -1,8 +1,8 @@
-import { notificationEmailController } from '@/applications/controllers';
-import { INotificationEmailData } from '@/domain';
 import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 import { useCommonStore } from '..';
+import { INotificationEmailData } from '@/domain';
+import { notificationEmailController } from '@/applications/controllers';
 
 export const useNotificationEmailStore = defineStore('notificationEmail', {
   state: () => {
@@ -18,7 +18,13 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         createdAt: '',
         updatedAt: '',
       },
-      notificationEmailEdit: {id: '', description: '', name: '', sender: '', recipient: ''},
+      notificationEmailEdit: {
+        id: '',
+        description: '',
+        name: '',
+        sender: '',
+        recipient: '',
+      },
       optionNotificationEmail: [],
       error: {
         code: '',
@@ -75,11 +81,11 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         recipient: notificationEmail.recipient,
         sender: notificationEmail.sender,
         createdAt:
-        notificationEmail.createdAt !== undefined
+          notificationEmail.createdAt !== undefined
             ? new Date(notificationEmail.createdAt).toLocaleString('en-US')
             : notificationEmail.createdAt,
         updatedAt:
-        notificationEmail.updatedAt !== undefined
+          notificationEmail.updatedAt !== undefined
             ? new Date(notificationEmail.updatedAt).toLocaleString('en-US')
             : notificationEmail.updatedAt,
       }));
@@ -87,16 +93,17 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
     hashMapNotificationEmailList(state) {
       const data = new Map();
       if (state.data.length > 0) {
-        state.data.forEach(val => {
-          data.set(val.id, val.name)
+        state.data.forEach((val) => {
+          data.set(val.id, val.name);
         });
       }
       return data;
-    }
+    },
   },
   actions: {
     async getOptionNotificationEmail() {
-      const result = await notificationEmailController().getNotificationEmailList();
+      const result =
+        await notificationEmailController().getNotificationEmailList();
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
@@ -115,7 +122,8 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
     async getNotificationEmailList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      const result = await notificationEmailController().getNotificationEmailList();
+      const result =
+        await notificationEmailController().getNotificationEmailList();
       if (result.data?.error) {
         common.setIsLoading(false);
         this.error = result.data.error;
@@ -131,7 +139,8 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
     },
     async getNotificationEmailById(id: string) {
       const common = useCommonStore();
-      const result = await notificationEmailController().getNotificationEmailById(id);
+      const result =
+        await notificationEmailController().getNotificationEmailById(id);
       if (result.data?.error) {
         common.setIsLoading(false);
         this.error = result.data.error;
@@ -141,20 +150,24 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
           this.dataDetails = result.data?.result;
-          this.notificationEmailEdit.id = this.dataDetails.id
-          this.notificationEmailEdit.name = this.dataDetails.name
-          this.notificationEmailEdit.description = this.dataDetails.description
-          this.notificationEmailEdit.sender = this.dataDetails.sender
-          this.notificationEmailEdit.recipient = this.dataDetails.recipient
+          this.notificationEmailEdit.id = this.dataDetails.id;
+          this.notificationEmailEdit.name = this.dataDetails.name;
+          this.notificationEmailEdit.description = this.dataDetails.description;
+          this.notificationEmailEdit.sender = this.dataDetails.sender;
+          this.notificationEmailEdit.recipient = this.dataDetails.recipient;
           this.error = result.data?.error;
         }
       }
     },
-    async createNotificationEmail(
-      value: { name: string; description: string; sender: string, recipient: string }
-    ) {
+    async createNotificationEmail(value: {
+      name: string;
+      description: string;
+      sender: string;
+      recipient: string;
+    }) {
       const common = useCommonStore();
-      const result = await notificationEmailController().createNotificationEmail(value);
+      const result =
+        await notificationEmailController().createNotificationEmail(value);
       if (result.data?.error) {
         common.setIsModalShow(false);
         common.setIsLoadingButton(false);
@@ -173,10 +186,19 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
     },
     async updateNotificationEmailById(
       id: string,
-      value: { name: string; description: string; sender: string, recipient: string }
+      value: {
+        name: string;
+        description: string;
+        sender: string;
+        recipient: string;
+      },
     ) {
       const common = useCommonStore();
-      const result = await notificationEmailController().updateNotificationEmailById(id, value);
+      const result =
+        await notificationEmailController().updateNotificationEmailById(
+          id,
+          value,
+        );
       if (result.data?.error) {
         common.setIsDrawerShow(false);
         common.setIsLoadingButton(false);
@@ -188,7 +210,7 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
           const index = this.data.findIndex(
-            (x) => x.id === result.data?.result.id
+            (x) => x.id === result.data?.result.id,
           );
           this.data[index] = result.data?.result;
           this.error = result.data?.error;
@@ -197,7 +219,8 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
       }
     },
     async deleteNotificationEmailById(id: string) {
-      const result = await notificationEmailController().deleteNotificationEmailById(id);
+      const result =
+        await notificationEmailController().deleteNotificationEmailById(id);
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
@@ -211,6 +234,6 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
           message.success(`${result.status} ${this.message}`);
         }
       }
-    }
-  }
-})
+    },
+  },
+});

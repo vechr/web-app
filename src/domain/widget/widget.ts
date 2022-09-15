@@ -37,7 +37,6 @@ export interface IUpdateWidget {
   shiftData?: boolean;
 }
 
-
 export interface IFormWidget {
   topicId: string;
   name: string;

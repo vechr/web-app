@@ -1,5 +1,5 @@
-import { IWidget, IError } from '@/domain';
 import { GridStackNode } from 'gridstack';
+import { IWidget, IError } from '@/domain';
 
 export interface IWidgetData {
   message: string;

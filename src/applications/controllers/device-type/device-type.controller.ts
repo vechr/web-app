@@ -8,40 +8,43 @@ export function deviceTypeController() {
     return await http.request({
       method: 'get',
       url: '/api/v1/things/device-type',
-    })
+    });
   }
 
   async function getDeviceTypeById(id: string): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
       url: `/api/v1/things/device-type/${id}`,
-    })
+    });
   }
 
-  async function createDeviceType(value: { name: string; description: string }) {
+  async function createDeviceType(value: {
+    name: string;
+    description: string;
+  }) {
     return await http.request({
       method: 'post',
       url: '/api/v1/things/device-type',
-      data: value
-    })
+      data: value,
+    });
   }
 
   async function updateDeviceTypeById(
     id: string,
-    value: { name: string; description: string }
+    value: { name: string; description: string },
   ) {
     return await http.request({
       method: 'patch',
       url: `/api/v1/things/device-type/${id}`,
-      data: value
-    })
+      data: value,
+    });
   }
 
   async function deleteDeviceTypeById(id: string) {
     return await http.request({
       method: 'delete',
-      url: `/api/v1/things/device-type/${id}`
-    })
+      url: `/api/v1/things/device-type/${id}`,
+    });
   }
 
   return {
@@ -49,6 +52,6 @@ export function deviceTypeController() {
     getDeviceTypeById,
     createDeviceType,
     updateDeviceTypeById,
-    deleteDeviceTypeById
-  }
+    deleteDeviceTypeById,
+  };
 }

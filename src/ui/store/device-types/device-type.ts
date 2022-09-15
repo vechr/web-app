@@ -1,8 +1,8 @@
-import { deviceTypeController } from '@/applications/controllers';
-import { IDeviceTypeData } from '@/domain';
 import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 import { useCommonStore } from '..';
+import { IDeviceTypeData } from '@/domain';
+import { deviceTypeController } from '@/applications/controllers';
 
 export const useDeviceTypeStore = defineStore('deviceType', {
   state: () => {
@@ -145,21 +145,24 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
         common.setIsModalShow(false);
-          common.setIsLoadingButton(false);
-          if (result.status === 201) {
-            this.message = result.data ? result.data.message : 'Success!';
-            this.data.push(result.data?.result);
-            this.error = result.data?.error;
-            message.success(`${result.status} ${this.message}`);
-          }
+        common.setIsLoadingButton(false);
+        if (result.status === 201) {
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data.push(result.data?.result);
+          this.error = result.data?.error;
+          message.success(`${result.status} ${this.message}`);
+        }
       }
     },
     async updateDeviceTypeById(
       id: string,
-      value: { name: string; description: string }
+      value: { name: string; description: string },
     ) {
       const common = useCommonStore();
-      const result = await deviceTypeController().updateDeviceTypeById(id, value);
+      const result = await deviceTypeController().updateDeviceTypeById(
+        id,
+        value,
+      );
       if (result.data?.error) {
         common.setIsDrawerShow(false);
         common.setIsLoadingButton(false);
@@ -171,7 +174,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           const index = this.data.findIndex(
-            (x) => x.id === result.data?.result.id
+            (x) => x.id === result.data?.result.id,
           );
           this.data[index] = result.data?.result;
           this.error = result.data?.error;

@@ -1,7 +1,7 @@
-import { loggingController } from '@/applications/controllers';
-import { ILoggingData } from '@/domain';
 import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
+import { loggingController } from '@/applications/controllers';
+import { ILoggingData } from '@/domain';
 
 export const useLoggingStore = defineStore('logging', {
   state: () => {
@@ -31,10 +31,12 @@ export const useLoggingStore = defineStore('logging', {
         message.error(`${result.data.error.code} ${result.data.message}`);
       } else {
         if (result.status === 200) {
-          this.data = result.data?.result.map((val: { _value: any }, index: number) => ({
-            no: index + 1,
-            message: val._value,
-          }));
+          this.data = result.data?.result.map(
+            (val: { _value: any }, index: number) => ({
+              no: index + 1,
+              message: val._value,
+            }),
+          );
         }
       }
     },

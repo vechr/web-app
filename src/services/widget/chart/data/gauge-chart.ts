@@ -1,6 +1,5 @@
 import { ChartType } from 'chart.js';
 
-
 const lineChartType: ChartType = 'doughnut';
 export const afterDrawCallback = (chart: {
   config: {
@@ -20,7 +19,7 @@ export const afterDrawCallback = (chart: {
   const needleValue = chart.config.data.datasets[0].needleValue;
   const dataTotal = chart.config.data.datasets[0].data.reduce(
     (a, b) => a + b,
-    0
+    0,
   );
   const angle = Math.PI + (1 / dataTotal) * needleValue * Math.PI;
   const ctx = chart.ctx;
@@ -42,13 +41,13 @@ export const afterDrawCallback = (chart: {
   ctx.beginPath();
   ctx.arc(cx, cy, 5, 0, Math.PI * 2);
   ctx.fill();
-}
+};
 
 export const gaugeChartData = {
   type: lineChartType,
   plugins: [
     {
-      afterDraw: afterDrawCallback
+      afterDraw: afterDrawCallback,
     },
   ],
   data: {

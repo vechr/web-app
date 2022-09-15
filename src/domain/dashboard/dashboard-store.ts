@@ -1,5 +1,5 @@
-import { IDashboard } from '.';
 import { IError } from '../protocol';
+import { IDashboard } from '.';
 
 export interface IDashboardData {
   message: string;

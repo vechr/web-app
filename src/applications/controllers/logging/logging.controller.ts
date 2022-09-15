@@ -12,11 +12,11 @@ export function loggingController() {
     return await http.request({
       method: 'post',
       url: `/api/v1/things/device/${payload.deviceId}/topic/query`,
-      data: payload
-    })
+      data: payload,
+    });
   }
 
   return {
-    getHistoricalData
-  }
+    getHistoricalData,
+  };
 }

@@ -1,5 +1,5 @@
-import { commonController } from '@/applications/controllers';
 import { defineStore } from 'pinia';
+import { commonController } from '@/applications/controllers';
 
 export const useCommonStore = defineStore('commonStore', {
   state: () => {

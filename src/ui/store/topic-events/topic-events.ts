@@ -1,8 +1,8 @@
+import { message } from 'ant-design-vue';
+import { defineStore } from 'pinia';
 import { topicEventController } from '@/applications/controllers';
 import { ITopicEventData } from '@/domain';
 import { useCommonStore } from '@/ui/store';
-import { message } from 'ant-design-vue';
-import { defineStore } from 'pinia';
 
 export const useTopicEventStore = defineStore('topicEvent', {
   state: () => {
@@ -21,7 +21,15 @@ export const useTopicEventStore = defineStore('topicEvent', {
         createdAt: '',
         updatedAt: '',
       },
-      topicEventEdit: { id: '' ,name: '', description: '', eventExpression: '', notificationEmailId: [], bodyEmail: '', htmlBodyEmail: '' },
+      topicEventEdit: {
+        id: '',
+        name: '',
+        description: '',
+        eventExpression: '',
+        notificationEmailId: [],
+        bodyEmail: '',
+        htmlBodyEmail: '',
+      },
       error: {
         code: '',
         message: '',
@@ -110,7 +118,10 @@ export const useTopicEventStore = defineStore('topicEvent', {
     },
     async getTopicEventById(topicId: string, id: string) {
       const common = useCommonStore();
-      const result = await topicEventController().getTopicEventById(topicId, id);
+      const result = await topicEventController().getTopicEventById(
+        topicId,
+        id,
+      );
       if (result.data?.error) {
         common.setIsLoading(false);
         this.error = result.data.error;
@@ -126,10 +137,20 @@ export const useTopicEventStore = defineStore('topicEvent', {
     },
     async createTopicEvent(
       topicId: string,
-      value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
+      value: {
+        name: string;
+        description: string;
+        eventExpression: string;
+        notificationEmailId: string[];
+        bodyEmail?: string;
+        htmlBodyEmail?: string;
+      },
     ) {
       const common = useCommonStore();
-      const result = await topicEventController().createTopicEvent(topicId, value);
+      const result = await topicEventController().createTopicEvent(
+        topicId,
+        value,
+      );
       if (result.data?.error) {
         common.setIsModalShow(false);
         common.setIsLoadingButton(false);
@@ -149,10 +170,21 @@ export const useTopicEventStore = defineStore('topicEvent', {
     async updateTopicEventById(
       topicId: string,
       id: string,
-      value: { name: string; description: string; eventExpression: string, notificationEmailId: string[], bodyEmail?: string, htmlBodyEmail?: string }
+      value: {
+        name: string;
+        description: string;
+        eventExpression: string;
+        notificationEmailId: string[];
+        bodyEmail?: string;
+        htmlBodyEmail?: string;
+      },
     ) {
       const common = useCommonStore();
-      const result = await topicEventController().updateTopicEventById(topicId, id, value);
+      const result = await topicEventController().updateTopicEventById(
+        topicId,
+        id,
+        value,
+      );
       if (result.data?.error) {
         common.setIsDrawerShow(false);
         common.setIsLoadingButton(false);
@@ -164,7 +196,7 @@ export const useTopicEventStore = defineStore('topicEvent', {
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
           const index = this.data.findIndex(
-            (x) => x.id === result.data?.result.id
+            (x) => x.id === result.data?.result.id,
           );
           this.data[index] = result.data?.result;
           this.error = result.data?.error;
@@ -173,7 +205,10 @@ export const useTopicEventStore = defineStore('topicEvent', {
       }
     },
     async deleteTopicEventById(topicId: string, id: string) {
-      const result = await topicEventController().deleteTopicEventById(topicId, id);
+      const result = await topicEventController().deleteTopicEventById(
+        topicId,
+        id,
+      );
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);

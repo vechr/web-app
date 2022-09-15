@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { useCommonStore } from '..';
 import { message } from 'ant-design-vue';
+import { useCommonStore } from '..';
 import { deviceController } from '@/applications/controllers';
 import { IDeviceData } from '@/domain';
 
@@ -107,7 +107,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
   },
   actions: {
     async getOptionDevice() {
-      const result = await deviceController().getDevices()
+      const result = await deviceController().getDevices();
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
@@ -126,7 +126,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     async getDeviceList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      const result = await deviceController().getDevices()
+      const result = await deviceController().getDevices();
       if (result.data?.error) {
         common.setIsLoading(false);
         this.error = result.data.error;
@@ -188,7 +188,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         description: string;
         isActive: boolean;
         deviceTypeId: string;
-      }
+      },
     ) {
       const common = useCommonStore();
       const result = await deviceController().updateDeviceById(id, value);
@@ -203,7 +203,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           const index = this.data.findIndex(
-            (x) => x.id === result.data?.result.id
+            (x) => x.id === result.data?.result.id,
           );
           this.data[index] = result.data?.result;
           this.error = result.data?.error;

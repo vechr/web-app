@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import Antd from 'ant-design-vue';
+import L from 'leaflet';
 import App from './ui/App.vue';
 import router from './ui/router';
 import 'ant-design-vue/dist/antd.css';
@@ -9,7 +10,6 @@ import 'gridstack/dist/gridstack.min.css';
 import 'leaflet/dist/leaflet.css';
 
 // LEAFLET SETTING ICON
-import L from 'leaflet';
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'marker-icon-2x.png',
   iconUrl: 'marker-icon.png',

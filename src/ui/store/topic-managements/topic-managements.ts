@@ -1,8 +1,8 @@
+import { message } from 'ant-design-vue';
+import { defineStore } from 'pinia';
 import { topicController } from '@/applications/controllers';
 import { ITopicData } from '@/domain';
 import { useCommonStore } from '@/ui/store';
-import { message } from 'ant-design-vue';
-import { defineStore } from 'pinia';
 
 export const useTopicManagementStore = defineStore('topicManagement', {
   state: () => {
@@ -106,7 +106,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     },
     async getTopicById(deviceId: string, id: string) {
       const common = useCommonStore();
-      const result = await topicController().getTopicById(deviceId, id)
+      const result = await topicController().getTopicById(deviceId, id);
       if (result.data?.error) {
         common.setIsLoading(false);
         this.error = result.data.error;
@@ -124,7 +124,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     },
     async createTopic(
       deviceId: string,
-      value: { name: string; description: string; widgetType?: string }
+      value: { name: string; description: string; widgetType?: string },
     ) {
       if (value.widgetType === '') delete value.widgetType;
       const common = useCommonStore();
@@ -148,10 +148,14 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     async updateTopicById(
       deviceId: string,
       id: string,
-      value: { name: string; description: string }
+      value: { name: string; description: string },
     ) {
       const common = useCommonStore();
-      const result = await topicController().updateTopicById(deviceId, id, value);
+      const result = await topicController().updateTopicById(
+        deviceId,
+        id,
+        value,
+      );
       if (result.data?.error) {
         common.setIsDrawerShow(false);
         common.setIsLoadingButton(false);
@@ -163,7 +167,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
           const index = this.data.findIndex(
-            (x) => x.id === result.data?.result.id
+            (x) => x.id === result.data?.result.id,
           );
           this.data[index] = result.data?.result;
           this.error = result.data?.error;

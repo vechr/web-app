@@ -1,4 +1,4 @@
-export type THttpMethod = 'post' | 'get' | 'put' | 'delete' | 'patch'
+export type THttpMethod = 'post' | 'get' | 'put' | 'delete' | 'patch';
 
 export enum EHttpStatusCode {
   ok = 200,
@@ -14,24 +14,24 @@ export enum EHttpStatusCode {
 }
 
 export type THttpRequest = {
-  url: string
-  method: THttpMethod
-  data?: any
-  headers?: any
-  baseURL?: string
-}
+  url: string;
+  method: THttpMethod;
+  data?: any;
+  headers?: any;
+  baseURL?: string;
+};
 
 export type TResponseData<T = any, E = any> = {
-  message: string
-  result?: T
-  error?: E
-}
+  message: string;
+  result?: T;
+  error?: E;
+};
 
 export type THttpResponse = {
-  status: EHttpStatusCode,
-  data?: TResponseData
-}
+  status: EHttpStatusCode;
+  data?: TResponseData;
+};
 
 export interface IHttpClient {
-  request(httpRequest: THttpRequest): Promise<THttpResponse>
+  request(httpRequest: THttpRequest): Promise<THttpResponse>;
 }

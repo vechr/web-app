@@ -124,7 +124,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
           (this.dashboardEdit.name = result.data?.result.name),
             (this.dashboardEdit.description = result.data?.result.description),
             (this.dashboardEdit.devices = result.data?.result.devices?.map(
-              (device: { id: string }) => device.id
+              (device: { id: string }) => device.id,
             ));
           this.dataDetails = result.data?.result;
           this.error = result.data?.error;
@@ -152,7 +152,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
     async updateDashboardById(
       id: string,
-      value: { name: string; description: string; devices: string[] }
+      value: { name: string; description: string; devices: string[] },
     ) {
       const common = useCommonStore();
       const result = await dashboardController().updateDashboardById(id, value);
@@ -167,7 +167,7 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           const index = this.data.findIndex(
-            (x) => x.id === result.data?.result.id
+            (x) => x.id === result.data?.result.id,
           );
           this.data[index] = result.data?.result;
           this.error = result.data?.error;
