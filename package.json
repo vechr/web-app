@@ -22,7 +22,7 @@
     "chart.js": "^3.9.1",
     "codemirror": "^6.0.1",
     "core-js": "^3.25.2",
-    "gridstack": "^6.0.1",
+    "gridstack": "^6.0.2",
     "leaflet": "^1.9.1",
     "nats.ws": "^1.9.0",
     "pinia": "^2.0.22",
