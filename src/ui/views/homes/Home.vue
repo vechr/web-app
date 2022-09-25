@@ -47,7 +47,7 @@
                           >
                             <a-typography-paragraph
                               :copyable="{
-                                text: `kreMES/DashboardID/${value.id}/DeviceID/${device.id}/TopicID/${topic.id}/Topic${topic.name}`,
+                                text: `Vechr/DashboardID/${value.id}/DeviceID/${device.id}/TopicID/${topic.id}/Topic${topic.name}`,
                               }"
                             >
                               {{ topic.name }}
@@ -161,9 +161,9 @@ import {
   PlusOutlined,
   EyeOutlined,
 } from '@ant-design/icons-vue';
-import { useDashboardManagementStore, useLoggingStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
+import { useDashboardManagementStore, useLoggingStore } from '@/ui/store';
 
 export default defineComponent({
   name: 'Home',
