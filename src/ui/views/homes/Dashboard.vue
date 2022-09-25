@@ -6,12 +6,22 @@
       >
     </a-col>
     <a-col style="text-align: right" :span="12">
-      <h2 class="title-dashboard">{{dataFull.find(val => val.id === dashboardId)?.name}}</h2>
+      <h2 class="title-dashboard">
+        {{ dataFull.find((val) => val.id === dashboardId)?.name }}
+      </h2>
     </a-col>
     <a-col :span="24" class="option-dashboard">
       <a-space>
-        <a-switch v-model:checked="enableMove" checked-children="Draggable" un-checked-children="Undraggable" />
-        <a-switch v-model:checked="enableResize" checked-children="Resizeable" un-checked-children="Unresizeable" />
+        <a-switch
+          v-model:checked="enableMove"
+          checked-children="Draggable"
+          un-checked-children="Undraggable"
+        />
+        <a-switch
+          v-model:checked="enableResize"
+          checked-children="Resizeable"
+          un-checked-children="Unresizeable"
+        />
       </a-space>
     </a-col>
   </a-row>
@@ -38,7 +48,6 @@
         @finish="onFinish"
         @finishFailed="onFinishFailed"
       >
-
         <a-form-item
           label="Name"
           name="name"
@@ -78,10 +87,10 @@
           ]"
         >
           <vue-jsoneditor
-            height="600" 
+            height="600"
             :mode="'text'"
             :fullWidthButton="false"
-            v-model:json="formState.widgetData" 
+            v-model:json="formState.widgetData"
             @change="onChange"
           />
         </a-form-item>
@@ -89,9 +98,17 @@
         <a-form-item
           label="Shifted the Data"
           name="shiftData"
-          v-if="widgetSelection !== EWidget.GAUGE && widgetSelection !== EWidget.BAR && widgetSelection !== EWidget.LINE"
+          v-if="
+            widgetSelection !== EWidget.GAUGE &&
+            widgetSelection !== EWidget.BAR &&
+            widgetSelection !== EWidget.LINE
+          "
         >
-          <a-switch v-model:checked="formState.shiftData" checked-children="Shifted" un-checked-children="Unshifted" />
+          <a-switch
+            v-model:checked="formState.shiftData"
+            checked-children="Shifted"
+            un-checked-children="Unshifted"
+          />
         </a-form-item>
 
         <a-form-item>
@@ -202,23 +219,52 @@ import {
   RadarChartOutlined,
   DashboardOutlined,
 } from '@ant-design/icons-vue';
-import { defineComponent, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import {
+  defineComponent,
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
 import { GridStack, GridStackNode } from 'gridstack';
+import { SelectProps } from 'ant-design-vue';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
+import L from 'leaflet';
+import { connect, NatsConnection, StringCodec } from 'nats.ws';
+import { message as notif } from 'ant-design-vue';
 import { useLoggingStore, useWidgetStore } from '@/ui/store';
 import uuid from '@/utils/uuid';
 import { EWidget, IFormWidget, IWidget } from '@/domain';
-import { SelectProps } from 'ant-design-vue';
 import { useDashboardManagementStore } from '@/ui/store';
-import { storeToRefs } from 'pinia';
-import { useRoute } from 'vue-router';
-import { BarChartWidget, DoughnutChartWidget, GaugeChartWidget, BubbleChartWidget, LineChartWidget, PieChartWidget, PolarChartWidget, RadarChartWidget, ScatterChartWidget, WidgetValidationService, afterDrawCallback } from '@/services';
+import {
+  BarChartWidget,
+  DoughnutChartWidget,
+  GaugeChartWidget,
+  BubbleChartWidget,
+  LineChartWidget,
+  PieChartWidget,
+  PolarChartWidget,
+  RadarChartWidget,
+  ScatterChartWidget,
+  WidgetValidationService,
+  afterDrawCallback,
+} from '@/services';
 import { MapWidget, WidgetService } from '@/services';
-import { barChartData, bubbleChartData, doughnutPieChartData, gaugeChartData, lineChartData, polarAreaChartData, radarChartData, scatterChartData } from '@/services';
+import {
+  barChartData,
+  bubbleChartData,
+  doughnutPieChartData,
+  gaugeChartData,
+  lineChartData,
+  polarAreaChartData,
+  radarChartData,
+  scatterChartData,
+} from '@/services';
 import { isJsonString } from '@/utils/jsonCheck';
-import L from 'leaflet';
 import { dataBuilder } from '@/services';
-import { connect, NatsConnection, StringCodec } from 'nats.ws';
-import { message as notif } from 'ant-design-vue';
 
 export default defineComponent({
   name: 'Dashboard',
@@ -238,9 +284,8 @@ export default defineComponent({
   setup() {
     let nc: NatsConnection;
     const storeLogging = useLoggingStore();
-    const { statusConnection } =
-      storeToRefs(storeLogging);
-    
+    const { statusConnection } = storeToRefs(storeLogging);
+
     const enableMove = ref<boolean>(false);
     const enableResize = ref<boolean>(false);
     const bar = new BarChartWidget();
@@ -261,7 +306,7 @@ export default defineComponent({
 
     // Widget Data
     const storeWidget = useWidgetStore();
-    const { data } = storeToRefs(storeWidget)
+    const { data } = storeToRefs(storeWidget);
 
     // Config Data
     const configVisible = ref<boolean>(false);
@@ -276,59 +321,60 @@ export default defineComponent({
 
     // On Create
     const onFinish = (values: { topicId: string }) => {
-      formState.topicId = values.topicId
-      formState.dashboardId = typeof dashboardId === 'string' ? dashboardId : ''
-      formState.widgetData = json.value
-      
+      formState.topicId = values.topicId;
+      formState.dashboardId =
+        typeof dashboardId === 'string' ? dashboardId : '';
+      formState.widgetData = json.value;
+
       switch (widgetSelection.value) {
         case EWidget.BAR: {
-          formState.widgetType = EWidget.BAR
-          bar.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.BAR;
+          bar.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.BUBBLE: {
-          formState.widgetType = EWidget.BUBBLE
-          bubble.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.BUBBLE;
+          bubble.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.DOUGHNUT: {
-          formState.widgetType = EWidget.DOUGHNUT
-          doughnut.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.DOUGHNUT;
+          doughnut.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.PIE: {
-          formState.widgetType = EWidget.PIE
-          pie.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.PIE;
+          pie.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.GAUGE: {
-          formState.widgetType = EWidget.GAUGE
-          gauge.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.GAUGE;
+          gauge.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.LINE: {
-          formState.widgetType = EWidget.LINE
-          line.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.LINE;
+          line.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.POLAR: {
-          formState.widgetType = EWidget.POLAR
-          polar.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.POLAR;
+          polar.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.RADAR: {
-          formState.widgetType = EWidget.RADAR
-          radar.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.RADAR;
+          radar.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.SCATTER: {
-          formState.widgetType = EWidget.SCATTER
-          scatter.addChart(grid, uuid(), formState)
+          formState.widgetType = EWidget.SCATTER;
+          scatter.addChart(grid, uuid(), formState);
           break;
         }
         case EWidget.MAPS: {
-          formState.widgetType = EWidget.MAPS
-          map.addMap(grid, uuid(), formState)
+          formState.widgetType = EWidget.MAPS;
+          map.addMap(grid, uuid(), formState);
           break;
         }
       }
@@ -353,14 +399,14 @@ export default defineComponent({
       shiftData: true,
       dashboardId: typeof dashboardId === 'string' ? dashboardId : '',
       widgetType: '',
-      widgetData: {}
+      widgetData: {},
     });
 
     const onChange = (value: any) => {
       if (isJsonString(value.text)) {
-        json.value = JSON.parse(value.text)
+        json.value = JSON.parse(value.text);
       }
-    }
+    };
 
     const onConfigClose = () => {
       formState.topicId = '';
@@ -388,94 +434,162 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       await storeDashboard.getDashboardFullList();
-      await storeWidget.getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '').then(async () => {
-        data.value.forEach(element => {
-          if (element.widgetType === EWidget.MAPS) {
-            WidgetService.generateMap(grid, element.node, element.nodeId, element.name)
-          } else if (element.widgetType === EWidget.GAUGE) {
-            element.widgetData.plugins = [
-              {
-                afterDraw: afterDrawCallback
-              },
-            ]
-            WidgetService.generateChart(grid, element.nodeId, element.widgetData, element.node, element.name)
-          } else {
-            WidgetService.generateChart(grid, element.nodeId, element.widgetData, element.node, element.name)
-          }
-        });
-        try {
-          const server = { servers: [import.meta.env.VUE_APP_NATS_WS] };
-          nc = await connect(server);
-          const sc = StringCodec();
-          let dashboard = dataFull.value.find(val => val.id === dashboardId);
-          if (!dashboard) return;
-          dashboard.devices?.forEach(device => {
-            device.topics?.forEach((topic) => {
-              console.log(`kreMES.DashboardID.${dashboardId}.DeviceID.${device.id}.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`)
-              nc.subscribe(`kreMES.DashboardID.${dashboardId}.DeviceID.${device.id}.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`, {
-                callback: (err: any, msg: any) => {
-                  if (data.value.length === 0) return;
-                  data.value.filter(val => val.dashboardId === dashboard?.id && val.topicId === topic.id && val.topic.deviceId === device.id).forEach(element => {
-                    if (element.widgetType !== undefined) {
-                      if (
-                        validationTopic.validation(
-                          element.widgetType,
-                          sc.decode(msg.data)
+      await storeWidget
+        .getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '')
+        .then(async () => {
+          data.value.forEach((element) => {
+            if (element.widgetType === EWidget.MAPS) {
+              WidgetService.generateMap(
+                grid,
+                element.node,
+                element.nodeId,
+                element.name,
+              );
+            } else if (element.widgetType === EWidget.GAUGE) {
+              element.widgetData.plugins = [
+                {
+                  afterDraw: afterDrawCallback,
+                },
+              ];
+              WidgetService.generateChart(
+                grid,
+                element.nodeId,
+                element.widgetData,
+                element.node,
+                element.name,
+              );
+            } else {
+              WidgetService.generateChart(
+                grid,
+                element.nodeId,
+                element.widgetData,
+                element.node,
+                element.name,
+              );
+            }
+          });
+          try {
+            const server = { servers: [import.meta.env.VUE_APP_NATS_WS] };
+            nc = await connect(server);
+            const sc = StringCodec();
+            let dashboard = dataFull.value.find(
+              (val) => val.id === dashboardId,
+            );
+            if (!dashboard) return;
+            dashboard.devices?.forEach((device) => {
+              device.topics?.forEach((topic) => {
+                console.log(
+                  `Vechr.DashboardID.${dashboardId}.DeviceID.${
+                    device.id
+                  }.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`,
+                );
+                nc.subscribe(
+                  `Vechr.DashboardID.${dashboardId}.DeviceID.${
+                    device.id
+                  }.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`,
+                  {
+                    callback: (err: any, msg: any) => {
+                      if (data.value.length === 0) return;
+                      data.value
+                        .filter(
+                          (val) =>
+                            val.dashboardId === dashboard?.id &&
+                            val.topicId === topic.id &&
+                            val.topic.deviceId === device.id,
                         )
-                      ) {
-                        if (element.widgetType === EWidget.MAPS) {
-                          if ( WidgetService.componentWidget['map_' + element.nodeId] !== undefined ) {
-                            let marker = WidgetService.componentWidget['map_' + element.nodeId]
-                            var newLatLng = new L.LatLng(JSON.parse(sc.decode(msg.data)).latitude, JSON.parse(sc.decode(msg.data)).longitude);
-                            marker.setLatLng(newLatLng)
+                        .forEach((element) => {
+                          if (element.widgetType !== undefined) {
+                            if (
+                              validationTopic.validation(
+                                element.widgetType,
+                                sc.decode(msg.data),
+                              )
+                            ) {
+                              if (element.widgetType === EWidget.MAPS) {
+                                if (
+                                  WidgetService.componentWidget[
+                                    'map_' + element.nodeId
+                                  ] !== undefined
+                                ) {
+                                  let marker =
+                                    WidgetService.componentWidget[
+                                      'map_' + element.nodeId
+                                    ];
+                                  var newLatLng = new L.LatLng(
+                                    JSON.parse(sc.decode(msg.data)).latitude,
+                                    JSON.parse(sc.decode(msg.data)).longitude,
+                                  );
+                                  marker.setLatLng(newLatLng);
+                                }
+                              } else if (element.widgetType === EWidget.GAUGE) {
+                                if (
+                                  WidgetService.componentWidget[
+                                    'myChart_' + element.nodeId
+                                  ] !== undefined
+                                ) {
+                                  WidgetService.componentWidget[
+                                    'myChart_' + element.nodeId
+                                  ].data.datasets.forEach((dataset: any) => {
+                                    dataset.needleValue = JSON.parse(
+                                      sc.decode(msg.data),
+                                    );
+                                  });
+                                  WidgetService.componentWidget[
+                                    'myChart_' + element.nodeId
+                                  ].update();
+                                }
+                              } else {
+                                if (
+                                  WidgetService.componentWidget[
+                                    'myChart_' + element.nodeId
+                                  ] !== undefined
+                                ) {
+                                  WidgetService.componentWidget[
+                                    'myChart_' + element.nodeId
+                                  ].data.datasets.forEach((dataset: any) => {
+                                    dataset.data = dataBuilder(
+                                      dataset.data,
+                                      JSON.parse(sc.decode(msg.data)),
+                                      element.shiftData != undefined
+                                        ? element.shiftData
+                                        : true,
+                                    );
+                                  });
+                                  WidgetService.componentWidget[
+                                    'myChart_' + element.nodeId
+                                  ].update();
+                                }
+                              }
+                            }
                           }
-                        } else if (element.widgetType === EWidget.GAUGE) {
-                          if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
-                            WidgetService.componentWidget['myChart_' + element.nodeId].data.datasets.forEach((dataset: any) => {
-                              dataset.needleValue = JSON.parse(sc.decode(msg.data));
-                            });
-                            WidgetService.componentWidget['myChart_' + element.nodeId].update();
-                          }
-                        } else {
-                          if ( WidgetService.componentWidget['myChart_' + element.nodeId] !== undefined ) {
-                            WidgetService.componentWidget['myChart_' + element.nodeId].data.datasets.forEach((dataset: any) => {
-                              dataset.data = dataBuilder(dataset.data, JSON.parse(sc.decode(msg.data)), element.shiftData != undefined ? element.shiftData : true)
-                            });
-                          WidgetService.componentWidget['myChart_' + element.nodeId].update();
-                          }
-                        }
-                      }
-                    }
-                  })
-                  if (err) notif.error(err)
-                }
+                        });
+                      if (err) notif.error(err);
+                    },
+                  },
+                );
               });
             });
-          });
-          
 
-          nc.subscribe(`${dashboardId}.status.connection`, {
-            callback: (err: any, msg: any) => {
-              statusConnection.value.message = sc.decode(msg.data);
-              if (statusConnection.value.process == 'Start') {
-                notif.success(statusConnection.value.message);
-                statusConnection.value.process = 'Finished';
-              }
-              if (err) notif.error(err)
-            },
-          });
+            nc.subscribe(`${dashboardId}.status.connection`, {
+              callback: (err: any, msg: any) => {
+                statusConnection.value.message = sc.decode(msg.data);
+                if (statusConnection.value.process == 'Start') {
+                  notif.success(statusConnection.value.message);
+                  statusConnection.value.process = 'Finished';
+                }
+                if (err) notif.error(err);
+              },
+            });
 
-          nc.publish(
-            `${dashboardId}.status.connection`,
-            sc.encode(
-              'Connected to the server'
-            )
-          );
-          statusConnection.value.process = 'Start';
-        } catch (error) {
-          notif.error('Server can\'t be reached!');
-        }
-      });
+            nc.publish(
+              `${dashboardId}.status.connection`,
+              sc.encode('Connected to the server'),
+            );
+            statusConnection.value.process = 'Start';
+          } catch (error) {
+            notif.error("Server can't be reached!");
+          }
+        });
     });
 
     const validationTopic = new WidgetValidationService();
@@ -488,14 +602,14 @@ export default defineComponent({
         notif.error('Server error while close the connection!');
       }
     });
-    
+
     watch(enableMove, () => {
       grid.enableMove(enableMove.value);
-    })
+    });
 
     watch(enableResize, () => {
       grid.enableResize(enableResize.value);
-    })
+    });
 
     let info = ref('');
     let grid: GridStack;
@@ -505,36 +619,47 @@ export default defineComponent({
         cellHeight: '70px',
         minRow: 7,
         removable: true,
-        disableDrag: true
+        disableDrag: true,
       });
 
       grid.on('removed', (_: Event, items: any) => {
         items.forEach(async (node: GridStackNode) => {
-          const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
-          if(preDelete !== undefined) {
-            await storeWidget.deleteWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id)
+          const preDelete: IWidget | undefined = data.value.find(
+            (val) => val.nodeId === node.id,
+          );
+          if (preDelete !== undefined) {
+            await storeWidget.deleteWidgetById(
+              typeof dashboardId === 'string' ? dashboardId : '',
+              preDelete.id,
+            );
           }
         });
       });
 
       grid.on('change', (_: Event, items: any) => {
         items.forEach(async (node: GridStackNode) => {
-          const preDelete: IWidget | undefined = data.value.find(val => val.nodeId === node.id)
-          if(preDelete !== undefined) {
-            await storeWidget.updateWidgetById(typeof dashboardId === 'string' ? dashboardId : '', preDelete.id, {
-              name: preDelete.name,
-              description: preDelete.description,
-              node: {
-                x: node.x !== undefined ? node.x : 0,
-                y: node.y !== undefined ? node.y : 0,
-                w: node.w !== undefined ? node.w : 0,
-                h: node.h !== undefined ? node.h : 0,
-                id: preDelete.node.id,
-                content: preDelete.node.content
+          const preDelete: IWidget | undefined = data.value.find(
+            (val) => val.nodeId === node.id,
+          );
+          if (preDelete !== undefined) {
+            await storeWidget.updateWidgetById(
+              typeof dashboardId === 'string' ? dashboardId : '',
+              preDelete.id,
+              {
+                name: preDelete.name,
+                description: preDelete.description,
+                node: {
+                  x: node.x !== undefined ? node.x : 0,
+                  y: node.y !== undefined ? node.y : 0,
+                  w: node.w !== undefined ? node.w : 0,
+                  h: node.h !== undefined ? node.h : 0,
+                  id: preDelete.node.id,
+                  content: preDelete.node.content,
+                },
+                widgetData: preDelete.widgetData,
+                shiftData: preDelete.shiftData,
               },
-              widgetData: preDelete.widgetData,
-              shiftData: preDelete.shiftData
-            })
+            );
           }
         });
       });
@@ -542,58 +667,59 @@ export default defineComponent({
 
     function selectWidget(widget: string) {
       configVisible.value = true;
-      titleConfig.value = widget.charAt(0) + widget.slice(1).toLowerCase() + ' Widget';
+      titleConfig.value =
+        widget.charAt(0) + widget.slice(1).toLowerCase() + ' Widget';
       widgetSelection.value = widget;
 
       switch (widgetSelection.value) {
         case EWidget.BAR: {
-          formState.widgetData = barChartData
-          json.value = barChartData
+          formState.widgetData = barChartData;
+          json.value = barChartData;
           break;
         }
         case EWidget.BUBBLE: {
-          formState.widgetData = bubbleChartData
-          json.value = bubbleChartData
+          formState.widgetData = bubbleChartData;
+          json.value = bubbleChartData;
           break;
         }
         case EWidget.DOUGHNUT: {
-          formState.widgetData = doughnutPieChartData('doughnut')
-          json.value = doughnutPieChartData('doughnut')
+          formState.widgetData = doughnutPieChartData('doughnut');
+          json.value = doughnutPieChartData('doughnut');
           break;
         }
         case EWidget.PIE: {
-          formState.widgetData = doughnutPieChartData('pie')
-          json.value = doughnutPieChartData('pie')
+          formState.widgetData = doughnutPieChartData('pie');
+          json.value = doughnutPieChartData('pie');
           break;
         }
         case EWidget.GAUGE: {
-          formState.widgetData = gaugeChartData
-          json.value = gaugeChartData
+          formState.widgetData = gaugeChartData;
+          json.value = gaugeChartData;
           break;
         }
         case EWidget.LINE: {
-          formState.widgetData = lineChartData
-          json.value = lineChartData
+          formState.widgetData = lineChartData;
+          json.value = lineChartData;
           break;
         }
         case EWidget.POLAR: {
-          formState.widgetData = polarAreaChartData
-          json.value = polarAreaChartData
+          formState.widgetData = polarAreaChartData;
+          json.value = polarAreaChartData;
           break;
         }
         case EWidget.RADAR: {
-          formState.widgetData = radarChartData
-          json.value = radarChartData
+          formState.widgetData = radarChartData;
+          json.value = radarChartData;
           break;
         }
         case EWidget.SCATTER: {
-          formState.widgetData = scatterChartData
-          json.value = scatterChartData
+          formState.widgetData = scatterChartData;
+          json.value = scatterChartData;
           break;
         }
         case EWidget.MAPS: {
-          formState.widgetData = {latitude: 40.731253, longitude: -73.996139}
-          json.value = {latitude: 40.731253, longitude: -73.996139}
+          formState.widgetData = { latitude: 40.731253, longitude: -73.996139 };
+          json.value = { latitude: 40.731253, longitude: -73.996139 };
           break;
         }
       }

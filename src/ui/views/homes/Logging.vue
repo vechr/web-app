@@ -39,10 +39,10 @@
 import { defineComponent } from 'vue-demi';
 import { connect, NatsConnection, StringCodec } from 'nats.ws';
 import { onBeforeMount, onBeforeUnmount } from 'vue';
-import { useLoggingStore, useTopicManagementStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { message as notif, TableColumnType } from 'ant-design-vue';
+import { useLoggingStore, useTopicManagementStore } from '@/ui/store';
 import { WidgetValidationService } from '@/services';
 
 type TableDataType = {
@@ -86,7 +86,7 @@ export default defineComponent({
 
     const validationTopic = new WidgetValidationService();
 
-    urlTopic.value = `kreMES.DashboardID.${dashboardId}.DeviceID.${deviceId}.TopicID.${topicId}.Topic${topicName}`;
+    urlTopic.value = `Vechr.DashboardID.${dashboardId}.DeviceID.${deviceId}.TopicID.${topicId}.Topic${topicName}`;
 
     onBeforeMount(async () => {
       if (typeof topicId === 'string')
@@ -105,12 +105,12 @@ export default defineComponent({
 
         nc.subscribe(urlTopic.value, {
           callback: (err: any, msg: any) => {
-            console.log(sc.decode(msg.data))
+            console.log(sc.decode(msg.data));
             if (dataDetails.value.widgetType !== undefined) {
               if (
                 validationTopic.validation(
                   dataDetails.value.widgetType,
-                  sc.decode(msg.data)
+                  sc.decode(msg.data),
                 )
               ) {
                 data.value.push({
@@ -145,12 +145,12 @@ export default defineComponent({
               typeof topicName == 'string'
                 ? topicName.replace(/\./g, '/')
                 : topicName
-            }!`
-          )
+            }!`,
+          ),
         );
         statusConnection.value.process = 'Start';
       } catch (error) {
-        notif.error('Server can\'t be reached!');
+        notif.error("Server can't be reached!");
       }
     });
 

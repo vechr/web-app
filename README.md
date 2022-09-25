@@ -1,7 +1,7 @@
 # web-app
 
 <p align="center">
-  <a href="" target="blank"><img src="./public/logo.svg" width="320" alt="kreMES Logo" /></a>
+  <a href="" target="blank"><img src="./public/logo.svg" width="320" alt="Vechr Logo" /></a>
 </p>
 
 ## Production Build

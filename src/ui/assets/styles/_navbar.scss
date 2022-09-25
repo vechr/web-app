@@ -33,6 +33,13 @@
   margin-left: auto;
 }
 
+.ant-menu.ant-menu-dark {
+  background: #00D1FF;
+  .ant-menu-item {
+    color: #fff;
+  }
+}
+
 #avatar.ant-menu-item-selected::after {
   border-bottom: 2px solid rgb(201, 83, 201);
 }
@@ -71,6 +78,7 @@
   position: fixed;
   z-index: 999;
   height: -webkit-fill-available;
+  background: #00D1FF;
 }
 
 .ant-layout-sider-collapsed {
