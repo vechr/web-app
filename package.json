@@ -44,7 +44,7 @@
     "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-typescript": "^10.0.0",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^8.23.1",
+    "eslint": "^8.24.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^8.0.3",
     "husky": "^8.0.0",
