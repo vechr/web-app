@@ -72,10 +72,10 @@
 </template>
 <script lang="ts">
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { useCommonStore, useTopicManagementStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
 import { useRoute } from 'vue-router';
+import { useCommonStore, useTopicManagementStore } from '@/ui/store';
 import { useWidgetStore } from '@/ui/store';
 
 interface FormState {

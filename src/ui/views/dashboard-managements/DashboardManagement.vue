@@ -59,7 +59,7 @@
                     v-for="tag in record.devices"
                     :key="tag"
                     :color="`#${Math.floor(Math.random() * 16777215).toString(
-                      16
+                      16,
                     )}`"
                   >
                     {{ tag }}
@@ -92,12 +92,12 @@
 </template>
 
 <script lang="ts">
-import FormCreate from '@/ui/components/dashboard-managements/FormCreate.vue';
-import FormEdit from '@/ui/components/dashboard-managements/FormEdit.vue';
-import { useCommonStore, useDashboardManagementStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import FormCreate from '@/ui/components/dashboard-managements/FormCreate.vue';
+import FormEdit from '@/ui/components/dashboard-managements/FormEdit.vue';
+import { useCommonStore, useDashboardManagementStore } from '@/ui/store';
 import { IDashboard } from '@/domain';
 
 export default defineComponent({

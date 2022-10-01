@@ -472,7 +472,7 @@ export default defineComponent({
             const server = { servers: [import.meta.env.VUE_APP_NATS_WS] };
             nc = await connect(server);
             const sc = StringCodec();
-            let dashboard = dataFull.value.find(
+            const dashboard = dataFull.value.find(
               (val) => val.id === dashboardId,
             );
             if (!dashboard) return;
@@ -511,11 +511,11 @@ export default defineComponent({
                                     'map_' + element.nodeId
                                   ] !== undefined
                                 ) {
-                                  let marker =
+                                  const marker =
                                     WidgetService.componentWidget[
                                       'map_' + element.nodeId
                                     ];
-                                  var newLatLng = new L.LatLng(
+                                  const newLatLng = new L.LatLng(
                                     JSON.parse(sc.decode(msg.data)).latitude,
                                     JSON.parse(sc.decode(msg.data)).longitude,
                                   );
@@ -611,7 +611,7 @@ export default defineComponent({
       grid.enableResize(enableResize.value);
     });
 
-    let info = ref('');
+    const info = ref('');
     let grid: GridStack;
     onMounted(() => {
       grid = GridStack.init({

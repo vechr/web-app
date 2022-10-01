@@ -17,7 +17,9 @@
       <a-form-item
         label="Name"
         name="name"
-        :rules="[{ required: true, message: 'Please input name notification email!' }]"
+        :rules="[
+          { required: true, message: 'Please input name notification email!' },
+        ]"
       >
         <a-input v-model:value="notificationEmailEdit.name" />
       </a-form-item>
@@ -31,20 +33,34 @@
       </a-form-item>
 
       <a-form-item
-          label="Sender"
-          name="sender"
-          :rules="[{ required: true, pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm), message: 'Please input sender email with correct format for example: me@mail.com!' }]"
-        >
-          <a-input v-model:value="notificationEmailEdit.sender" />
-        </a-form-item>
+        label="Sender"
+        name="sender"
+        :rules="[
+          {
+            required: true,
+            pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm),
+            message:
+              'Please input sender email with correct format for example: me@mail.com!',
+          },
+        ]"
+      >
+        <a-input v-model:value="notificationEmailEdit.sender" />
+      </a-form-item>
 
-        <a-form-item
-          label="Sender"
-          name="sender"
-          :rules="[{ required: true, pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm), message: 'Please input recipient email with correct format for example: me@mail.com!' }]"
-        >
-          <a-input v-model:value="notificationEmailEdit.recipient" />
-        </a-form-item>
+      <a-form-item
+        label="Sender"
+        name="sender"
+        :rules="[
+          {
+            required: true,
+            pattern: new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gm),
+            message:
+              'Please input recipient email with correct format for example: me@mail.com!',
+          },
+        ]"
+      >
+        <a-input v-model:value="notificationEmailEdit.recipient" />
+      </a-form-item>
 
       <a-form-item>
         <a-button
@@ -59,9 +75,9 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
+import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
 
 export default defineComponent({
   name: 'FormEditNotificationEmail',

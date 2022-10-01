@@ -71,13 +71,13 @@
   </a-drawer>
 </template>
 <script lang="ts">
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
   useDeviceTypeStore,
 } from '@/ui/store';
-import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
 
 interface FormState {
   name: string;

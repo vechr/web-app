@@ -51,7 +51,7 @@
                     v-for="tag in record.notificationEmailId"
                     :key="tag"
                     :color="`#${Math.floor(Math.random() * 16777215).toString(
-                      16
+                      16,
                     )}`"
                   >
                     {{ hashMapNotificationEmailList.get(tag) }}
@@ -111,10 +111,14 @@
 
 <script lang="ts">
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
-import { useTopicEventStore, useCommonStore, useNotificationEmailStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
+import {
+  useTopicEventStore,
+  useCommonStore,
+  useNotificationEmailStore,
+} from '@/ui/store';
 import { ITopicEvent } from '@/domain';
 import FormCreate from '@/ui/components/topic-events/FormCreate.vue';
 import FormEdit from '@/ui/components/topic-events/FormEdit.vue';
@@ -136,14 +140,17 @@ export default defineComponent({
     const { isLoadingActive } = storeToRefs(common);
 
     const topicEventStore = useTopicEventStore();
-    const { topicEventEdit, topicEventList, topicEventColumns } = storeToRefs(topicEventStore);
+    const { topicEventEdit, topicEventList, topicEventColumns } =
+      storeToRefs(topicEventStore);
 
     const notificationEmailStore = useNotificationEmailStore();
-    const { hashMapNotificationEmailList } = storeToRefs(notificationEmailStore);
+    const { hashMapNotificationEmailList } = storeToRefs(
+      notificationEmailStore,
+    );
 
     onBeforeMount(() => {
       topicEventStore.getTopicEventList(topicId);
-      notificationEmailStore.getNotificationEmailList()
+      notificationEmailStore.getNotificationEmailList();
     });
 
     const onDelete = (record: ITopicEvent) => {
@@ -152,18 +159,21 @@ export default defineComponent({
 
     const onEdit = (record: ITopicEvent) => {
       common.setIsDrawerShow(true);
-      const topicEventFound: ITopicEvent | undefined = topicEventList.value.find(val => val.id ==  record.id)
+      const topicEventFound: ITopicEvent | undefined =
+        topicEventList.value.find((val) => val.id == record.id);
       if (topicEventFound !== undefined) {
-        topicEventEdit.value.id = topicEventFound.id
-        topicEventEdit.value.description = topicEventFound.description
-        topicEventEdit.value.name = topicEventFound.name
-        topicEventEdit.value.notificationEmailId = topicEventFound.notificationEmailId
-        topicEventEdit.value.bodyEmail = topicEventFound.bodyEmail
-        topicEventEdit.value.htmlBodyEmail = topicEventFound.htmlBodyEmail
+        topicEventEdit.value.id = topicEventFound.id;
+        topicEventEdit.value.description = topicEventFound.description;
+        topicEventEdit.value.name = topicEventFound.name;
+        topicEventEdit.value.notificationEmailId =
+          topicEventFound.notificationEmailId;
+        topicEventEdit.value.bodyEmail = topicEventFound.bodyEmail;
+        topicEventEdit.value.htmlBodyEmail = topicEventFound.htmlBodyEmail;
         if (topicEventFound.eventExpression !== undefined) {
-          topicEventEdit.value.eventExpression = topicEventFound.eventExpression
+          topicEventEdit.value.eventExpression =
+            topicEventFound.eventExpression;
         } else {
-          topicEventEdit.value.eventExpression = ''
+          topicEventEdit.value.eventExpression = '';
         }
       }
     };

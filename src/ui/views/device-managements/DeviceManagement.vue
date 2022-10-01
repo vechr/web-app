@@ -82,7 +82,7 @@
                     v-for="tag in record.topics"
                     :key="tag"
                     :color="`#${Math.floor(Math.random() * 16777215).toString(
-                      16
+                      16,
                     )}`"
                   >
                     {{ tag }}
@@ -120,10 +120,10 @@ import {
   EditOutlined,
   CheckCircleFilled,
 } from '@ant-design/icons-vue';
-import { useCommonStore, useDeviceManagementStore } from '@/ui/store';
-import { IDevice } from '@/domain';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
+import { useCommonStore, useDeviceManagementStore } from '@/ui/store';
+import { IDevice } from '@/domain';
 import FormCreate from '@/ui/components/device-managements/FormCreate.vue';
 import FormEdit from '@/ui/components/device-managements/FormEdit.vue';
 

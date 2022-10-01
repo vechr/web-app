@@ -21,7 +21,9 @@
         <a-form-item
           label="Name"
           name="name"
-          :rules="[{ required: true, message: 'Please input name device type!' }]"
+          :rules="[
+            { required: true, message: 'Please input name device type!' },
+          ]"
         >
           <a-input v-model:value="formState.name" />
         </a-form-item>
@@ -49,9 +51,9 @@
 </template>
 <script lang="ts">
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
+import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
 
 interface FormState {
   name: string;

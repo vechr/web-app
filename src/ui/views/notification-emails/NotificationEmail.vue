@@ -72,44 +72,45 @@
 </template>
 
 <script lang="ts">
-  import { INotificationEmail } from '@/domain';
-  import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
-  import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
-  import { storeToRefs } from 'pinia';
-  import { defineComponent, onBeforeMount } from 'vue';
-  import FormCreate from '@/ui/components/notification-emails/FormCreate.vue';
-  import FormEdit from '@/ui/components/notification-emails/FormEdit.vue';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
+import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
+import { INotificationEmail } from '@/domain';
+import FormCreate from '@/ui/components/notification-emails/FormCreate.vue';
+import FormEdit from '@/ui/components/notification-emails/FormEdit.vue';
 
-  export default defineComponent({
-    name: 'NotificationEmail',
-    components: { DeleteOutlined, EditOutlined, FormCreate, FormEdit },
-    setup() {
-      const common = useCommonStore();
-      const { isLoadingActive } = storeToRefs(common);
+export default defineComponent({
+  name: 'NotificationEmail',
+  components: { DeleteOutlined, EditOutlined, FormCreate, FormEdit },
+  setup() {
+    const common = useCommonStore();
+    const { isLoadingActive } = storeToRefs(common);
 
-      const store = useNotificationEmailStore();
-      const { notificationEmailList, notificationEmailTypeColumns } = storeToRefs(store);
+    const store = useNotificationEmailStore();
+    const { notificationEmailList, notificationEmailTypeColumns } =
+      storeToRefs(store);
 
-      const onEdit = (record: INotificationEmail) => {
-        common.setIsDrawerShow(true);
-        store.getNotificationEmailById(record.id);
-      };
+    const onEdit = (record: INotificationEmail) => {
+      common.setIsDrawerShow(true);
+      store.getNotificationEmailById(record.id);
+    };
 
-      const onDelete = (record: INotificationEmail) => {
-        store.deleteNotificationEmailById(record.id);
-      };
+    const onDelete = (record: INotificationEmail) => {
+      store.deleteNotificationEmailById(record.id);
+    };
 
-      onBeforeMount(() => {
-        store.getNotificationEmailList();
-      })
-      
-      return {
-        isLoadingActive,
-        notificationEmailList,
-        notificationEmailTypeColumns,
-        onEdit,
-        onDelete
-      };
-    }
-  })
+    onBeforeMount(() => {
+      store.getNotificationEmailList();
+    });
+
+    return {
+      isLoadingActive,
+      notificationEmailList,
+      notificationEmailTypeColumns,
+      onEdit,
+      onDelete,
+    };
+  },
+});
 </script>

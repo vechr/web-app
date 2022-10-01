@@ -52,37 +52,30 @@
 
       <a-divider>Email Notification</a-divider>
 
-      <a-form-item
-          label="Notification Email"
-          name="notificationEmailId"
-        >
-          <a-select
-            mode="tags"
-            style="width: 100%"
-            placeholder="Select a Notification Email"
-            :options="optionNotificationEmail"
-            v-model:value="topicEventEdit.notificationEmailId"
-            show-search
-          ></a-select>
-        </a-form-item>
+      <a-form-item label="Notification Email" name="notificationEmailId">
+        <a-select
+          mode="tags"
+          style="width: 100%"
+          placeholder="Select a Notification Email"
+          :options="optionNotificationEmail"
+          v-model:value="topicEventEdit.notificationEmailId"
+          show-search
+        ></a-select>
+      </a-form-item>
 
       <a-form-item
         label="Body Text"
         name="bodyEmail"
-        :rules="[
-          { message: 'Please input Body Text Email!' },
-        ]"
+        :rules="[{ message: 'Please input Body Text Email!' }]"
       >
         <a-textarea v-model:value="topicEventEdit.bodyEmail" />
       </a-form-item>
 
-      <a-form-item
-        label="HTML Body Email"
-      >
+      <a-form-item label="HTML Body Email">
         <editor
           :init="{
             plugins: 'lists link image table code help wordcount',
-            height: 500
+            height: 500,
           }"
           v-model="topicEventEdit.htmlBodyEmail"
         />
@@ -101,50 +94,54 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useNotificationEmailStore, useTopicEventStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
 import Editor from '@tinymce/tinymce-vue';
 import { Codemirror } from 'vue-codemirror';
 import { jsonLanguage } from '@codemirror/lang-json';
+import {
+  useCommonStore,
+  useNotificationEmailStore,
+  useTopicEventStore,
+} from '@/ui/store';
 
 interface FormState {
   name: string;
   description: string;
   eventExpression: string;
-  notificationEmailId: string[],
-  bodyEmail?: string,
-  htmlBodyEmail?: string,
+  notificationEmailId: string[];
+  bodyEmail?: string;
+  htmlBodyEmail?: string;
 }
 
 export default defineComponent({
   name: 'FormEditTopicEvent',
-  components: { 'editor': Editor, Codemirror },
+  components: { editor: Editor, Codemirror },
   setup() {
     // Code Editor
-    const extensions = [jsonLanguage]
-    
+    const extensions = [jsonLanguage];
+
     const route = useRoute();
     const topicId = String(route.params.topicId);
-    
+
     const common = useCommonStore();
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
-    
+
     const storeTopicEvent = useTopicEventStore();
     const { topicEventEdit } = storeToRefs(storeTopicEvent);
-    
+
     const storeNotificationStore = useNotificationEmailStore();
     const { optionNotificationEmail } = storeToRefs(storeNotificationStore);
 
     const onFinish = (values: FormState) => {
-      values.htmlBodyEmail = topicEventEdit.value.htmlBodyEmail
-      values.eventExpression = topicEventEdit.value.eventExpression
+      values.htmlBodyEmail = topicEventEdit.value.htmlBodyEmail;
+      values.eventExpression = topicEventEdit.value.eventExpression;
       common.setIsLoadingButton(true);
       storeTopicEvent.updateTopicEventById(
         topicId,
         topicEventEdit.value.id,
-        values
+        values,
       );
     };
 

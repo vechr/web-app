@@ -53,10 +53,10 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useTopicManagementStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
 import { useRoute } from 'vue-router';
+import { useCommonStore, useTopicManagementStore } from '@/ui/store';
 
 interface FormState {
   name: string;

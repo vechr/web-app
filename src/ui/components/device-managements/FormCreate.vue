@@ -74,13 +74,13 @@
 </template>
 <script lang="ts">
 import { PlusOutlined } from '@ant-design/icons-vue';
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount, reactive } from 'vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
   useDeviceTypeStore,
 } from '@/ui/store';
-import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount, reactive } from 'vue';
 
 interface FormState {
   name: string;

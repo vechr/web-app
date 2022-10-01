@@ -75,7 +75,7 @@
                 <div v-if="record.widgetType">
                   <a-tag
                     :color="`#${Math.floor(Math.random() * 16777215).toString(
-                      16
+                      16,
                     )}`"
                   >
                     {{ record.widgetType }}
@@ -95,7 +95,7 @@
                     v-for="tag in record.topicEvents"
                     :key="tag"
                     :color="`#${Math.floor(Math.random() * 16777215).toString(
-                      16
+                      16,
                     )}`"
                   >
                     {{ tag }}
@@ -129,12 +129,12 @@
 
 <script lang="ts">
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
-import FormCreate from '@/ui/components/topic-managements/FormCreate.vue';
-import FormEdit from '@/ui/components/topic-managements/FormEdit.vue';
 import { defineComponent, onBeforeMount } from 'vue';
-import { useCommonStore, useTopicManagementStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
+import FormCreate from '@/ui/components/topic-managements/FormCreate.vue';
+import FormEdit from '@/ui/components/topic-managements/FormEdit.vue';
+import { useCommonStore, useTopicManagementStore } from '@/ui/store';
 import { ITopic } from '@/domain';
 
 export default defineComponent({

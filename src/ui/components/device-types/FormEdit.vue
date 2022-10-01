@@ -43,9 +43,9 @@
   </a-drawer>
 </template>
 <script lang="ts">
-import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
+import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
 
 export default defineComponent({
   name: 'FormEditDeviceType',

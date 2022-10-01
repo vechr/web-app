@@ -217,17 +217,17 @@
   </div>
 </template>
 <script lang="ts">
-import { useCommonStore } from '@/ui/store';
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
+import { useCommonStore } from '@/ui/store';
 export default defineComponent({
   setup() {
-    const common = useCommonStore()
+    const common = useCommonStore();
 
     const { isLoadingActive } = storeToRefs(common);
 
     return {
-      isLoadingActive
+      isLoadingActive,
     };
   },
 });
@@ -260,7 +260,6 @@ export default defineComponent({
     transform: rotateZ(360deg);
   }
 }
-
 
 #second {
   animation: second 1s linear infinite;
@@ -312,5 +311,4 @@ export default defineComponent({
     transform: translate(0%, 0%);
   }
 }
-
 </style>

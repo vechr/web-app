@@ -33,7 +33,7 @@
                     v-for="tag in record.devices"
                     :key="tag"
                     :color="`#${Math.floor(Math.random() * 16777215).toString(
-                      16
+                      16,
                     )}`"
                   >
                     {{ tag }}
@@ -93,10 +93,10 @@
 
 <script lang="ts">
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
-import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
-import { IDeviceType } from '@/domain';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
+import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
+import { IDeviceType } from '@/domain';
 import FormCreate from '@/ui/components/device-types/FormCreate.vue';
 import FormEdit from '@/ui/components/device-types/FormEdit.vue';
 

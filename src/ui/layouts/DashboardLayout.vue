@@ -112,10 +112,10 @@ import {
   ApartmentOutlined,
   // UserSwitchOutlined,
   CloseOutlined,
-  MailOutlined
+  MailOutlined,
 } from '@ant-design/icons-vue';
-import Loading from '@/ui/components/common/Loading.vue';
 import { defineComponent, ref } from 'vue';
+import Loading from '@/ui/components/common/Loading.vue';
 
 export default defineComponent({
   name: 'DashboardLayout',

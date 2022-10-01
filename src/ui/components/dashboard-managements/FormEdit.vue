@@ -56,13 +56,13 @@
   </a-drawer>
 </template>
 <script lang="ts">
+import { storeToRefs } from 'pinia';
+import { defineComponent, onBeforeMount } from 'vue';
 import {
   useCommonStore,
   useDashboardManagementStore,
   useDeviceManagementStore,
 } from '@/ui/store';
-import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
 
 export default defineComponent({
   name: 'FormEditDashboard',
