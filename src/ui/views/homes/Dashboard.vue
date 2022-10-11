@@ -90,7 +90,7 @@
             height="600"
             :mode="'text'"
             :fullWidthButton="false"
-            v-model:json="formState.widgetData"
+            v-model="formState.widgetData"
             @change="onChange"
           />
         </a-form-item>
