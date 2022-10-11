@@ -1,6 +1,6 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+import path from 'path';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,8 +10,8 @@ export default defineConfig({
     port: 8080,
     hmr: {
       host: '0.0.0.0',
-      port: 3031
-    }
+      port: 3031,
+    },
   },
   plugins: [vue()],
   resolve: {
@@ -20,12 +20,11 @@ export default defineConfig({
     },
   },
   build: {
-
     /** If you set esmExternals to true, this plugins assumes that 
       all external dependencies are ES modules */
- 
+
     commonjsOptions: {
-       esmExternals: true 
+      esmExternals: true,
     },
- }
-})
+  },
+});
