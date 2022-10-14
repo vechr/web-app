@@ -58,7 +58,6 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
-import { useRouter } from 'vue-router';
 import { useCommonStore, useSessionStore } from '@/ui/store';
 
 interface FormState {
@@ -75,16 +74,14 @@ export default defineComponent({
   setup() {
     const common = useCommonStore();
     const store = useSessionStore();
-    const router = useRouter();
 
     const formState = reactive<FormState>({
       username: '',
       password: '',
     });
-    const onFinish = async (values: FormState) => {
+    const onFinish = (values: FormState) => {
       common.setIsLoading(true);
-      const status = await store.login(values);
-      if (status) router.push({ name: 'home' });
+      store.login(values);
     };
 
     return {

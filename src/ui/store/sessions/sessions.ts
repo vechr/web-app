@@ -1,5 +1,6 @@
 import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
+import router from '../../router';
 import { useCommonStore } from '../common/common';
 import { ISessionData } from '@/domain/sessions/session-store';
 import { sessionController } from '@/applications/controllers';
@@ -26,10 +27,7 @@ export const useSessionStore = defineStore('session', {
       }
       return false;
     },
-    async login(value: {
-      username: string;
-      password: string;
-    }): Promise<boolean> {
+    async login(value: { username: string; password: string }) {
       const common = useCommonStore();
       const result = await sessionController().login(value);
 
@@ -47,9 +45,8 @@ export const useSessionStore = defineStore('session', {
         message.error(`${this.error.code} ${this.error.message}`);
       }
       if (result.data?.success) {
-        return result.data?.success;
+        router.push({ name: 'home' });
       }
-      return false;
     },
     async refresh(refreshToken: string) {
       const common = useCommonStore();
