@@ -1,7 +1,6 @@
-import { IDevice, IError } from '@/domain';
+import { IBaseResponse, IDevice } from '@/domain';
 
-export interface IDeviceData {
-  message: string;
+export interface IDeviceData extends IBaseResponse {
   data: IDevice[];
   deviceEdit: {
     name: string;
@@ -11,5 +10,4 @@ export interface IDeviceData {
   };
   optionDevice: { value: string; label: string }[];
   dataDetails: IDevice;
-  error: IError;
 }

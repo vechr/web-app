@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { useSessionStore } from '../store';
 import DashboardManagement from '@/ui/views/dashboard-managements/DashboardManagement.vue';
 import DeviceManagement from '@/ui/views/device-managements/DeviceManagement.vue';
 import UserManagement from '@/ui/views/user-managements/UserManagament.vue';
@@ -13,8 +14,17 @@ import Logging from '@/ui/views/homes/Logging.vue';
 import Dashboard from '@/ui/views/homes/Dashboard.vue';
 import NotificationEmail from '@/ui/views/notification-emails/NotificationEmail.vue';
 import NotFound from '@/ui/views/common/NotFound.vue';
+import Session from '@/ui/views/session/Session.vue';
 
 const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/session',
+    name: 'login',
+    component: Session,
+    meta: {
+      layout: 'blank-layout',
+    },
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
@@ -132,6 +142,14 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+});
+
+router.beforeEach(async (to, _from, next) => {
+  const session = useSessionStore();
+
+  const result = await session.statusToken();
+  if (to.name !== 'login' && !result) next({ name: 'login' });
+  else next();
 });
 
 export default router;

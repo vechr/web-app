@@ -34,6 +34,7 @@ export class AxiosHttpClient implements IHttpClient {
         data: httpRequest.data,
         headers: httpRequest.headers,
         baseURL: httpRequest.baseURL,
+        withCredentials: true,
       })
       .then((res) => {
         this.status = res.status;

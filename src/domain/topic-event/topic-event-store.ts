@@ -1,7 +1,6 @@
-import { IError, ITopicEvent } from '@/domain';
+import { IBaseResponse, ITopicEvent } from '@/domain';
 
-export interface ITopicEventData {
-  message: string;
+export interface ITopicEventData extends IBaseResponse {
   data: ITopicEvent[];
   dataDetails: ITopicEvent;
   topicEventEdit: {
@@ -13,5 +12,4 @@ export interface ITopicEventData {
     bodyEmail?: string;
     htmlBodyEmail?: string;
   };
-  error: IError;
 }

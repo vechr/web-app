@@ -7,3 +7,4 @@ export * from './device-type';
 export * from './widget';
 export * from './logging';
 export * from './notification-email';
+export * from './sessions/index';

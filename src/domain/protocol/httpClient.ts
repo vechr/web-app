@@ -22,6 +22,8 @@ export type THttpRequest = {
 };
 
 export type TResponseData<T = any, E = any> = {
+  success?: boolean;
+  meta?: Record<string, any>;
   message: string;
   result?: T;
   error?: E;
