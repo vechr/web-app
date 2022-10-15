@@ -49,10 +49,6 @@
             <span>Role Management</span>
           </a-menu-item>
         </router-link>-->
-        <a-menu-item key="5" @click="logoutSession">
-          <logout-outlined />
-          <span> Logout</span>
-        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -89,13 +85,24 @@
             >
           </router-link>-->
 
-          <router-link to="/profile" custom v-slot="{ navigate, href }">
-            <a-menu-item key="8" id="avatar" @click="navigate" :href="href">
+          <a-sub-menu key="8" id="avatar">
+            <template #icon>
               <a-avatar size="small">
-                <template #icon><UserOutlined /></template>
+                <setting-outlined />
               </a-avatar>
+            </template>
+            <template #title>Settings</template>
+            <router-link to="/profile" custom v-slot="{ navigate, href }">
+              <a-menu-item key="setting:1" @click="navigate" :href="href">
+                <template #icon><UserOutlined /></template>
+                Profile
+              </a-menu-item>
+            </router-link>
+            <a-menu-item key="setting:2" @click="logoutSession">
+              <template #icon><logout-outlined /></template>
+              Logout
             </a-menu-item>
-          </router-link>
+          </a-sub-menu>
         </a-menu>
       </a-layout-header>
       <a-layout-content id="main-content">
@@ -115,6 +122,7 @@ import {
   MenuFoldOutlined,
   ApartmentOutlined,
   // UserSwitchOutlined,
+  SettingOutlined,
   LogoutOutlined,
   CloseOutlined,
   MailOutlined,
@@ -134,6 +142,7 @@ export default defineComponent({
     MenuFoldOutlined,
     ApartmentOutlined,
     // UserSwitchOutlined,
+    SettingOutlined,
     LogoutOutlined,
     CloseOutlined,
     MailOutlined,
