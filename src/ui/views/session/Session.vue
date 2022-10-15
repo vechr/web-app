@@ -1,5 +1,6 @@
 <template>
   <div class="container-auth-outer">
+    <img src="@/ui/assets/logo.svg" alt="logo" />
     <div class="container-auth-img"></div>
     <div class="container-auth-login">
       <a-form

@@ -129,7 +129,7 @@ import {
 } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useSessionStore } from '../store';
+import { useCommonStore, useSessionStore } from '../store';
 import Loading from '@/ui/components/common/Loading.vue';
 
 export default defineComponent({
@@ -151,8 +151,10 @@ export default defineComponent({
   setup() {
     const session = useSessionStore();
     const router = useRouter();
+    const common = useCommonStore();
 
     const logoutSession = async () => {
+      common.setIsLoading(true);
       const status = await session.logout();
       if (status) router.push('/session');
     };
