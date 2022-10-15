@@ -138,6 +138,7 @@ import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useCommonStore, useSessionStore } from '../store';
 import Loading from '@/ui/components/common/Loading.vue';
+import { confirmButtonLogout } from '@/utils/sweet_alert';
 
 export default defineComponent({
   name: 'DashboardLayout',
@@ -163,9 +164,13 @@ export default defineComponent({
     const { mySession } = storeToRefs(session);
 
     const logoutSession = async () => {
-      common.setIsLoading(true);
-      const status = await session.logout();
-      if (status) router.push('/session');
+      confirmButtonLogout.fire().then(async (result) => {
+        if (result.isConfirmed) {
+          common.setIsLoading(true);
+          const status = await session.logout();
+          if (status) router.push('/session');
+        }
+      });
     };
 
     return {

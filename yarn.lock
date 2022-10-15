@@ -7254,6 +7254,11 @@ svgo@^2.7.0:
     picocolors "^1.0.0"
     stable "^0.1.8"
 
+sweetalert2@11.x:
+  version "11.5.1"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.5.1.tgz#23f883e667e59394ff4bd4bd90e32a70b1684d8f"
+  integrity sha512-xkNfWDrA57rP6s4pescNWiHzZiRwizWlh0qGzl66C2jm/5OArA/0tFkhB8Poh18EeEr8s5sRA61OXcPzyUOuyw==
+
 tapable@^1.0.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-1.1.3.tgz#a1fccc06b58db61fd7a45da2da44f5f3a3e67ba2"
@@ -7639,6 +7644,13 @@ vue-style-loader@^4.1.0, vue-style-loader@^4.1.3:
   dependencies:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
+
+vue-sweetalert2@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/vue-sweetalert2/-/vue-sweetalert2-5.0.5.tgz#298663884149c7675d514490d1389f0614d875c0"
+  integrity sha512-Q7+TjQxNwGruT2jfPaSKMz18HHWs81r4umEwlrrtOf/QL5Iwl1T+tUaNkcvKB7Rf9rYftubt7NnOMjfDMnDH3A==
+  dependencies:
+    sweetalert2 "11.x"
 
 vue-template-compiler@^2.7.10:
   version "2.7.10"
