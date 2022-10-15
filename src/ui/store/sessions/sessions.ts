@@ -25,6 +25,8 @@ export const useSessionStore = defineStore('session', {
     async logout(): Promise<boolean> {
       const common = useCommonStore();
       const result = await sessionController().logout();
+      if (result.data) this.error = result.data.error;
+
       this.mySession = undefined;
       this.data = [];
 

@@ -95,7 +95,13 @@
             <router-link to="/profile" custom v-slot="{ navigate, href }">
               <a-menu-item key="setting:1" @click="navigate" :href="href">
                 <template #icon><UserOutlined /></template>
-                Profile
+                {{
+                  mySession !== undefined
+                    ? mySession.fullName !== null
+                      ? mySession.fullName
+                      : 'Profile'
+                    : 'Profile'
+                }}
               </a-menu-item>
             </router-link>
             <a-menu-item key="setting:2" @click="logoutSession">
@@ -129,6 +135,7 @@ import {
 } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import { useCommonStore, useSessionStore } from '../store';
 import Loading from '@/ui/components/common/Loading.vue';
 
@@ -153,6 +160,8 @@ export default defineComponent({
     const router = useRouter();
     const common = useCommonStore();
 
+    const { mySession } = storeToRefs(session);
+
     const logoutSession = async () => {
       common.setIsLoading(true);
       const status = await session.logout();
@@ -160,6 +169,7 @@ export default defineComponent({
     };
 
     return {
+      mySession,
       logoutSession,
       selectedKeys: ref<string[]>(['6']),
       collapsed: ref<boolean>(true),
