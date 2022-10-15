@@ -39,10 +39,20 @@
       // font-family: Viga;
     }
 
+    .input-auth {
+      border-bottom: 1px solid  rgba(0,148,95,1);
+    }
+
     .btn-auth {
       background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%);
-      border: rgba(0, 148, 95, 1);
+      border: none;
       width: 100%;
+    }
+
+    .btn-auth:hover {
+      background: linear-gradient(-45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%);
+      transform: scale(1.015);
+      transition: all 0.4s linear;
     }
   }
 

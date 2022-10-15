@@ -18,6 +18,8 @@
           <a-input
             placeholder="Type your username"
             v-model:value="formState.username"
+            :bordered="false"
+            class="input-auth"
           >
             <template #prefix>
               <UserOutlined class="site-form-item-icon" />
@@ -33,6 +35,8 @@
           <a-input-password
             placeholder="Type your password"
             v-model:value="formState.password"
+            :bordered="false"
+            class="input-auth"
           >
             <template #prefix>
               <LockOutlined class="site-form-item-icon" />
