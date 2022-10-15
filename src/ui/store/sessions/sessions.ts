@@ -4,6 +4,7 @@ import router from '../../router';
 import { useCommonStore } from '../common/common';
 import { ISessionData } from '@/domain/sessions/session-store';
 import { sessionController } from '@/applications/controllers';
+import { IError } from '@/domain';
 
 export const useSessionStore = defineStore('session', {
   state: () => {
@@ -20,12 +21,21 @@ export const useSessionStore = defineStore('session', {
     } as ISessionData;
   },
   actions: {
-    async statusToken(): Promise<boolean> {
-      const result = await sessionController().statusToken();
+    async logout(): Promise<boolean> {
+      const result = await sessionController().logout();
       if (result.data?.success) {
         return result.data.success;
       }
       return false;
+    },
+    async statusToken(): Promise<{ status: boolean; error: IError }> {
+      const result = await sessionController().statusToken();
+      if (result.data) this.error = result.data.error;
+
+      return {
+        status: result.data?.success ? result.data.success : false,
+        error: this.error,
+      };
     },
     async login(value: { username: string; password: string }) {
       const common = useCommonStore();
@@ -48,9 +58,9 @@ export const useSessionStore = defineStore('session', {
         router.push({ name: 'home' });
       }
     },
-    async refresh(refreshToken: string) {
+    async refresh(): Promise<{ status: boolean; error: IError }> {
       const common = useCommonStore();
-      const result = await sessionController().refresh(refreshToken);
+      const result = await sessionController().refresh();
 
       if (result.data) {
         common.setIsLoading(false);
@@ -63,8 +73,12 @@ export const useSessionStore = defineStore('session', {
 
       if (result.data?.error) {
         common.setIsLoading(false);
-        message.error(`${this.error.code} ${this.error.message}`);
       }
+
+      return {
+        status: result.data?.success ? result.data.success : false,
+        error: this.error,
+      };
     },
   },
 });

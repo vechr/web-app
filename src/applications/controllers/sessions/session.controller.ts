@@ -3,6 +3,13 @@ import { AxiosHttpClient } from '@/applications/drivers';
 export function sessionController() {
   const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
 
+  async function logout() {
+    return await http.request({
+      method: 'post',
+      url: '/api/v1/auth/sessions/logout',
+    });
+  }
+
   async function statusToken() {
     return await http.request({
       method: 'get',
@@ -18,10 +25,10 @@ export function sessionController() {
     });
   }
 
-  async function refresh(refreshToken: string) {
+  async function refresh() {
     return await http.request({
       method: 'post',
-      url: `api/v1/auth/sessions/refresh/${refreshToken}`,
+      url: `api/v1/auth/sessions/refresh`,
     });
   }
 
@@ -29,5 +36,6 @@ export function sessionController() {
     login,
     refresh,
     statusToken,
+    logout,
   };
 }

@@ -15,6 +15,7 @@ import Dashboard from '@/ui/views/homes/Dashboard.vue';
 import NotificationEmail from '@/ui/views/notification-emails/NotificationEmail.vue';
 import NotFound from '@/ui/views/common/NotFound.vue';
 import Session from '@/ui/views/session/Session.vue';
+import { EErrorJwtCode } from '@/domain';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -146,9 +147,19 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
   const session = useSessionStore();
+  let authenticated = false;
 
   const result = await session.statusToken();
-  if (to.name !== 'login' && !result) next({ name: 'login' });
+  authenticated = result.status;
+
+  if (!authenticated) {
+    if (result.error.code === EErrorJwtCode.TOKEN_EXPIRED) {
+      const { status } = await session.refresh();
+      authenticated = status;
+    }
+  }
+
+  if (to.name !== 'login' && !authenticated) next({ name: 'login' });
   else next();
 });
 
