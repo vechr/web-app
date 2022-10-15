@@ -67,3 +67,7 @@
 .ant-btn:focus, .swal2-confirm:focus {
   background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%) !important;
 }
+
+.ant-btn-dangerous, .ant-btn-dangerous:hover, .ant-btn-dangerous:focus {
+  background: red !important;
+}
