@@ -11,27 +11,27 @@
           <router-link to="/device-type" custom v-slot="{ navigate, href }">
             <a-menu-item key="1" @click="navigate" :href="href">
               <ApartmentOutlined />
-              <span>Device Type Management</span>
+              <span> Device Type Management</span>
             </a-menu-item>
           </router-link>
 
           <a-menu-item key="2" @click="navigate" :href="href">
             <dashboard-outlined />
-            <span>Dashboard Management</span>
+            <span> Dashboard Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/device" custom v-slot="{ navigate, href }">
           <a-menu-item key="3" @click="navigate" :href="href">
             <api-outlined />
-            <span>Device Management</span>
+            <span> Device Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/email" custom v-slot="{ navigate, href }">
           <a-menu-item key="4" @click="navigate" :href="href">
             <mail-outlined />
-            <span>Email Management</span>
+            <span> Email Management</span>
           </a-menu-item>
         </router-link>
 
@@ -49,6 +49,10 @@
             <span>Role Management</span>
           </a-menu-item>
         </router-link>-->
+        <a-menu-item key="5" @click="logoutSession">
+          <logout-outlined />
+          <span> Logout</span>
+        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -111,10 +115,13 @@ import {
   MenuFoldOutlined,
   ApartmentOutlined,
   // UserSwitchOutlined,
+  LogoutOutlined,
   CloseOutlined,
   MailOutlined,
 } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useSessionStore } from '../store';
 import Loading from '@/ui/components/common/Loading.vue';
 
 export default defineComponent({
@@ -127,12 +134,22 @@ export default defineComponent({
     MenuFoldOutlined,
     ApartmentOutlined,
     // UserSwitchOutlined,
+    LogoutOutlined,
     CloseOutlined,
     MailOutlined,
     Loading,
   },
   setup() {
+    const session = useSessionStore();
+    const router = useRouter();
+
+    const logoutSession = async () => {
+      const status = await session.logout();
+      if (status) router.push('/session');
+    };
+
     return {
+      logoutSession,
       selectedKeys: ref<string[]>(['6']),
       collapsed: ref<boolean>(true),
     };
