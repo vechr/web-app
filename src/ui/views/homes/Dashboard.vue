@@ -622,6 +622,8 @@ export default defineComponent({
         disableDrag: true,
       });
 
+      grid.enableResize(false);
+
       grid.on('removed', (_: Event, items: any) => {
         items.forEach(async (node: GridStackNode) => {
           const preDelete: IWidget | undefined = data.value.find(
