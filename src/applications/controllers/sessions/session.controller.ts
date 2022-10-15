@@ -3,6 +3,13 @@ import { AxiosHttpClient } from '@/applications/drivers';
 export function sessionController() {
   const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
 
+  async function mySession() {
+    return await http.request({
+      method: 'get',
+      url: '/api/v1/auth/sessions/me',
+    });
+  }
+
   async function logout() {
     return await http.request({
       method: 'post',
@@ -33,6 +40,7 @@ export function sessionController() {
   }
 
   return {
+    mySession,
     login,
     refresh,
     statusToken,

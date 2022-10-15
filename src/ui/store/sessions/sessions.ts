@@ -18,12 +18,15 @@ export const useSessionStore = defineStore('session', {
         params: {},
       },
       meta: {},
+      mySession: undefined,
     } as ISessionData;
   },
   actions: {
     async logout(): Promise<boolean> {
       const common = useCommonStore();
       const result = await sessionController().logout();
+      this.mySession = undefined;
+      this.data = [];
 
       common.setIsLoading(false);
 
@@ -89,6 +92,12 @@ export const useSessionStore = defineStore('session', {
         status: result.data?.success ? result.data.success : false,
         error: this.error,
       };
+    },
+    async userMe(): Promise<void> {
+      const result = await sessionController().mySession();
+      if (result.data?.success) {
+        this.mySession = result.data?.result;
+      }
     },
   },
 });

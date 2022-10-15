@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import { useSessionStore } from '../store';
 import DashboardManagement from '@/ui/views/dashboard-managements/DashboardManagement.vue';
 import DeviceManagement from '@/ui/views/device-managements/DeviceManagement.vue';
@@ -147,6 +148,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
   const session = useSessionStore();
+  const { mySession } = storeToRefs(session);
   let authenticated = false;
 
   const result = await session.statusToken();
@@ -156,6 +158,12 @@ router.beforeEach(async (to, _from, next) => {
     if (result.error.code === EErrorJwtCode.TOKEN_EXPIRED) {
       const { status } = await session.refresh();
       authenticated = status;
+    }
+  }
+
+  if (authenticated) {
+    if (mySession?.value === undefined) {
+      await session.userMe();
     }
   }
 
