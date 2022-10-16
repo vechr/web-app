@@ -75,7 +75,7 @@
 <script lang="ts">
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount, reactive } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
@@ -114,10 +114,6 @@ export default defineComponent({
       description: '',
       isActive: true,
       deviceTypeId: '',
-    });
-
-    onBeforeMount(() => {
-      storeDeviceType.getOptionDeviceType();
     });
 
     const onFinish = (values: FormState) => {
