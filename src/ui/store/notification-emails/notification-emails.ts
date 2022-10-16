@@ -31,9 +31,38 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         message: '',
         params: Object,
       },
+      meta: {},
     } as INotificationEmailData;
   },
   getters: {
+    notificationEmailColumnsSort() {
+      return [
+        {
+          label: 'Name',
+          value: 'name',
+        },
+        {
+          label: 'Description',
+          value: 'description',
+        },
+        {
+          label: 'Sender',
+          value: 'sender',
+        },
+        {
+          label: 'Recipient',
+          value: 'recipient',
+        },
+        {
+          label: 'Created At',
+          value: 'createdAt',
+        },
+        {
+          label: 'Updated At',
+          value: 'updatedAt',
+        },
+      ];
+    },
     notificationEmailTypeColumns() {
       return [
         {
@@ -101,6 +130,27 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
     },
   },
   actions: {
+    async getNotificationEmailPagination(params: Record<string, any>) {
+      const common = useCommonStore();
+      common.setIsLoading(true);
+
+      const result =
+        await notificationEmailController().getNotificationEmailListV2(params);
+
+      if (result.data?.error) {
+        this.error = result.data?.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
+        if (result.status === 200) {
+          this.success = result.data?.success;
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data = result.data?.result;
+          this.error = result.data?.error;
+          this.meta = result.data?.meta;
+        }
+      }
+      common.setIsLoading(false);
+    },
     async getOptionNotificationEmail() {
       const result =
         await notificationEmailController().getNotificationEmailList();

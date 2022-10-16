@@ -1,7 +1,18 @@
 import { AxiosHttpClient } from '@/applications/drivers';
+import { THttpResponse } from '@/domain';
 
 export function notificationEmailController() {
   const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+
+  async function getNotificationEmailListV2(
+    urlParams: Record<string, any>,
+  ): Promise<THttpResponse> {
+    return await http.request({
+      method: 'get',
+      url: '/api/v2/notification/email',
+      params: urlParams,
+    });
+  }
 
   async function getNotificationEmailList() {
     return await http.request({
@@ -54,6 +65,7 @@ export function notificationEmailController() {
   }
 
   return {
+    getNotificationEmailListV2,
     getNotificationEmailList,
     getNotificationEmailById,
     createNotificationEmail,
