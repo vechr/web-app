@@ -33,6 +33,7 @@
           :dataSource="topicList"
           :columns="topicColumns"
           :scroll="{ x: 1200 }"
+          :pagination="false"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'name'">

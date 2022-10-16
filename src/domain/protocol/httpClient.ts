@@ -15,6 +15,7 @@ export enum EHttpStatusCode {
 
 export type THttpRequest = {
   url: string;
+  params?: Record<string, any>;
   method: THttpMethod;
   data?: any;
   headers?: any;

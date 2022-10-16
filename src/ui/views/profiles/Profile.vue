@@ -98,8 +98,13 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       if (dataDetails?.value === undefined) {
-        if (mySession?.value !== undefined && mySession.value.id !== undefined)
+        if (
+          mySession?.value !== undefined &&
+          mySession.value.id !== undefined
+        ) {
+          common.setIsLoading(true);
           await user.getUserById(mySession.value.id);
+        }
       }
     });
 

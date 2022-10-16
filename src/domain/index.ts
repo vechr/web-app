@@ -9,3 +9,4 @@ export * from './logging';
 export * from './notification-email';
 export * from './sessions/index';
 export * from './user/user';
+export * from './query/list.query';

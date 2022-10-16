@@ -24,9 +24,30 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
         message: '',
         params: Object,
       },
+      meta: {},
     } as IDashboardData;
   },
   getters: {
+    dashboardColumnsSort() {
+      return [
+        {
+          label: 'Name',
+          value: 'name',
+        },
+        {
+          label: 'Description',
+          value: 'description',
+        },
+        {
+          label: 'Created At',
+          value: 'createdAt',
+        },
+        {
+          label: 'Updated At',
+          value: 'updatedAt',
+        },
+      ];
+    },
     dashboardColumns() {
       return [
         {
@@ -79,6 +100,26 @@ export const useDashboardManagementStore = defineStore('dashboardManagement', {
     },
   },
   actions: {
+    async getDashboardPagination(params: Record<string, any>) {
+      const common = useCommonStore();
+      common.setIsLoading(true);
+
+      const result = await dashboardController().getDashboardListV2(params);
+
+      if (result.data?.error) {
+        this.error = result.data?.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
+        if (result.status === 200) {
+          this.success = result.data?.success;
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data = result.data?.result;
+          this.error = result.data?.error;
+          this.meta = result.data?.meta;
+        }
+      }
+      common.setIsLoading(false);
+    },
     async getDashboardFullList() {
       const common = useCommonStore();
       common.setIsLoading(true);

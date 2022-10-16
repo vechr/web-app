@@ -57,7 +57,7 @@
 </template>
 <script lang="ts">
 import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
+import { defineComponent } from 'vue';
 import {
   useCommonStore,
   useDashboardManagementStore,
@@ -79,10 +79,6 @@ export default defineComponent({
     const onClose = () => {
       common.setIsDrawerShow(false);
     };
-
-    onBeforeMount(() => {
-      deviceStore.getOptionDevice();
-    });
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
