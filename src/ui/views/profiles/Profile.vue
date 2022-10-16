@@ -1,7 +1,17 @@
 <template>
   <div v-if="!isLoadingActive">
     <div v-if="dataDetails !== undefined">
-      <h2>Hi, {{ dataDetails.fullName }}!</h2>
+      <h2
+        :style="{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '50px',
+        }"
+        class="responsive-text"
+      >
+        Hi, {{ dataDetails.fullName }}!
+      </h2>
       <a-form
         :model="dataDetails"
         name="basic"
@@ -56,15 +66,7 @@
           </a-textarea>
         </a-form-item>
 
-        <a-form-item label="Site" name="site">
-          <a-textarea
-            placeholder="Type your Site"
-            v-model:value="dataDetails.site.name"
-          >
-          </a-textarea>
-        </a-form-item>
-
-        <a-form-item :wrapper-col="{ offset: 4, span: 28 }">
+        <!-- <a-form-item :wrapper-col="{ offset: 4, span: 28 }">
           <a-button
             class="btn-auth"
             shape="round"
@@ -73,7 +75,7 @@
             html-type="submit"
             >Save</a-button
           >
-        </a-form-item>
+        </a-form-item> -->
       </a-form>
     </div>
   </div>
