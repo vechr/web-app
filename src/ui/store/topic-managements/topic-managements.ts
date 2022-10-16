@@ -25,9 +25,30 @@ export const useTopicManagementStore = defineStore('topicManagement', {
         message: '',
         params: Object,
       },
+      meta: {},
     } as ITopicData;
   },
   getters: {
+    topicColumnsSort() {
+      return [
+        {
+          label: 'Name',
+          value: 'name',
+        },
+        {
+          label: 'Description',
+          value: 'description',
+        },
+        {
+          label: 'Created At',
+          value: 'createdAt',
+        },
+        {
+          label: 'Updated At',
+          value: 'updatedAt',
+        },
+      ];
+    },
     topicColumns() {
       return [
         {
@@ -87,6 +108,26 @@ export const useTopicManagementStore = defineStore('topicManagement', {
     },
   },
   actions: {
+    async getTopicPagination(deviceId: string, params: Record<string, any>) {
+      const common = useCommonStore();
+      common.setIsLoading(true);
+
+      const result = await topicController().getTopicListV2(deviceId, params);
+
+      if (result.data?.error) {
+        this.error = result.data?.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
+        if (result.status === 200) {
+          this.success = result.data?.success;
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data = result.data?.result;
+          this.error = result.data?.error;
+          this.meta = result.data?.meta;
+        }
+      }
+      common.setIsLoading(false);
+    },
     async getTopicList(deviceId: string) {
       const common = useCommonStore();
       common.setIsLoading(true);
