@@ -122,8 +122,24 @@ export default defineComponent({
       common.setIsLoading(true);
       store.login(values);
       if (remember.value) {
-        cookies.set('user-sec', encryptedDDataString(values.username));
-        cookies.set('pass-sec', encryptedDDataString(values.password));
+        cookies.set(
+          'user-sec',
+          encryptedDDataString(values.username),
+          '3d',
+          undefined,
+          undefined,
+          true,
+          'Strict',
+        );
+        cookies.set(
+          'pass-sec',
+          encryptedDDataString(values.password),
+          '3d',
+          undefined,
+          undefined,
+          true,
+          'Strict',
+        );
         cookies.set('remember', String(remember.value));
       } else {
         cookies.remove('user-sec');
