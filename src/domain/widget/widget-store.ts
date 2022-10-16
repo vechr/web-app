@@ -1,10 +1,8 @@
 import { GridStackNode } from 'gridstack';
-import { IWidget, IError } from '@/domain';
+import { IWidget, IBaseResponse } from '@/domain';
 
-export interface IWidgetData {
-  message: string;
+export interface IWidgetData extends IBaseResponse {
   data: IWidget[];
   dataDetails: IWidget | null;
   node: GridStackNode[];
-  error: IError;
 }

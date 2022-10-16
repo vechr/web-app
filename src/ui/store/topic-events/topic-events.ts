@@ -35,9 +35,34 @@ export const useTopicEventStore = defineStore('topicEvent', {
         message: '',
         params: Object,
       },
+      meta: {},
     } as ITopicEventData;
   },
   getters: {
+    topicEventColumnsSort() {
+      return [
+        {
+          label: 'Name',
+          value: 'name',
+        },
+        {
+          label: 'Description',
+          value: 'description',
+        },
+        {
+          label: 'Event Expression',
+          value: 'eventExpression',
+        },
+        {
+          label: 'Created At',
+          value: 'createdAt',
+        },
+        {
+          label: 'Updated At',
+          value: 'updatedAt',
+        },
+      ];
+    },
     topicEventColumns() {
       return [
         {
@@ -99,6 +124,32 @@ export const useTopicEventStore = defineStore('topicEvent', {
     },
   },
   actions: {
+    async getTopicEventPagination(
+      topicId: string,
+      params: Record<string, any>,
+    ) {
+      const common = useCommonStore();
+      common.setIsLoading(true);
+
+      const result = await topicEventController().getTopicEventListV2(
+        topicId,
+        params,
+      );
+
+      if (result.data?.error) {
+        this.error = result.data?.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
+        if (result.status === 200) {
+          this.success = result.data?.success;
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data = result.data?.result;
+          this.error = result.data?.error;
+          this.meta = result.data?.meta;
+        }
+      }
+      common.setIsLoading(false);
+    },
     async getTopicEventList(topicId: string) {
       const common = useCommonStore();
       common.setIsLoading(true);

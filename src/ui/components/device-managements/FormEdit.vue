@@ -72,7 +72,7 @@
 </template>
 <script lang="ts">
 import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
+import { defineComponent } from 'vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
@@ -101,10 +101,6 @@ export default defineComponent({
     const filterOption = (input: string, option: any) => {
       return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     };
-
-    onBeforeMount(() => {
-      storeDeviceType.getOptionDeviceType();
-    });
 
     const onFinish = (values: FormState) => {
       common.setIsLoadingButton(true);

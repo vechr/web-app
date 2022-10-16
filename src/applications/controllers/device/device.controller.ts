@@ -1,7 +1,18 @@
 import { AxiosHttpClient } from '@/applications/drivers';
+import { THttpResponse } from '@/domain';
 
 export function deviceController() {
   const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+
+  async function getDeviceListV2(
+    urlParams: Record<string, any>,
+  ): Promise<THttpResponse> {
+    return await http.request({
+      method: 'get',
+      url: '/api/v2/things/device',
+      params: urlParams,
+    });
+  }
 
   async function getDevices() {
     return await http.request({
@@ -54,6 +65,7 @@ export function deviceController() {
   }
 
   return {
+    getDeviceListV2,
     getDevices,
     getDeviceById,
     createDevice,

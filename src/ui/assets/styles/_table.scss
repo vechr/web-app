@@ -1,0 +1,72 @@
+.ant-table-content {
+  border-radius: 10px;
+  border: 1px solid #00D1FF;
+}
+
+.ant-table-thead {
+  tr {
+    th {
+      color: white;
+      background: #00D1FF;
+    }
+  }
+}
+
+.pagination-table {
+  text-align: center;
+  margin-top: 30px;
+
+  ul {
+    li {
+      border-radius: 7px !important;
+      transition: all 0.01s linear;
+
+      button, .ant-select-selector, input {
+        border-radius: 7px !important;
+      }
+    }
+
+    .ant-pagination-item-active {
+      background: #00D1FF;
+      border: #00D1FF;
+
+      a {
+        color: white;
+        border: none;
+      }
+    }
+  }
+}
+
+.table-input-search {
+  margin-right: 10px;
+  width: 25%;
+  .ant-input-group {
+    input {
+      border-bottom: 1px solid rgba(0,148,95,1);
+    }
+  }
+}
+
+.ant-input-number.table-filter {
+  border-radius: 15px !important;
+
+  .ant-input-number-handler-wrap {
+    border-radius: 0 15px 15px 0 !important;
+  }
+}
+
+.table-filter {
+  margin-right: 10px;
+  
+  .ant-select-selector {
+    border-radius: 15px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .table-filter, .table-btn-create, .table-input-search {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

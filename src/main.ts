@@ -2,6 +2,8 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import Antd from 'ant-design-vue';
 import L from 'leaflet';
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import App from './ui/App.vue';
 import router from './ui/router';
 import 'ant-design-vue/dist/antd.css';
@@ -17,4 +19,4 @@ L.Icon.Default.mergeOptions({
 });
 
 const app = createApp(App);
-app.use(createPinia()).use(router).use(Antd).mount('#app');
+app.use(createPinia()).use(router).use(Antd).use(VueSweetalert2).mount('#app');

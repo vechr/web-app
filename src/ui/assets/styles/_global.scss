@@ -38,3 +38,36 @@
 }
 
 .tox-notification, .tox-statusbar__branding { display: none !important }
+
+.swal2-popup {
+  border-radius: 10px;
+}
+
+.swal2-cancel {
+  border-radius: 20px !important;
+}
+
+.swal2-cancel:hover {
+  transform: scale(1.02);
+  transition: all 0.15s linear;
+}
+
+.ant-btn, .swal2-confirm {
+  border-radius: 20px !important;
+  background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%) !important;
+  border: none;
+}
+
+.ant-btn:hover, .swal2-confirm:hover {
+  background: linear-gradient(-45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%) !important;
+  transform: scale(1.02);
+  transition: all 0.15s linear;
+}
+
+.ant-btn:focus, .swal2-confirm:focus {
+  background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%) !important;
+}
+
+.ant-btn-dangerous, .ant-btn-dangerous:hover, .ant-btn-dangerous:focus {
+  background: red !important;
+}

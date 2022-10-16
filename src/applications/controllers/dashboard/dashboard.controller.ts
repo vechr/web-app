@@ -11,6 +11,16 @@ export function dashboardController() {
     });
   }
 
+  async function getDashboardListV2(
+    urlParams: Record<string, any>,
+  ): Promise<THttpResponse> {
+    return await http.request({
+      method: 'get',
+      url: '/api/v2/things/dashboard',
+      params: urlParams,
+    });
+  }
+
   async function getDashboardList(): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
@@ -61,5 +71,6 @@ export function dashboardController() {
     createDashboard,
     updateDashboardById,
     deleteDashboardById,
+    getDashboardListV2,
   };
 }

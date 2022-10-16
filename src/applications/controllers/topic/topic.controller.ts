@@ -1,7 +1,19 @@
 import { AxiosHttpClient } from '@/applications/drivers';
+import { THttpResponse } from '@/domain';
 
 export function topicController() {
   const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+
+  async function getTopicListV2(
+    deviceId: string,
+    urlParams: Record<string, any>,
+  ): Promise<THttpResponse> {
+    return await http.request({
+      method: 'get',
+      url: `/api/v2/things/device/${deviceId}/topic`,
+      params: urlParams,
+    });
+  }
 
   async function getTopicList(deviceId: string) {
     return await http.request({
@@ -48,6 +60,7 @@ export function topicController() {
   }
 
   return {
+    getTopicListV2,
     getTopicList,
     getTopicById,
     createTopic,

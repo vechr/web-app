@@ -38,9 +38,30 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         message: '',
         params: Object,
       },
+      meta: {},
     } as IDeviceData;
   },
   getters: {
+    deviceColumnsSort() {
+      return [
+        {
+          label: 'Name',
+          value: 'name',
+        },
+        {
+          label: 'Description',
+          value: 'description',
+        },
+        {
+          label: 'Created At',
+          value: 'createdAt',
+        },
+        {
+          label: 'Updated At',
+          value: 'updatedAt',
+        },
+      ];
+    },
     deviceColumns() {
       return [
         {
@@ -106,6 +127,26 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
     },
   },
   actions: {
+    async getDevicePagination(params: Record<string, any>) {
+      const common = useCommonStore();
+      common.setIsLoading(true);
+
+      const result = await deviceController().getDeviceListV2(params);
+
+      if (result.data?.error) {
+        this.error = result.data?.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
+        if (result.status === 200) {
+          this.success = result.data?.success;
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data = result.data?.result;
+          this.error = result.data?.error;
+          this.meta = result.data?.meta;
+        }
+      }
+      common.setIsLoading(false);
+    },
     async getOptionDevice() {
       const result = await deviceController().getDevices();
       if (result.data?.error) {

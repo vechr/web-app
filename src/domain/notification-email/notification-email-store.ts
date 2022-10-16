@@ -1,7 +1,6 @@
-import { IError, INotificationEmail } from '@/domain';
+import { IBaseResponse, INotificationEmail } from '@/domain';
 
-export interface INotificationEmailData {
-  message: string;
+export interface INotificationEmailData extends IBaseResponse {
   data: INotificationEmail[];
   dataDetails: INotificationEmail;
   optionNotificationEmail: { value: string; label: string }[];
@@ -12,5 +11,4 @@ export interface INotificationEmailData {
     sender: string;
     recipient: string;
   };
-  error: IError;
 }

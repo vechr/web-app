@@ -7,3 +7,5 @@ export * from './topic/topic.controller';
 export * from './topic-event/topic-event.controller';
 export * from './widget/widget.controller';
 export * from './notification-email/notification-email.controller';
+export * from './sessions/session.controller';
+export * from './user/user.controller';

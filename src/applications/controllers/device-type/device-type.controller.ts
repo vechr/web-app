@@ -4,6 +4,16 @@ import { THttpResponse } from '@/domain';
 export function deviceTypeController() {
   const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
 
+  async function getDeviceTypeListV2(
+    urlParams: Record<string, any>,
+  ): Promise<THttpResponse> {
+    return await http.request({
+      method: 'get',
+      url: '/api/v2/things/device-type',
+      params: urlParams,
+    });
+  }
+
   async function getDeviceTypes(): Promise<THttpResponse> {
     return await http.request({
       method: 'get',
@@ -48,6 +58,7 @@ export function deviceTypeController() {
   }
 
   return {
+    getDeviceTypeListV2,
     getDeviceTypes,
     getDeviceTypeById,
     createDeviceType,

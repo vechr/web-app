@@ -13,6 +13,49 @@
     </h2>
     <a-row>
       <a-col :span="24">
+        <!-- Filter Pagination -->
+        <a-input-search
+          :bordered="false"
+          placeholder="Find by name"
+          enter-button
+          class="table-input-search"
+          v-model:value="params.filters.field.name.contains"
+          @search="onSearch"
+        />
+        <a-select
+          class="table-filter"
+          ref="select"
+          v-model:value="params.filters.sort.mode"
+          :options="sortMode"
+          @change="onSearch"
+        >
+          <template #suffixIcon
+            ><sort-ascending-outlined
+              v-if="params.filters.sort.mode === ESortMode.ASC"
+              class="ant-select-suffix" /><sort-descending-outlined
+              v-else
+              class="ant-select-suffix"
+          /></template>
+        </a-select>
+        <a-select
+          class="table-filter"
+          ref="select"
+          v-model:value="params.filters.sort.by"
+          :options="deviceColumnsSort"
+          @change="onSearch"
+        >
+          <template #suffixIcon
+            ><field-time-outlined class="ant-select-suffix"
+          /></template>
+        </a-select>
+        <a-input-number
+          id="inputLimit"
+          v-model:value="params.filters.pagination.limit"
+          :min="1"
+          class="table-filter"
+          @change="onSearch"
+        />
+        <!-- Create Data -->
         <FormCreate style="float: right; margin-bottom: 20px" />
         <FormEdit />
       </a-col>
@@ -24,6 +67,7 @@
           :dataSource="deviceList"
           :columns="deviceColumns"
           :scroll="{ x: 1200 }"
+          :pagination="false"
         >
           <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'name'">
@@ -109,6 +153,17 @@
             </template>
           </a-empty>
         </div>
+        <!-- Pagination -->
+        <div class="pagination-table">
+          <a-pagination
+            v-model:current="params.filters.pagination.page"
+            v-model:pageSize="params.filters.pagination.limit"
+            :pageSizeOptions="pageSizeOptions"
+            show-quick-jumper
+            :total="meta?.total"
+            @change="onChangePagination"
+          />
+        </div>
       </a-col>
     </a-row>
   </div>
@@ -119,11 +174,24 @@ import {
   DeleteOutlined,
   EditOutlined,
   CheckCircleFilled,
+  SortAscendingOutlined,
+  SortDescendingOutlined,
+  FieldTimeOutlined,
 } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
-import { useCommonStore, useDeviceManagementStore } from '@/ui/store';
-import { IDevice } from '@/domain';
+import { defineComponent, onBeforeMount, reactive } from 'vue';
+import {
+  useCommonStore,
+  useDeviceManagementStore,
+  useDeviceTypeStore,
+} from '@/ui/store';
+import {
+  ESortMode,
+  IDevice,
+  pageSizeOptions,
+  sortMode,
+  TQueryParamsFieldName,
+} from '@/domain';
 import FormCreate from '@/ui/components/device-managements/FormCreate.vue';
 import FormEdit from '@/ui/components/device-managements/FormEdit.vue';
 
@@ -135,20 +203,54 @@ export default defineComponent({
     CheckCircleFilled,
     FormCreate,
     FormEdit,
+    SortAscendingOutlined,
+    SortDescendingOutlined,
+    FieldTimeOutlined,
   },
   setup() {
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
     const store = useDeviceManagementStore();
-    const { deviceList, deviceColumns } = storeToRefs(store);
+    const storeDeviceType = useDeviceTypeStore();
+    const { deviceList, deviceColumns, deviceColumnsSort, meta } =
+      storeToRefs(store);
+
+    const params = reactive<TQueryParamsFieldName>({
+      filters: {
+        pagination: {
+          page: 1,
+          limit: 10,
+        },
+        sort: {
+          by: 'createdAt',
+          mode: ESortMode.ASC,
+        },
+        field: {
+          name: {
+            contains: '',
+          },
+        },
+      },
+    });
+
+    const onSearch = () => {
+      store.getDevicePagination(params);
+    };
+
+    const onChangePagination = (pageNumber: number, pageSize: number) => {
+      params.filters.pagination.limit = pageSize;
+      params.filters.pagination.page = pageNumber;
+      store.getDevicePagination(params);
+    };
 
     const onDelete = (record: IDevice) => {
       store.deleteDeviceById(record.id);
     };
 
     onBeforeMount(() => {
-      store.getDeviceList();
+      store.getDevicePagination(params);
+      storeDeviceType.getOptionDeviceType();
     });
 
     const onEdit = (record: IDevice) => {
@@ -156,7 +258,21 @@ export default defineComponent({
       store.getDeviceById(record.id);
     };
 
-    return { isLoadingActive, deviceList, deviceColumns, onDelete, onEdit };
+    return {
+      pageSizeOptions,
+      meta,
+      deviceColumnsSort,
+      sortMode,
+      onSearch,
+      ESortMode,
+      params,
+      onChangePagination,
+      isLoadingActive,
+      deviceList,
+      deviceColumns,
+      onDelete,
+      onEdit,
+    };
   },
 });
 </script>

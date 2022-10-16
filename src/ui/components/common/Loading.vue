@@ -243,7 +243,7 @@ export default defineComponent({
 }
 
 .center-screen svg {
-  width: 400px;
+  width: 300px;
 }
 
 #minute {
