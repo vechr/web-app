@@ -31,6 +31,49 @@
     </h2>
     <a-row>
       <a-col :span="24">
+        <!-- Filter Pagination -->
+        <a-input-search
+          :bordered="false"
+          placeholder="Find by name"
+          enter-button
+          class="table-input-search"
+          v-model:value="params.filters.field.name.contains"
+          @search="onSearch"
+        />
+        <a-select
+          class="table-filter"
+          ref="select"
+          v-model:value="params.filters.sort.mode"
+          :options="sortMode"
+          @change="onSearch"
+        >
+          <template #suffixIcon
+            ><sort-ascending-outlined
+              v-if="params.filters.sort.mode === ESortMode.ASC"
+              class="ant-select-suffix" /><sort-descending-outlined
+              v-else
+              class="ant-select-suffix"
+          /></template>
+        </a-select>
+        <a-select
+          class="table-filter"
+          ref="select"
+          v-model:value="params.filters.sort.by"
+          :options="topicEventColumnsSort"
+          @change="onSearch"
+        >
+          <template #suffixIcon
+            ><field-time-outlined class="ant-select-suffix"
+          /></template>
+        </a-select>
+        <a-input-number
+          id="inputLimit"
+          v-model:value="params.filters.pagination.limit"
+          :min="1"
+          class="table-filter"
+          @change="onSearch"
+        />
+        <!-- Create Data -->
         <FormCreate style="float: right; margin-bottom: 20px" />
         <FormEdit />
       </a-col>
@@ -105,22 +148,45 @@
             </template>
           </a-empty>
         </div>
+        <!-- Pagination -->
+        <div class="pagination-table">
+          <a-pagination
+            v-model:current="params.filters.pagination.page"
+            v-model:pageSize="params.filters.pagination.limit"
+            :pageSizeOptions="pageSizeOptions"
+            show-quick-jumper
+            :total="meta?.total"
+            @change="onChangePagination"
+          />
+        </div>
       </a-col>
     </a-row>
   </div>
 </template>
 
 <script lang="ts">
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  FieldTimeOutlined,
+  SortAscendingOutlined,
+  SortDescendingOutlined,
+} from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
+import { defineComponent, onBeforeMount, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import {
   useTopicEventStore,
   useCommonStore,
   useNotificationEmailStore,
 } from '@/ui/store';
-import { ITopicEvent } from '@/domain';
+import {
+  ESortMode,
+  ITopicEvent,
+  pageSizeOptions,
+  sortMode,
+  TQueryParamsFieldName,
+} from '@/domain';
 import FormCreate from '@/ui/components/topic-events/FormCreate.vue';
 import FormEdit from '@/ui/components/topic-events/FormEdit.vue';
 
@@ -131,6 +197,9 @@ export default defineComponent({
     FormCreate,
     DeleteOutlined,
     EditOutlined,
+    SortAscendingOutlined,
+    SortDescendingOutlined,
+    FieldTimeOutlined,
   },
   setup() {
     const route = useRoute();
@@ -141,16 +210,49 @@ export default defineComponent({
     const { isLoadingActive } = storeToRefs(common);
 
     const topicEventStore = useTopicEventStore();
-    const { topicEventEdit, topicEventList, topicEventColumns } =
-      storeToRefs(topicEventStore);
+    const {
+      topicEventColumnsSort,
+      topicEventEdit,
+      topicEventList,
+      topicEventColumns,
+      meta,
+    } = storeToRefs(topicEventStore);
 
     const notificationEmailStore = useNotificationEmailStore();
     const { hashMapNotificationEmailList } = storeToRefs(
       notificationEmailStore,
     );
 
+    const params = reactive<TQueryParamsFieldName>({
+      filters: {
+        pagination: {
+          page: 1,
+          limit: 10,
+        },
+        sort: {
+          by: 'createdAt',
+          mode: ESortMode.ASC,
+        },
+        field: {
+          name: {
+            contains: '',
+          },
+        },
+      },
+    });
+
+    const onChangePagination = (pageNumber: number, pageSize: number) => {
+      params.filters.pagination.limit = pageSize;
+      params.filters.pagination.page = pageNumber;
+      topicEventStore.getTopicEventPagination(topicId, params);
+    };
+
+    const onSearch = () => {
+      topicEventStore.getTopicEventPagination(topicId, params);
+    };
+
     onBeforeMount(() => {
-      topicEventStore.getTopicEventList(topicId);
+      topicEventStore.getTopicEventPagination(topicId, params);
       notificationEmailStore.getNotificationEmailList();
     });
 
@@ -180,6 +282,14 @@ export default defineComponent({
     };
 
     return {
+      topicEventColumnsSort,
+      onSearch,
+      meta,
+      ESortMode,
+      params,
+      sortMode,
+      pageSizeOptions,
+      onChangePagination,
       hashMapNotificationEmailList,
       onDelete,
       onEdit,

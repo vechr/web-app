@@ -1,7 +1,19 @@
 import { AxiosHttpClient } from '@/applications/drivers';
+import { THttpResponse } from '@/domain';
 
 export function topicEventController() {
   const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+
+  async function getTopicEventListV2(
+    topicId: string,
+    urlParams: Record<string, any>,
+  ): Promise<THttpResponse> {
+    return await http.request({
+      method: 'get',
+      url: `/api/v2/things/topic/${topicId}/topic-events`,
+      params: urlParams,
+    });
+  }
 
   async function getTopicEventList(topicId: string) {
     return await http.request({
@@ -62,6 +74,7 @@ export function topicEventController() {
   }
 
   return {
+    getTopicEventListV2,
     getTopicEventList,
     getTopicEventById,
     createTopicEvent,
