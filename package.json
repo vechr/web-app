@@ -24,7 +24,7 @@
     "codemirror": "^6.0.1",
     "core-js": "^3.25.5",
     "crypto-js": "^4.1.1",
-    "gridstack": "^7.0.0",
+    "gridstack": "^7.0.1",
     "leaflet": "^1.9.2",
     "nats.ws": "^1.9.0",
     "pinia": "^2.0.23",
