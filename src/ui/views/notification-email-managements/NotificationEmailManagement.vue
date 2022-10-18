@@ -147,8 +147,8 @@ import {
   sortMode,
   TQueryParamsFieldName,
 } from '@/domain';
-import FormCreate from '@/ui/components/notification-emails/FormCreate.vue';
-import FormEdit from '@/ui/components/notification-emails/FormEdit.vue';
+import FormCreate from '@/ui/components/notification-email-managements/FormCreate.vue';
+import FormEdit from '@/ui/components/notification-email-managements/FormEdit.vue';
 
 export default defineComponent({
   name: 'NotificationEmail',

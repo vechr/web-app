@@ -164,8 +164,8 @@ import {
   sortMode,
   TQueryParamsFieldName,
 } from '@/domain';
-import FormCreate from '@/ui/components/device-types/FormCreate.vue';
-import FormEdit from '@/ui/components/device-types/FormEdit.vue';
+import FormCreate from '@/ui/components/device-type-managements/FormCreate.vue';
+import FormEdit from '@/ui/components/device-type-managements/FormEdit.vue';
 
 export default defineComponent({
   name: 'DeviceType',

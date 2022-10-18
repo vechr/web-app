@@ -151,8 +151,8 @@ import {
   TQueryParamsFieldUsername,
   TUser,
 } from '@/domain';
-import FormCreate from '@/ui/components/users/FormCreate.vue';
-import FormEdit from '@/ui/components/users/FormEdit.vue';
+import FormCreate from '@/ui/components/user-managements/FormCreate.vue';
+import FormEdit from '@/ui/components/user-managements/FormEdit.vue';
 
 export default defineComponent({
   name: 'UserManagement',

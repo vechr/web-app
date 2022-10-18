@@ -187,8 +187,8 @@ import {
   sortMode,
   TQueryParamsFieldName,
 } from '@/domain';
-import FormCreate from '@/ui/components/topic-events/FormCreate.vue';
-import FormEdit from '@/ui/components/topic-events/FormEdit.vue';
+import FormCreate from '@/ui/components/topic-event-managements/FormCreate.vue';
+import FormEdit from '@/ui/components/topic-event-managements/FormEdit.vue';
 
 export default defineComponent({
   name: 'TopicEvent',
