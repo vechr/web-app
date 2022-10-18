@@ -78,6 +78,16 @@
           />
         </a-form-item>
 
+        <a-form-item label="Roles" name="roles" :rules="[{ required: false }]">
+          <a-select
+            mode="tags"
+            style="width: 100%"
+            placeholder="Tags Mode"
+            :options="optionRoles"
+            v-model:value="formState.roles"
+          ></a-select>
+        </a-form-item>
+
         <a-form-item>
           <a-button
             type="primary"
@@ -98,7 +108,11 @@ import { PlusOutlined } from '@ant-design/icons-vue';
 import type { FormInstance } from 'ant-design-vue';
 import { defineComponent, reactive, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useCommonStore, useUserManagementStore } from '@/ui/store';
+import {
+  useCommonStore,
+  useRoleManagements,
+  useUserManagementStore,
+} from '@/ui/store';
 import { ICreateUser } from '@/domain';
 
 export default defineComponent({
@@ -108,8 +122,10 @@ export default defineComponent({
     const formRef = ref<FormInstance>();
     const common = useCommonStore();
     const store = useUserManagementStore();
-
     const { isModalShow, isLoadingButton } = storeToRefs(common);
+
+    const roleStore = useRoleManagements();
+    const { optionRoles } = storeToRefs(roleStore);
 
     const showModal = () => {
       common.setIsModalShow(true);
@@ -154,7 +170,6 @@ export default defineComponent({
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      values.roles = []; // dummy roles
       store.createUser(values);
     };
 
@@ -167,6 +182,7 @@ export default defineComponent({
     };
 
     return {
+      optionRoles,
       formRef,
       rules,
       isLoadingButton,

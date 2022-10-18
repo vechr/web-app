@@ -9,3 +9,4 @@ export * from './widgets/widget';
 export * from './notification-emails/notification-emails';
 export * from './sessions/sessions';
 export * from './users/user-managements';
+export * from './roles/role-management';

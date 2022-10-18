@@ -1,3 +1,5 @@
+import { Role } from '../role';
+
 export type TUser = {
   id: string;
   fullName: string;
@@ -16,14 +18,6 @@ type Site = {
   code: string;
   name: string;
   location: string;
-  description: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-type Role = {
-  id: string;
-  name: string;
   description: string | null;
   createdAt: Date;
   updatedAt: Date;

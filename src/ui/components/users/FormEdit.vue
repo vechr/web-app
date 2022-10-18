@@ -69,6 +69,16 @@
         />
       </a-form-item>
 
+      <a-form-item label="Roles" name="roles" :rules="[{ required: false }]">
+        <a-select
+          mode="tags"
+          style="width: 100%"
+          placeholder="Tags Mode"
+          :options="optionRoles"
+          v-model:value="userUpdate.roles"
+        ></a-select>
+      </a-form-item>
+
       <a-form-item>
         <a-button
           type="primary"
@@ -82,25 +92,44 @@
   </a-drawer>
 </template>
 <script lang="ts">
+import type { FormInstance } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 import { storeToRefs } from 'pinia';
-import { defineComponent } from 'vue';
-import { useCommonStore, useUserManagementStore } from '@/ui/store';
+import { defineComponent, ref } from 'vue';
+import {
+  useCommonStore,
+  useRoleManagements,
+  useUserManagementStore,
+} from '@/ui/store';
 
 export default defineComponent({
   name: 'FormEditDashboard',
   setup() {
+    const formRef = ref<FormInstance>();
     const common = useCommonStore();
     const { isLoadingButton, isDrawerShow } = storeToRefs(common);
 
     const store = useUserManagementStore();
     const { userUpdate, dataDetails } = storeToRefs(store);
 
+    const roleStore = useRoleManagements();
+    const { optionRoles } = storeToRefs(roleStore);
+
     const onClose = () => {
       common.setIsDrawerShow(false);
     };
 
     const validatePass = async (_rule: Rule, value: string) => {
+      if (value === '') {
+        return Promise.reject('Please input the password');
+      } else {
+        if (userUpdate.value.confirmPassword !== '' && formRef.value) {
+          formRef.value.validateFields('confirmPassword');
+        }
+        return Promise.resolve();
+      }
+    };
+    const validatePass2 = async (_rule: Rule, value: string) => {
       if (value === '') {
         return Promise.reject('Please input the password again');
       } else if (value !== userUpdate.value.password) {
@@ -111,18 +140,19 @@ export default defineComponent({
     };
 
     const rules: Record<string, Rule[]> = {
-      confirmPassword: [{ validator: validatePass, trigger: 'change' }],
+      password: [{ validator: validatePass, trigger: 'change' }],
+      confirmPassword: [{ validator: validatePass2, trigger: 'change' }],
     };
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      values.roles = [];
       values.siteId = userUpdate.value.siteId;
       if (dataDetails?.value)
         store.updateUserById(dataDetails.value.id, values);
     };
 
     return {
+      optionRoles,
       rules,
       userUpdate,
       isDrawerShow,

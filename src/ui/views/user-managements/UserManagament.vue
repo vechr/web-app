@@ -139,7 +139,11 @@ import {
   SortDescendingOutlined,
   FieldTimeOutlined,
 } from '@ant-design/icons-vue';
-import { useCommonStore, useUserManagementStore } from '@/ui/store';
+import {
+  useCommonStore,
+  useRoleManagements,
+  useUserManagementStore,
+} from '@/ui/store';
 import {
   ESortMode,
   pageSizeOptions,
@@ -163,10 +167,12 @@ export default defineComponent({
   },
   setup() {
     const store = useUserManagementStore();
-    const common = useCommonStore();
-
-    const { isLoadingActive } = storeToRefs(common);
     const { data, userColumns, meta, userColumnsSort } = storeToRefs(store);
+
+    const common = useCommonStore();
+    const { isLoadingActive } = storeToRefs(common);
+
+    const roles = useRoleManagements();
 
     const params = reactive<TQueryParamsFieldUsername>({
       filters: {
@@ -197,6 +203,7 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
+      roles.getOptionRole();
       store.getUserPagination(params);
     });
 

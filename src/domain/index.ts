@@ -8,5 +8,6 @@ export * from './widget';
 export * from './logging';
 export * from './notification-email';
 export * from './sessions/index';
-export * from './user/index';
+export * from './user';
 export * from './query/list.query';
+export * from './role';

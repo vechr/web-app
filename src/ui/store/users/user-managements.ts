@@ -125,6 +125,9 @@ export const useUserManagementStore = defineStore('userManagement', {
         this.userUpdate.emailAddress = result.data.result.emailAddress;
         this.userUpdate.siteId = result.data.result.site.id;
         this.userUpdate.phoneNumber = result.data.result.phoneNumber;
+        this.userUpdate.roles = result.data.result.roles.map(
+          (userRoles: { role: { id: string } }) => userRoles.role.id,
+        );
 
         this.dataDetails = result.data.result;
         this.message = result.data.message;
