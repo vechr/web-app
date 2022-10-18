@@ -1,3 +1,4 @@
+import { Permission, Site } from '..';
 import { Role } from '../role';
 
 export type TUser = {
@@ -13,16 +14,6 @@ export type TUser = {
   updatedAt: Date;
 };
 
-type Site = {
-  id: string;
-  code: string;
-  name: string;
-  location: string;
-  description: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
 type UsersRoles = {
   userId: string;
   roleId: string;
@@ -33,22 +24,6 @@ type UsersRoles = {
 type RolesPermissions = {
   roleId: string;
   permissionId: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-type PermissionType =
-  | 'Security'
-  | 'ProcessModelling'
-  | 'PhyscalModelling'
-  | 'Shopfloor';
-
-type Permission = {
-  id: string;
-  alias: string;
-  name: string;
-  description: string | null;
-  permissionType: PermissionType | null;
   createdAt: Date;
   updatedAt: Date;
 };
