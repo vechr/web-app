@@ -76,7 +76,7 @@ import { defineComponent } from 'vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
-  useDeviceTypeStore,
+  useDeviceTypeManagementStore,
 } from '@/ui/store';
 
 interface FormState {
@@ -95,7 +95,7 @@ export default defineComponent({
     const storeDevice = useDeviceManagementStore();
     const { deviceEdit, dataDetails } = storeToRefs(storeDevice);
 
-    const storeDeviceType = useDeviceTypeStore();
+    const storeDeviceType = useDeviceTypeManagementStore();
     const { optionDeviceType } = storeToRefs(storeDeviceType);
 
     const filterOption = (input: string, option: any) => {

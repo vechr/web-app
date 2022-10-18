@@ -108,8 +108,8 @@ import { Codemirror } from 'vue-codemirror';
 import { jsonLanguage } from '@codemirror/lang-json';
 import {
   useCommonStore,
-  useNotificationEmailStore,
-  useTopicEventStore,
+  useNotificationEmailManagementStore,
+  useTopicEventManagementStore,
 } from '@/ui/store';
 
 interface FormState {
@@ -132,9 +132,9 @@ export default defineComponent({
     const topicId = String(route.params.topicId);
 
     const common = useCommonStore();
-    const store = useTopicEventStore();
+    const store = useTopicEventManagementStore();
 
-    const storeNotificationStore = useNotificationEmailStore();
+    const storeNotificationStore = useNotificationEmailManagementStore();
     const { optionNotificationEmail } = storeToRefs(storeNotificationStore);
 
     const { isModalShow, isLoadingButton } = storeToRefs(common);

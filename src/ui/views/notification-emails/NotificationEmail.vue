@@ -136,7 +136,10 @@ import {
 } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount, reactive } from 'vue';
-import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
+import {
+  useCommonStore,
+  useNotificationEmailManagementStore,
+} from '@/ui/store';
 import {
   ESortMode,
   INotificationEmail,
@@ -162,7 +165,7 @@ export default defineComponent({
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
-    const store = useNotificationEmailStore();
+    const store = useNotificationEmailManagementStore();
     const {
       notificationEmailList,
       notificationEmailTypeColumns,

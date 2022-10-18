@@ -45,7 +45,7 @@
 <script lang="ts">
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
-import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
+import { useCommonStore, useDeviceTypeManagementStore } from '@/ui/store';
 
 export default defineComponent({
   name: 'FormEditDeviceType',
@@ -53,7 +53,7 @@ export default defineComponent({
     const common = useCommonStore();
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
-    const store = useDeviceTypeStore();
+    const store = useDeviceTypeManagementStore();
     const { dataDetails, deviceTypeEdit } = storeToRefs(store);
 
     const showModal = () => {

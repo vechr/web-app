@@ -156,7 +156,7 @@ import {
 } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount, reactive } from 'vue';
-import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
+import { useCommonStore, useDeviceTypeManagementStore } from '@/ui/store';
 import {
   ESortMode,
   IDeviceType,
@@ -182,7 +182,7 @@ export default defineComponent({
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
-    const store = useDeviceTypeStore();
+    const store = useDeviceTypeManagementStore();
     const { deviceTypeList, deviceTypeColumns, meta, deviceTypeColumnsSort } =
       storeToRefs(store);
 

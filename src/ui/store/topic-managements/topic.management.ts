@@ -1,41 +1,35 @@
 import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
-import { useCommonStore } from '..';
-import { INotificationEmailData } from '@/domain';
-import { notificationEmailController } from '@/applications/controllers';
+import { topicController } from '@/applications/controllers';
+import { ITopicData } from '@/domain';
+import { useCommonStore } from '@/ui/store';
 
-export const useNotificationEmailStore = defineStore('notificationEmail', {
+export const useTopicManagementStore = defineStore('topicManagement', {
   state: () => {
     return {
       message: '',
       data: [],
       dataDetails: {
         id: '',
-        description: '',
+        deviceId: '',
         name: '',
-        recipient: '',
-        sender: '',
+        description: '',
+        widgetType: '',
         createdAt: '',
         updatedAt: '',
+        topicEvents: [],
       },
-      notificationEmailEdit: {
-        id: '',
-        description: '',
-        name: '',
-        sender: '',
-        recipient: '',
-      },
-      optionNotificationEmail: [],
+      topicEdit: { name: '', description: '' },
       error: {
         code: '',
         message: '',
         params: Object,
       },
       meta: {},
-    } as INotificationEmailData;
+    } as ITopicData;
   },
   getters: {
-    notificationEmailColumnsSort() {
+    topicColumnsSort() {
       return [
         {
           label: 'Name',
@@ -44,14 +38,6 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         {
           label: 'Description',
           value: 'description',
-        },
-        {
-          label: 'Sender',
-          value: 'sender',
-        },
-        {
-          label: 'Recipient',
-          value: 'recipient',
         },
         {
           label: 'Created At',
@@ -63,7 +49,7 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         },
       ];
     },
-    notificationEmailTypeColumns() {
+    topicColumns() {
       return [
         {
           title: 'Name',
@@ -76,14 +62,14 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
           key: 'description',
         },
         {
-          title: 'Sender',
-          dataIndex: 'sender',
-          key: 'sender',
+          title: 'Topic Event',
+          dataIndex: 'topicEvents',
+          key: 'topicEvents',
         },
         {
-          title: 'Recipient',
-          dataIndex: 'recipient',
-          key: 'recipient',
+          title: 'Widget Type',
+          dataIndex: 'widgetType',
+          key: 'widgetType',
         },
         {
           title: 'Created At',
@@ -102,40 +88,31 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
         },
       ];
     },
-    notificationEmailList(state) {
-      return state.data.map((notificationEmail) => ({
-        id: notificationEmail.id,
-        description: notificationEmail.description,
-        name: notificationEmail.name,
-        recipient: notificationEmail.recipient,
-        sender: notificationEmail.sender,
+    topicList(state) {
+      return state.data.map((topic) => ({
+        id: topic.id,
+        deviceId: topic.deviceId,
+        name: topic.name,
+        description: topic.description,
+        widgetType: topic.widgetType,
         createdAt:
-          notificationEmail.createdAt !== undefined
-            ? new Date(notificationEmail.createdAt).toLocaleString('en-US')
-            : notificationEmail.createdAt,
+          topic.createdAt !== undefined
+            ? new Date(topic.createdAt).toLocaleString('en-US')
+            : topic.createdAt,
         updatedAt:
-          notificationEmail.updatedAt !== undefined
-            ? new Date(notificationEmail.updatedAt).toLocaleString('en-US')
-            : notificationEmail.updatedAt,
+          topic.updatedAt !== undefined
+            ? new Date(topic.updatedAt).toLocaleString('en-US')
+            : topic.updatedAt,
+        topicEvents: topic.topicEvents?.map((topicEvent) => topicEvent.name),
       }));
-    },
-    hashMapNotificationEmailList(state) {
-      const data = new Map();
-      if (state.data.length > 0) {
-        state.data.forEach((val) => {
-          data.set(val.id, val.name);
-        });
-      }
-      return data;
     },
   },
   actions: {
-    async getNotificationEmailPagination(params: Record<string, any>) {
+    async getTopicPagination(deviceId: string, params: Record<string, any>) {
       const common = useCommonStore();
       common.setIsLoading(true);
 
-      const result =
-        await notificationEmailController().getNotificationEmailListV2(params);
+      const result = await topicController().getTopicListV2(deviceId, params);
 
       if (result.data?.error) {
         this.error = result.data?.error;
@@ -151,81 +128,50 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
       }
       common.setIsLoading(false);
     },
-    async getOptionNotificationEmail() {
-      const result =
-        await notificationEmailController().getNotificationEmailList();
-      if (result.data?.error) {
-        this.error = result.data.error;
-        message.error(`${this.error.code} ${this.error.message}`);
-      } else {
-        if (result.status === 200) {
-          this.message = result.data ? result.data.message : 'Success!';
-          this.data = result.data?.result;
-          this.optionNotificationEmail = this.data.map((email) => ({
-            value: email.id,
-            label: email.name,
-          }));
-          this.error = result.data?.error;
-        }
-      }
-    },
-    async getNotificationEmailList() {
+    async getTopicList(deviceId: string) {
       const common = useCommonStore();
       common.setIsLoading(true);
-      const result =
-        await notificationEmailController().getNotificationEmailList();
+      const result = await topicController().getTopicList(deviceId);
       if (result.data?.error) {
-        common.setIsLoading(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsLoading(false);
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
           this.data = result.data?.result;
           this.error = result.data?.error;
         }
       }
+      common.setIsLoading(false);
     },
-    async getNotificationEmailById(id: string) {
+    async getTopicById(deviceId: string, id: string) {
       const common = useCommonStore();
-      const result =
-        await notificationEmailController().getNotificationEmailById(id);
+      const result = await topicController().getTopicById(deviceId, id);
       if (result.data?.error) {
-        common.setIsLoading(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsLoading(false);
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
+          this.topicEdit.name = result.data?.result.name;
+          this.topicEdit.description = result.data?.result.description;
           this.dataDetails = result.data?.result;
-          this.notificationEmailEdit.id = this.dataDetails.id;
-          this.notificationEmailEdit.name = this.dataDetails.name;
-          this.notificationEmailEdit.description = this.dataDetails.description;
-          this.notificationEmailEdit.sender = this.dataDetails.sender;
-          this.notificationEmailEdit.recipient = this.dataDetails.recipient;
           this.error = result.data?.error;
         }
       }
+      common.setIsLoading(false);
     },
-    async createNotificationEmail(value: {
-      name: string;
-      description: string;
-      sender: string;
-      recipient: string;
-    }) {
+    async createTopic(
+      deviceId: string,
+      value: { name: string; description: string; widgetType?: string },
+    ) {
+      if (value.widgetType === '') delete value.widgetType;
       const common = useCommonStore();
-      const result =
-        await notificationEmailController().createNotificationEmail(value);
+      const result = await topicController().createTopic(deviceId, value);
       if (result.data?.error) {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 201) {
           this.message = result.data ? result.data?.message : 'Success!';
           this.data.push(result.data?.result);
@@ -233,30 +179,24 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsModalShow(false);
+      common.setIsLoadingButton(false);
     },
-    async updateNotificationEmailById(
+    async updateTopicById(
+      deviceId: string,
       id: string,
-      value: {
-        name: string;
-        description: string;
-        sender: string;
-        recipient: string;
-      },
+      value: { name: string; description: string },
     ) {
       const common = useCommonStore();
-      const result =
-        await notificationEmailController().updateNotificationEmailById(
-          id,
-          value,
-        );
+      const result = await topicController().updateTopicById(
+        deviceId,
+        id,
+        value,
+      );
       if (result.data?.error) {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 200) {
           this.message = result.data ? result.data?.message : 'Success!';
           const index = this.data.findIndex(
@@ -267,10 +207,11 @@ export const useNotificationEmailStore = defineStore('notificationEmail', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsModalShow(false);
+      common.setIsLoadingButton(false);
     },
-    async deleteNotificationEmailById(id: string) {
-      const result =
-        await notificationEmailController().deleteNotificationEmailById(id);
+    async deleteTopicById(deviceId: string, id: string) {
+      const result = await topicController().deleteTopicById(deviceId, id);
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);

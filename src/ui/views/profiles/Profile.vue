@@ -85,7 +85,7 @@
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
 import { useCommonStore, useSessionStore } from '@/ui/store';
-import { useUserManagementStore } from '@/ui/store/users/user-managements';
+import { useUserManagementStore } from '@/ui/store';
 import { TUserFullInformation } from '@/domain';
 
 export default defineComponent({

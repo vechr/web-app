@@ -86,7 +86,10 @@
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
-import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
+import {
+  useCommonStore,
+  useNotificationEmailManagementStore,
+} from '@/ui/store';
 
 interface FormState {
   name: string;
@@ -100,7 +103,7 @@ export default defineComponent({
   components: { PlusOutlined },
   setup() {
     const common = useCommonStore();
-    const store = useNotificationEmailStore();
+    const store = useNotificationEmailManagementStore();
 
     const { isModalShow, isLoadingButton } = storeToRefs(common);
 

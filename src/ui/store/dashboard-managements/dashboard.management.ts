@@ -1,37 +1,23 @@
 import { defineStore } from 'pinia';
 import { message } from 'ant-design-vue';
-import { useCommonStore } from '..';
-import { deviceController } from '@/applications/controllers';
-import { IDeviceData } from '@/domain';
+import { useCommonStore } from '@/ui/store';
+import { IDashboardData } from '@/domain';
+import { dashboardController } from '@/applications/controllers';
 
-export const useDeviceManagementStore = defineStore('deviceManagement', {
+export const useDashboardManagementStore = defineStore('dashboardManagement', {
   state: () => {
     return {
       message: '',
+      dataFull: [],
       data: [],
-      deviceEdit: {
-        name: '',
-        description: '',
-        deviceTypeId: '',
-        isActive: false,
-      },
-      optionDevice: [],
+      dashboardEdit: { name: '', description: '', devices: [] },
       dataDetails: {
         id: '',
         name: '',
         description: '',
-        deviceTypeId: '',
-        isActive: false,
         createdAt: '',
         updatedAt: '',
-        topics: [],
-        deviceType: {
-          id: '',
-          name: '',
-          description: '',
-          createdAt: '',
-          updatedAt: '',
-        },
+        devices: [],
       },
       error: {
         code: '',
@@ -39,10 +25,10 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         params: Object,
       },
       meta: {},
-    } as IDeviceData;
+    } as IDashboardData;
   },
   getters: {
-    deviceColumnsSort() {
+    dashboardColumnsSort() {
       return [
         {
           label: 'Name',
@@ -62,7 +48,7 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         },
       ];
     },
-    deviceColumns() {
+    dashboardColumns() {
       return [
         {
           title: 'Name',
@@ -75,19 +61,9 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
           key: 'description',
         },
         {
-          title: 'Device Type',
-          dataIndex: 'deviceType',
-          key: 'deviceType',
-        },
-        {
-          title: 'Active',
-          dataIndex: 'isActive',
-          key: 'isActive',
-        },
-        {
-          title: 'Topics',
-          dataIndex: 'topics',
-          key: 'topics',
+          title: 'Devices',
+          dataIndex: 'devices',
+          key: 'devices',
         },
         {
           title: 'Created At',
@@ -106,32 +82,29 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
         },
       ];
     },
-    deviceList(state) {
-      return state.data.map((device) => ({
-        id: device.id,
-        name: device.name,
-        description: device.description,
-        isActive: device.isActive,
-        deviceTypeId: device.deviceTypeId,
-        deviceType: device.deviceType?.name,
+    dashboardList(state) {
+      return state.data.map((dashboard) => ({
+        id: dashboard.id,
+        name: dashboard.name,
+        description: dashboard.description,
         createdAt:
-          device.createdAt !== undefined
-            ? new Date(device.createdAt).toLocaleString('en-US')
-            : device.createdAt,
+          dashboard.createdAt !== undefined
+            ? new Date(dashboard.createdAt).toLocaleString('en-US')
+            : dashboard.createdAt,
         updatedAt:
-          device.updatedAt !== undefined
-            ? new Date(device.updatedAt).toLocaleString('en-US')
-            : device.updatedAt,
-        topics: device.topics?.map((topic) => topic.name),
+          dashboard.updatedAt !== undefined
+            ? new Date(dashboard.updatedAt).toLocaleString('en-US')
+            : dashboard.updatedAt,
+        devices: dashboard.devices?.map((device) => device.name),
       }));
     },
   },
   actions: {
-    async getDevicePagination(params: Record<string, any>) {
+    async getDashboardPagination(params: Record<string, any>) {
       const common = useCommonStore();
       common.setIsLoading(true);
 
-      const result = await deviceController().getDeviceListV2(params);
+      const result = await dashboardController().getDashboardListV2(params);
 
       if (result.data?.error) {
         this.error = result.data?.error;
@@ -147,73 +120,63 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
       }
       common.setIsLoading(false);
     },
-    async getOptionDevice() {
-      const result = await deviceController().getDevices();
-      if (result.data?.error) {
-        this.error = result.data.error;
-        message.error(`${this.error.code} ${this.error.message}`);
-      } else {
-        if (result.status === 200) {
-          this.message = result.data ? result.data.message : 'Success!';
-          this.data = result.data?.result;
-          this.optionDevice = this.data.map((device) => ({
-            value: device.id,
-            label: device.name,
-          }));
-          this.error = result.data?.error;
-        }
-      }
-    },
-    async getDeviceList() {
+    async getDashboardFullList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      const result = await deviceController().getDevices();
+      const result = await dashboardController().getDashboardFullList();
       if (result.data?.error) {
-        common.setIsLoading(false);
-        this.error = result.data.error;
+        this.error = result.data?.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsLoading(false);
+        if (result.status === 200) {
+          this.message = result.data ? result.data.message : 'Success!';
+          this.dataFull = result.data?.result;
+          this.error = result.data?.error;
+        }
+      }
+      common.setIsLoading(false);
+    },
+    async getDashboardList() {
+      const common = useCommonStore();
+      common.setIsLoading(true);
+      const result = await dashboardController().getDashboardList();
+      if (result.data?.error) {
+        this.error = result.data?.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           this.data = result.data?.result;
           this.error = result.data?.error;
         }
       }
+      common.setIsLoading(false);
     },
-    async getDeviceById(id: string) {
-      const result = await deviceController().getDeviceById(id);
+    async getDashboardById(id: string) {
+      const result = await dashboardController().getDashboardById(id);
       if (result.data?.error) {
-        this.error = result.data.error;
+        this.error = result.data?.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
-          this.deviceEdit.name = result.data?.result.name;
-          (this.deviceEdit.description = result.data?.result.description),
-            (this.deviceEdit.deviceTypeId = result.data?.result.deviceType?.id),
-            (this.deviceEdit.isActive = result.data?.result.isActive);
+          (this.dashboardEdit.name = result.data?.result.name),
+            (this.dashboardEdit.description = result.data?.result.description),
+            (this.dashboardEdit.devices = result.data?.result.devices?.map(
+              (device: { id: string }) => device.id,
+            ));
           this.dataDetails = result.data?.result;
           this.error = result.data?.error;
         }
       }
     },
-    async createDevice(value: {
-      name: string;
-      description: string;
-      isActive: boolean;
-      deviceTypeId: string;
-    }) {
+    async createDashboard(value: { name: string; description: string }) {
       const common = useCommonStore();
-      const result = await deviceController().createDevice(value);
+      const result = await dashboardController().createDashboard(value);
       if (result.data?.error) {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 201) {
           this.message = result.data ? result.data.message : 'Success!';
           this.data.push(result.data?.result);
@@ -221,26 +184,19 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsModalShow(false);
+      common.setIsLoadingButton(false);
     },
-    async updateDeviceById(
+    async updateDashboardById(
       id: string,
-      value: {
-        name: string;
-        description: string;
-        isActive: boolean;
-        deviceTypeId: string;
-      },
+      value: { name: string; description: string; devices: string[] },
     ) {
       const common = useCommonStore();
-      const result = await deviceController().updateDeviceById(id, value);
+      const result = await dashboardController().updateDashboardById(id, value);
       if (result.data?.error) {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
-        this.error = result.data.error;
+        this.error = result.data?.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           const index = this.data.findIndex(
@@ -251,9 +207,11 @@ export const useDeviceManagementStore = defineStore('deviceManagement', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsDrawerShow(false);
+      common.setIsLoadingButton(false);
     },
-    async deleteDeviceById(id: string) {
-      const result = await deviceController().deleteDeviceById(id);
+    async deleteDashboardById(id: string) {
+      const result = await dashboardController().deleteDashboardById(id);
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);

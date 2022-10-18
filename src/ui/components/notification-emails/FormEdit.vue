@@ -77,7 +77,10 @@
 <script lang="ts">
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
-import { useCommonStore, useNotificationEmailStore } from '@/ui/store';
+import {
+  useCommonStore,
+  useNotificationEmailManagementStore,
+} from '@/ui/store';
 
 export default defineComponent({
   name: 'FormEditNotificationEmail',
@@ -85,7 +88,7 @@ export default defineComponent({
     const common = useCommonStore();
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
-    const store = useNotificationEmailStore();
+    const store = useNotificationEmailManagementStore();
     const { notificationEmailEdit } = storeToRefs(store);
 
     const showModal = () => {

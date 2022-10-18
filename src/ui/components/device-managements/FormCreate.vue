@@ -79,7 +79,7 @@ import { defineComponent, reactive } from 'vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
-  useDeviceTypeStore,
+  useDeviceTypeManagementStore,
 } from '@/ui/store';
 
 interface FormState {
@@ -95,7 +95,7 @@ export default defineComponent({
   setup() {
     const common = useCommonStore();
     const store = useDeviceManagementStore();
-    const storeDeviceType = useDeviceTypeStore();
+    const storeDeviceType = useDeviceTypeManagementStore();
 
     const { optionDeviceType } = storeToRefs(storeDeviceType);
 

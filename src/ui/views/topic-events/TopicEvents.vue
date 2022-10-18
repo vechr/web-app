@@ -176,9 +176,9 @@ import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import {
-  useTopicEventStore,
+  useTopicEventManagementStore,
   useCommonStore,
-  useNotificationEmailStore,
+  useNotificationEmailManagementStore,
 } from '@/ui/store';
 import {
   ESortMode,
@@ -209,7 +209,7 @@ export default defineComponent({
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
-    const topicEventStore = useTopicEventStore();
+    const topicEventStore = useTopicEventManagementStore();
     const {
       topicEventColumnsSort,
       topicEventEdit,
@@ -218,7 +218,7 @@ export default defineComponent({
       meta,
     } = storeToRefs(topicEventStore);
 
-    const notificationEmailStore = useNotificationEmailStore();
+    const notificationEmailStore = useNotificationEmailManagementStore();
     const { hashMapNotificationEmailList } = storeToRefs(
       notificationEmailStore,
     );

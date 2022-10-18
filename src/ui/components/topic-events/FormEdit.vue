@@ -102,8 +102,8 @@ import { Codemirror } from 'vue-codemirror';
 import { jsonLanguage } from '@codemirror/lang-json';
 import {
   useCommonStore,
-  useNotificationEmailStore,
-  useTopicEventStore,
+  useNotificationEmailManagementStore,
+  useTopicEventManagementStore,
 } from '@/ui/store';
 
 interface FormState {
@@ -128,10 +128,10 @@ export default defineComponent({
     const common = useCommonStore();
     const { isDrawerShow, isLoadingButton } = storeToRefs(common);
 
-    const storeTopicEvent = useTopicEventStore();
+    const storeTopicEvent = useTopicEventManagementStore();
     const { topicEventEdit } = storeToRefs(storeTopicEvent);
 
-    const storeNotificationStore = useNotificationEmailStore();
+    const storeNotificationStore = useNotificationEmailManagementStore();
     const { optionNotificationEmail } = storeToRefs(storeNotificationStore);
 
     const onFinish = (values: FormState) => {

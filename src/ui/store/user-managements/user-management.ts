@@ -146,13 +146,9 @@ export const useUserManagementStore = defineStore('userManagement', {
       const common = useCommonStore();
       const result = await userController().createUser(value);
       if (result.data?.error) {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           this.data.push(this.transformToTableData(result.data?.result));
@@ -160,18 +156,16 @@ export const useUserManagementStore = defineStore('userManagement', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsModalShow(false);
+      common.setIsLoadingButton(false);
     },
     async updateUserById(id: string, values: IUpdateUser) {
       const common = useCommonStore();
       const result = await userController().updateUserById(id, values);
       if (result.data?.error) {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data?.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 201) {
           this.message = result.data ? result.data.message : 'Success!';
           const index = this.data.findIndex(
@@ -182,6 +176,8 @@ export const useUserManagementStore = defineStore('userManagement', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsDrawerShow(false);
+      common.setIsLoadingButton(false);
     },
     async deleteUserById(userId: string) {
       const result = await userController().deleteUserById(userId);

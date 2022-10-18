@@ -1,34 +1,48 @@
-import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
+import { message } from 'ant-design-vue';
 import { useCommonStore } from '..';
-import { IDeviceTypeData } from '@/domain';
-import { deviceTypeController } from '@/applications/controllers';
+import { deviceController } from '@/applications/controllers';
+import { IDeviceData } from '@/domain';
 
-export const useDeviceTypeStore = defineStore('deviceType', {
+export const useDeviceManagementStore = defineStore('deviceManagement', {
   state: () => {
     return {
       message: '',
       data: [],
+      deviceEdit: {
+        name: '',
+        description: '',
+        deviceTypeId: '',
+        isActive: false,
+      },
+      optionDevice: [],
       dataDetails: {
         id: '',
         name: '',
         description: '',
+        deviceTypeId: '',
+        isActive: false,
         createdAt: '',
         updatedAt: '',
-        devices: [],
+        topics: [],
+        deviceType: {
+          id: '',
+          name: '',
+          description: '',
+          createdAt: '',
+          updatedAt: '',
+        },
       },
-      deviceTypeEdit: { name: '', description: '' },
-      optionDeviceType: [],
       error: {
         code: '',
         message: '',
         params: Object,
       },
       meta: {},
-    } as IDeviceTypeData;
+    } as IDeviceData;
   },
   getters: {
-    deviceTypeColumnsSort() {
+    deviceColumnsSort() {
       return [
         {
           label: 'Name',
@@ -48,7 +62,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         },
       ];
     },
-    deviceTypeColumns() {
+    deviceColumns() {
       return [
         {
           title: 'Name',
@@ -61,9 +75,19 @@ export const useDeviceTypeStore = defineStore('deviceType', {
           key: 'description',
         },
         {
-          title: 'Devices',
-          dataIndex: 'devices',
-          key: 'devices',
+          title: 'Device Type',
+          dataIndex: 'deviceType',
+          key: 'deviceType',
+        },
+        {
+          title: 'Active',
+          dataIndex: 'isActive',
+          key: 'isActive',
+        },
+        {
+          title: 'Topics',
+          dataIndex: 'topics',
+          key: 'topics',
         },
         {
           title: 'Created At',
@@ -82,29 +106,32 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         },
       ];
     },
-    deviceTypeList(state) {
-      return state.data.map((deviceType) => ({
-        id: deviceType.id,
-        name: deviceType.name,
-        description: deviceType.description,
-        devices: deviceType.devices?.map((device) => device.name),
+    deviceList(state) {
+      return state.data.map((device) => ({
+        id: device.id,
+        name: device.name,
+        description: device.description,
+        isActive: device.isActive,
+        deviceTypeId: device.deviceTypeId,
+        deviceType: device.deviceType?.name,
         createdAt:
-          deviceType.createdAt !== undefined
-            ? new Date(deviceType.createdAt).toLocaleString('en-US')
-            : deviceType.createdAt,
+          device.createdAt !== undefined
+            ? new Date(device.createdAt).toLocaleString('en-US')
+            : device.createdAt,
         updatedAt:
-          deviceType.updatedAt !== undefined
-            ? new Date(deviceType.updatedAt).toLocaleString('en-US')
-            : deviceType.updatedAt,
+          device.updatedAt !== undefined
+            ? new Date(device.updatedAt).toLocaleString('en-US')
+            : device.updatedAt,
+        topics: device.topics?.map((topic) => topic.name),
       }));
     },
   },
   actions: {
-    async getDeviceTypePagination(params: Record<string, any>) {
+    async getDevicePagination(params: Record<string, any>) {
       const common = useCommonStore();
       common.setIsLoading(true);
 
-      const result = await deviceTypeController().getDeviceTypeListV2(params);
+      const result = await deviceController().getDeviceListV2(params);
 
       if (result.data?.error) {
         this.error = result.data?.error;
@@ -120,8 +147,8 @@ export const useDeviceTypeStore = defineStore('deviceType', {
       }
       common.setIsLoading(false);
     },
-    async getOptionDeviceType() {
-      const result = await deviceTypeController().getDeviceTypes();
+    async getOptionDevice() {
+      const result = await deviceController().getDevices();
       if (result.data?.error) {
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
@@ -129,7 +156,7 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           this.data = result.data?.result;
-          this.optionDeviceType = this.data.map((device) => ({
+          this.optionDevice = this.data.map((device) => ({
             value: device.id,
             label: device.name,
           }));
@@ -137,56 +164,51 @@ export const useDeviceTypeStore = defineStore('deviceType', {
         }
       }
     },
-    async getDeviceTypeList() {
+    async getDeviceList() {
       const common = useCommonStore();
       common.setIsLoading(true);
-      const result = await deviceTypeController().getDeviceTypes();
+      const result = await deviceController().getDevices();
       if (result.data?.error) {
-        common.setIsLoading(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsLoading(false);
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           this.data = result.data?.result;
-          this.optionDeviceType = this.data.map((device) => ({
-            value: device.id,
-            label: device.name,
-          }));
           this.error = result.data?.error;
         }
       }
+      common.setIsLoading(false);
     },
-    async getDeviceTypeById(id: string) {
-      const common = useCommonStore();
-      const result = await deviceTypeController().getDeviceTypeById(id);
+    async getDeviceById(id: string) {
+      const result = await deviceController().getDeviceById(id);
       if (result.data?.error) {
-        common.setIsLoading(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsLoading(false);
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
-          this.deviceTypeEdit.name = result.data?.result.name;
-          this.deviceTypeEdit.description = result.data?.result.description;
+          this.deviceEdit.name = result.data?.result.name;
+          (this.deviceEdit.description = result.data?.result.description),
+            (this.deviceEdit.deviceTypeId = result.data?.result.deviceType?.id),
+            (this.deviceEdit.isActive = result.data?.result.isActive);
           this.dataDetails = result.data?.result;
           this.error = result.data?.error;
         }
       }
     },
-    async createDeviceType(value: { name: string; description: string }) {
+    async createDevice(value: {
+      name: string;
+      description: string;
+      isActive: boolean;
+      deviceTypeId: string;
+    }) {
       const common = useCommonStore();
-      const result = await deviceTypeController().createDeviceType(value);
+      const result = await deviceController().createDevice(value);
       if (result.data?.error) {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 201) {
           this.message = result.data ? result.data.message : 'Success!';
           this.data.push(result.data?.result);
@@ -194,24 +216,24 @@ export const useDeviceTypeStore = defineStore('deviceType', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsModalShow(false);
+      common.setIsLoadingButton(false);
     },
-    async updateDeviceTypeById(
+    async updateDeviceById(
       id: string,
-      value: { name: string; description: string },
+      value: {
+        name: string;
+        description: string;
+        isActive: boolean;
+        deviceTypeId: string;
+      },
     ) {
       const common = useCommonStore();
-      const result = await deviceTypeController().updateDeviceTypeById(
-        id,
-        value,
-      );
+      const result = await deviceController().updateDeviceById(id, value);
       if (result.data?.error) {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 200) {
           this.message = result.data ? result.data.message : 'Success!';
           const index = this.data.findIndex(
@@ -222,11 +244,13 @@ export const useDeviceTypeStore = defineStore('deviceType', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsDrawerShow(false);
+      common.setIsLoadingButton(false);
     },
-    async deleteDeviceTypeById(id: string) {
-      const result = await deviceTypeController().deleteDeviceTypeById(id);
+    async deleteDeviceById(id: string) {
+      const result = await deviceController().deleteDeviceById(id);
       if (result.data?.error) {
-        this.error = result.data?.error;
+        this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
         if (result.status === 200) {

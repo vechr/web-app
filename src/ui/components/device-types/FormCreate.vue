@@ -53,7 +53,7 @@
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { defineComponent, reactive } from 'vue';
-import { useCommonStore, useDeviceTypeStore } from '@/ui/store';
+import { useCommonStore, useDeviceTypeManagementStore } from '@/ui/store';
 
 interface FormState {
   name: string;
@@ -65,7 +65,7 @@ export default defineComponent({
   components: { PlusOutlined },
   setup() {
     const common = useCommonStore();
-    const store = useDeviceTypeStore();
+    const store = useDeviceTypeManagementStore();
 
     const { isModalShow, isLoadingButton } = storeToRefs(common);
 

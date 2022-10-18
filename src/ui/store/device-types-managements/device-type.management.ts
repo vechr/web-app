@@ -1,35 +1,34 @@
 import { message } from 'ant-design-vue';
 import { defineStore } from 'pinia';
-import { topicController } from '@/applications/controllers';
-import { ITopicData } from '@/domain';
-import { useCommonStore } from '@/ui/store';
+import { useCommonStore } from '..';
+import { IDeviceTypeData } from '@/domain';
+import { deviceTypeController } from '@/applications/controllers';
 
-export const useTopicManagementStore = defineStore('topicManagement', {
+export const useDeviceTypeManagementStore = defineStore('deviceType', {
   state: () => {
     return {
       message: '',
       data: [],
       dataDetails: {
         id: '',
-        deviceId: '',
         name: '',
         description: '',
-        widgetType: '',
         createdAt: '',
         updatedAt: '',
-        topicEvents: [],
+        devices: [],
       },
-      topicEdit: { name: '', description: '' },
+      deviceTypeEdit: { name: '', description: '' },
+      optionDeviceType: [],
       error: {
         code: '',
         message: '',
         params: Object,
       },
       meta: {},
-    } as ITopicData;
+    } as IDeviceTypeData;
   },
   getters: {
-    topicColumnsSort() {
+    deviceTypeColumnsSort() {
       return [
         {
           label: 'Name',
@@ -49,7 +48,7 @@ export const useTopicManagementStore = defineStore('topicManagement', {
         },
       ];
     },
-    topicColumns() {
+    deviceTypeColumns() {
       return [
         {
           title: 'Name',
@@ -62,14 +61,9 @@ export const useTopicManagementStore = defineStore('topicManagement', {
           key: 'description',
         },
         {
-          title: 'Topic Event',
-          dataIndex: 'topicEvents',
-          key: 'topicEvents',
-        },
-        {
-          title: 'Widget Type',
-          dataIndex: 'widgetType',
-          key: 'widgetType',
+          title: 'Devices',
+          dataIndex: 'devices',
+          key: 'devices',
         },
         {
           title: 'Created At',
@@ -88,31 +82,29 @@ export const useTopicManagementStore = defineStore('topicManagement', {
         },
       ];
     },
-    topicList(state) {
-      return state.data.map((topic) => ({
-        id: topic.id,
-        deviceId: topic.deviceId,
-        name: topic.name,
-        description: topic.description,
-        widgetType: topic.widgetType,
+    deviceTypeList(state) {
+      return state.data.map((deviceType) => ({
+        id: deviceType.id,
+        name: deviceType.name,
+        description: deviceType.description,
+        devices: deviceType.devices?.map((device) => device.name),
         createdAt:
-          topic.createdAt !== undefined
-            ? new Date(topic.createdAt).toLocaleString('en-US')
-            : topic.createdAt,
+          deviceType.createdAt !== undefined
+            ? new Date(deviceType.createdAt).toLocaleString('en-US')
+            : deviceType.createdAt,
         updatedAt:
-          topic.updatedAt !== undefined
-            ? new Date(topic.updatedAt).toLocaleString('en-US')
-            : topic.updatedAt,
-        topicEvents: topic.topicEvents?.map((topicEvent) => topicEvent.name),
+          deviceType.updatedAt !== undefined
+            ? new Date(deviceType.updatedAt).toLocaleString('en-US')
+            : deviceType.updatedAt,
       }));
     },
   },
   actions: {
-    async getTopicPagination(deviceId: string, params: Record<string, any>) {
+    async getDeviceTypePagination(params: Record<string, any>) {
       const common = useCommonStore();
       common.setIsLoading(true);
 
-      const result = await topicController().getTopicListV2(deviceId, params);
+      const result = await deviceTypeController().getDeviceTypeListV2(params);
 
       if (result.data?.error) {
         this.error = result.data?.error;
@@ -128,85 +120,92 @@ export const useTopicManagementStore = defineStore('topicManagement', {
       }
       common.setIsLoading(false);
     },
-    async getTopicList(deviceId: string) {
-      const common = useCommonStore();
-      common.setIsLoading(true);
-      const result = await topicController().getTopicList(deviceId);
+    async getOptionDeviceType() {
+      const result = await deviceTypeController().getDeviceTypes();
       if (result.data?.error) {
-        common.setIsLoading(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsLoading(false);
         if (result.status === 200) {
-          this.message = result.data ? result.data?.message : 'Success!';
+          this.message = result.data ? result.data.message : 'Success!';
           this.data = result.data?.result;
+          this.optionDeviceType = this.data.map((device) => ({
+            value: device.id,
+            label: device.name,
+          }));
           this.error = result.data?.error;
         }
       }
     },
-    async getTopicById(deviceId: string, id: string) {
+    async getDeviceTypeList() {
       const common = useCommonStore();
-      const result = await topicController().getTopicById(deviceId, id);
+      common.setIsLoading(true);
+      const result = await deviceTypeController().getDeviceTypes();
       if (result.data?.error) {
-        common.setIsLoading(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsLoading(false);
         if (result.status === 200) {
-          this.message = result.data ? result.data?.message : 'Success!';
-          this.topicEdit.name = result.data?.result.name;
-          this.topicEdit.description = result.data?.result.description;
+          this.message = result.data ? result.data.message : 'Success!';
+          this.data = result.data?.result;
+          this.optionDeviceType = this.data.map((device) => ({
+            value: device.id,
+            label: device.name,
+          }));
+          this.error = result.data?.error;
+        }
+      }
+      common.setIsLoading(false);
+    },
+    async getDeviceTypeById(id: string) {
+      const common = useCommonStore();
+      const result = await deviceTypeController().getDeviceTypeById(id);
+      if (result.data?.error) {
+        this.error = result.data.error;
+        message.error(`${this.error.code} ${this.error.message}`);
+      } else {
+        if (result.status === 200) {
+          this.message = result.data ? result.data.message : 'Success!';
+          this.deviceTypeEdit.name = result.data?.result.name;
+          this.deviceTypeEdit.description = result.data?.result.description;
           this.dataDetails = result.data?.result;
           this.error = result.data?.error;
         }
       }
+      common.setIsLoading(false);
     },
-    async createTopic(
-      deviceId: string,
-      value: { name: string; description: string; widgetType?: string },
-    ) {
-      if (value.widgetType === '') delete value.widgetType;
+    async createDeviceType(value: { name: string; description: string }) {
       const common = useCommonStore();
-      const result = await topicController().createTopic(deviceId, value);
+      const result = await deviceTypeController().createDeviceType(value);
       if (result.data?.error) {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsModalShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 201) {
-          this.message = result.data ? result.data?.message : 'Success!';
+          this.message = result.data ? result.data.message : 'Success!';
           this.data.push(result.data?.result);
           this.error = result.data?.error;
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsModalShow(false);
+      common.setIsLoadingButton(false);
     },
-    async updateTopicById(
-      deviceId: string,
+    async updateDeviceTypeById(
       id: string,
       value: { name: string; description: string },
     ) {
       const common = useCommonStore();
-      const result = await topicController().updateTopicById(
-        deviceId,
+      const result = await deviceTypeController().updateDeviceTypeById(
         id,
         value,
       );
       if (result.data?.error) {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         this.error = result.data.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
-        common.setIsDrawerShow(false);
-        common.setIsLoadingButton(false);
         if (result.status === 200) {
-          this.message = result.data ? result.data?.message : 'Success!';
+          this.message = result.data ? result.data.message : 'Success!';
           const index = this.data.findIndex(
             (x) => x.id === result.data?.result.id,
           );
@@ -215,15 +214,17 @@ export const useTopicManagementStore = defineStore('topicManagement', {
           message.success(`${result.status} ${this.message}`);
         }
       }
+      common.setIsDrawerShow(false);
+      common.setIsLoadingButton(false);
     },
-    async deleteTopicById(deviceId: string, id: string) {
-      const result = await topicController().deleteTopicById(deviceId, id);
+    async deleteDeviceTypeById(id: string) {
+      const result = await deviceTypeController().deleteDeviceTypeById(id);
       if (result.data?.error) {
-        this.error = result.data.error;
+        this.error = result.data?.error;
         message.error(`${this.error.code} ${this.error.message}`);
       } else {
         if (result.status === 200) {
-          this.message = result.data ? result.data?.message : 'Success!';
+          this.message = result.data ? result.data.message : 'Success!';
           this.data = this.data.filter((x) => {
             return x.id != id;
           });
