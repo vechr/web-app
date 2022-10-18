@@ -7,14 +7,14 @@ import UserManagement from '@/ui/views/user-managements/UserManagament.vue';
 import Home from '@/ui/views/homes/Home.vue';
 import About from '@/ui/views/abouts/About.vue';
 import Profile from '@/ui/views/profiles/Profile.vue';
-import DeviceType from '@/ui/views/device-types/DeviceType.vue';
+import DeviceTypeManagement from '@/ui/views/device-type-managements/DeviceTypeManagement.vue';
 import RoleManagement from '@/ui/views/roles-managements/RoleManagement.vue';
 import SiteManagement from '@/ui/views/sites-managements/SiteManagement.vue';
 import TopicManagement from '@/ui/views/topic-managements/TopicManagement.vue';
-import TopicEvent from '@/ui/views/topic-events/TopicEvents.vue';
+import TopicEventManagement from '@/ui/views/topic-event-managements/TopicEventManagement.vue';
 import Logging from '@/ui/views/homes/Logging.vue';
 import Dashboard from '@/ui/views/homes/Dashboard.vue';
-import NotificationEmail from '@/ui/views/notification-emails/NotificationEmail.vue';
+import NotificationEmailManagement from '@/ui/views/notification-email-managements/NotificationEmailManagement.vue';
 import NotFound from '@/ui/views/common/NotFound.vue';
 import Session from '@/ui/views/session/Session.vue';
 import { EErrorJwtCode } from '@/domain';
@@ -95,7 +95,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/email',
     name: 'notification-email-managements',
-    component: NotificationEmail,
+    component: NotificationEmailManagement,
     meta: {
       layout: 'dashboard-layout',
     },
@@ -111,7 +111,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/device/:deviceId/topic/:topicId/topic-event',
     name: 'topic-event',
-    component: TopicEvent,
+    component: TopicEventManagement,
     meta: {
       layout: 'dashboard-layout',
     },
@@ -119,7 +119,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/device-type',
     name: 'device-types',
-    component: DeviceType,
+    component: DeviceTypeManagement,
     meta: {
       layout: 'dashboard-layout',
     },
