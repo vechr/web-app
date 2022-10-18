@@ -236,7 +236,7 @@ import L from 'leaflet';
 import { connect, NatsConnection, StringCodec } from 'nats.ws';
 import { message as notif } from 'ant-design-vue';
 import { useLoggingStore, useWidgetStore } from '@/ui/store';
-import uuid from '@/utils/uuid';
+import uuid from '@/utils/uuid.util';
 import { EWidget, IFormWidget, IWidget } from '@/domain';
 import { useDashboardManagementStore } from '@/ui/store';
 import {
@@ -263,7 +263,7 @@ import {
   radarChartData,
   scatterChartData,
 } from '@/services';
-import { isJsonString } from '@/utils/jsonCheck';
+import { isJsonString } from '@/utils/json-check.util';
 import { dataBuilder } from '@/services';
 
 export default defineComponent({

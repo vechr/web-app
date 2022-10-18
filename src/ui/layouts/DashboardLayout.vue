@@ -145,7 +145,7 @@ import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useCommonStore, useSessionStore } from '../store';
 import Loading from '@/ui/components/common/Loading.vue';
-import { confirmButtonLogout } from '@/utils/sweet_alert';
+import { confirmButtonLogout } from '@/utils/sweet-alert.util';
 
 export default defineComponent({
   name: 'DashboardLayout',
