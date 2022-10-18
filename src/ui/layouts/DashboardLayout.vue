@@ -35,7 +35,6 @@
           </a-menu-item>
         </router-link>
 
-        <!--
         <router-link to="/user" custom v-slot="{ navigate, href }">
           <a-menu-item key="5" @click="navigate" :href="href">
             <user-outlined />
@@ -48,7 +47,14 @@
             <UserSwitchOutlined />
             <span>Role Management</span>
           </a-menu-item>
-        </router-link>-->
+        </router-link>
+
+        <router-link to="/site" custom v-slot="{ navigate, href }">
+          <a-menu-item key="7" @click="navigate" :href="href">
+            <DatabaseOutlined />
+            <span>Site Management</span>
+          </a-menu-item>
+        </router-link>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -127,11 +133,12 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   ApartmentOutlined,
-  // UserSwitchOutlined,
+  UserSwitchOutlined,
   SettingOutlined,
   LogoutOutlined,
   CloseOutlined,
   MailOutlined,
+  DatabaseOutlined,
 } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -149,11 +156,12 @@ export default defineComponent({
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     ApartmentOutlined,
-    // UserSwitchOutlined,
+    UserSwitchOutlined,
     SettingOutlined,
     LogoutOutlined,
     CloseOutlined,
     MailOutlined,
+    DatabaseOutlined,
     Loading,
   },
   setup() {

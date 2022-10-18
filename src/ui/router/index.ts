@@ -9,6 +9,7 @@ import About from '@/ui/views/abouts/About.vue';
 import Profile from '@/ui/views/profiles/Profile.vue';
 import DeviceType from '@/ui/views/device-types/DeviceType.vue';
 import RoleManagement from '@/ui/views/roles-managements/RoleManagement.vue';
+import SiteManagement from '@/ui/views/sites-managements/SiteManagement.vue';
 import TopicManagement from '@/ui/views/topic-managements/TopicManagement.vue';
 import TopicEvent from '@/ui/views/topic-events/TopicEvents.vue';
 import Logging from '@/ui/views/homes/Logging.vue';
@@ -135,6 +136,14 @@ const routes: Array<RouteRecordRaw> = [
     path: '/role',
     name: 'role-managements',
     component: RoleManagement,
+    meta: {
+      layout: 'dashboard-layout',
+    },
+  },
+  {
+    path: '/site',
+    name: 'site-managements',
+    component: SiteManagement,
     meta: {
       layout: 'dashboard-layout',
     },

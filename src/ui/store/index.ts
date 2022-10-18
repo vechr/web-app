@@ -8,3 +8,4 @@ export * from './logging/logging';
 export * from './widgets/widget';
 export * from './notification-emails/notification-emails';
 export * from './sessions/sessions';
+export * from './users/user-managements';
