@@ -59,22 +59,19 @@ export const usePermissionManagementStore = defineStore(
             key: 'name',
           },
           {
+            title: 'Alias',
+            dataIndex: 'alias',
+            key: 'alias',
+          },
+          {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
           },
           {
-            label: 'Alias',
-            value: 'alias',
-          },
-          {
-            label: 'Permission Type',
-            value: 'permissionType',
-          },
-          {
-            title: 'Action',
-            dataIndex: 'id',
-            key: 'action',
+            title: 'Permission Type',
+            dataIndex: 'permissionType',
+            key: 'permissionType',
           },
         ];
       },
