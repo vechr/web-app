@@ -44,6 +44,14 @@ export const useUserManagementStore = defineStore('userManagement', {
           label: 'Username',
           value: 'username',
         },
+        {
+          label: 'Created At',
+          value: 'createdAt',
+        },
+        {
+          label: 'Updated At',
+          value: 'updatedAt',
+        },
       ];
     },
     userColumns() {

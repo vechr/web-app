@@ -110,7 +110,7 @@ import { defineComponent, reactive, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import {
   useCommonStore,
-  useRoleManagements,
+  useRoleManagementStore,
   useUserManagementStore,
 } from '@/ui/store';
 import { ICreateUser } from '@/domain';
@@ -124,7 +124,7 @@ export default defineComponent({
     const store = useUserManagementStore();
     const { isModalShow, isLoadingButton } = storeToRefs(common);
 
-    const roleStore = useRoleManagements();
+    const roleStore = useRoleManagementStore();
     const { optionRoles } = storeToRefs(roleStore);
 
     const showModal = () => {

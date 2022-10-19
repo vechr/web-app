@@ -98,7 +98,7 @@ import { storeToRefs } from 'pinia';
 import { defineComponent, ref } from 'vue';
 import {
   useCommonStore,
-  useRoleManagements,
+  useRoleManagementStore,
   useUserManagementStore,
 } from '@/ui/store';
 
@@ -112,7 +112,7 @@ export default defineComponent({
     const store = useUserManagementStore();
     const { userUpdate, dataDetails } = storeToRefs(store);
 
-    const roleStore = useRoleManagements();
+    const roleStore = useRoleManagementStore();
     const { optionRoles } = storeToRefs(roleStore);
 
     const onClose = () => {

@@ -10,3 +10,4 @@ export * from './notification-email-managements/notification-email.management';
 export * from './sessions/sessions';
 export * from './user-managements/user-management';
 export * from './roles-managements/role-management';
+export * from './permission-managements/permission-management';

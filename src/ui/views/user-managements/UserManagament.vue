@@ -141,7 +141,7 @@ import {
 } from '@ant-design/icons-vue';
 import {
   useCommonStore,
-  useRoleManagements,
+  useRoleManagementStore,
   useUserManagementStore,
 } from '@/ui/store';
 import {
@@ -172,7 +172,7 @@ export default defineComponent({
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
-    const roles = useRoleManagements();
+    const roles = useRoleManagementStore();
 
     const params = reactive<TQueryParamsFieldUsername>({
       filters: {
