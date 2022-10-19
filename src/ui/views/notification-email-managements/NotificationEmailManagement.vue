@@ -56,7 +56,10 @@
           @change="onSearch"
         />
         <!-- Create Data -->
-        <FormCreate style="float: right; margin-bottom: 20px" />
+        <FormCreate
+          style="float: right; margin-bottom: 20px"
+          class="table-btn-create"
+        />
         <FormEdit />
       </a-col>
     </a-row>
