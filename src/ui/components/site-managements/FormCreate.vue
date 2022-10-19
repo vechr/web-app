@@ -1,12 +1,12 @@
 <template>
   <div>
     <a-button type="primary" @click="showModal" block>
-      <template #icon><PlusOutlined /></template>Create Role
+      <template #icon><PlusOutlined /></template>Create Site
     </a-button>
 
     <a-modal
       v-model:visible="isModalShow"
-      title="Create Role"
+      title="Create Site"
       @ok="handleOk"
       :footer="null"
     >
@@ -19,9 +19,9 @@
         @finishFailed="onFinishFailed"
       >
         <a-form-item
-          label="Role Name"
+          label="Site Name"
           name="name"
-          :rules="[{ required: true, message: 'Please input Role Name!' }]"
+          :rules="[{ required: true, message: 'Please input Site Name!' }]"
         >
           <a-input v-model:value="formState.name" />
         </a-form-item>
@@ -31,17 +31,19 @@
         </a-form-item>
 
         <a-form-item
-          label="Permission"
-          name="permissions"
-          :rules="[{ required: false }]"
+          label="Code"
+          name="code"
+          :rules="[{ required: true, message: 'Please input Code!' }]"
         >
-          <a-select
-            mode="tags"
-            style="width: 100%"
-            placeholder="Tags Mode"
-            :options="optionPermissions"
-            v-model:value="formState.permissions"
-          ></a-select>
+          <a-input v-model:value="formState.code" />
+        </a-form-item>
+
+        <a-form-item
+          label="Location"
+          name="location"
+          :rules="[{ required: true, message: 'Please input Location!' }]"
+        >
+          <a-input v-model:value="formState.location" />
         </a-form-item>
 
         <a-form-item>
@@ -62,37 +64,31 @@
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { defineComponent, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
-import {
-  useCommonStore,
-  usePermissionManagementStore,
-  useRoleManagementStore,
-} from '@/ui/store';
-import { ICreateRole } from '@/domain';
+import { useCommonStore, useSiteManagementStore } from '@/ui/store';
+import { ICreateSite } from '@/domain';
 
 export default defineComponent({
   name: 'FormCreateRole',
   components: { PlusOutlined },
   setup() {
     const common = useCommonStore();
-    const store = useRoleManagementStore();
+    const store = useSiteManagementStore();
     const { isModalShow, isLoadingButton } = storeToRefs(common);
-
-    const permissionStore = usePermissionManagementStore();
-    const { optionPermissions } = storeToRefs(permissionStore);
 
     const showModal = () => {
       common.setIsModalShow(true);
     };
 
-    const formState = reactive<ICreateRole>({
+    const formState = reactive<ICreateSite>({
       name: '',
       description: '',
-      permissions: [],
+      code: '',
+      location: '',
     });
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      store.createRole(values);
+      store.createSite(values);
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -104,7 +100,6 @@ export default defineComponent({
     };
 
     return {
-      optionPermissions,
       isLoadingButton,
       formState,
       isModalShow,

@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="Edit Role"
+    title="Edit Site"
     :visible="isDrawerShow"
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
@@ -8,35 +8,37 @@
   >
     <a-form
       layout="vertical"
-      :model="updateRole"
+      :model="updateSite"
       name="basic"
       autocomplete="off"
       @finish="onFinish"
     >
       <a-form-item
-        label="Role Name"
+        label="Site Name"
         name="name"
-        :rules="[{ required: true, message: 'Please input Role Name!' }]"
+        :rules="[{ required: true, message: 'Please input Site Name!' }]"
       >
-        <a-input v-model:value="updateRole.name" />
+        <a-input v-model:value="updateSite.name" />
       </a-form-item>
 
       <a-form-item label="Description" name="description">
-        <a-textarea v-model:value="updateRole.description" />
+        <a-textarea v-model:value="updateSite.description" />
       </a-form-item>
 
       <a-form-item
-        label="Permission"
-        name="permissions"
-        :rules="[{ required: false }]"
+        label="Code"
+        name="code"
+        :rules="[{ required: true, message: 'Please input Code!' }]"
       >
-        <a-select
-          mode="tags"
-          style="width: 100%"
-          placeholder="Tags Mode"
-          :options="optionPermissions"
-          v-model:value="updateRole.permissions"
-        ></a-select>
+        <a-input v-model:value="updateSite.code" />
+      </a-form-item>
+
+      <a-form-item
+        label="Location"
+        name="location"
+        :rules="[{ required: true, message: 'Please input Location!' }]"
+      >
+        <a-input v-model:value="updateSite.location" />
       </a-form-item>
 
       <a-form-item>
@@ -55,11 +57,7 @@
 <script lang="ts">
 import { storeToRefs } from 'pinia';
 import { defineComponent } from 'vue';
-import {
-  useCommonStore,
-  useRoleManagementStore,
-  usePermissionManagementStore,
-} from '@/ui/store';
+import { useCommonStore, useSiteManagementStore } from '@/ui/store';
 
 export default defineComponent({
   name: 'FormEditDashboard',
@@ -67,11 +65,8 @@ export default defineComponent({
     const common = useCommonStore();
     const { isLoadingButton, isDrawerShow } = storeToRefs(common);
 
-    const store = useRoleManagementStore();
-    const { updateRole, dataDetails } = storeToRefs(store);
-
-    const permissionStore = usePermissionManagementStore();
-    const { optionPermissions } = storeToRefs(permissionStore);
+    const store = useSiteManagementStore();
+    const { updateSite, dataDetails } = storeToRefs(store);
 
     const onClose = () => {
       common.setIsDrawerShow(false);
@@ -80,12 +75,11 @@ export default defineComponent({
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
       if (dataDetails?.value)
-        store.updateRoleById(dataDetails.value.id, values);
+        store.updateSiteById(dataDetails.value.id, values);
     };
 
     return {
-      optionPermissions,
-      updateRole,
+      updateSite,
       isDrawerShow,
       isLoadingButton,
       onFinish,
