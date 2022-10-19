@@ -19,10 +19,10 @@ export function roleController() {
     });
   }
 
-  async function getRoleById(userId: string) {
+  async function getRoleById(roleId: string) {
     return await http.request({
       method: 'get',
-      url: `/api/v1/auth/roles/${userId}`,
+      url: `/api/v1/auth/roles/${roleId}`,
     });
   }
 
