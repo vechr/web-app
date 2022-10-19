@@ -79,6 +79,20 @@
         ></a-select>
       </a-form-item>
 
+      <a-form-item
+        label="Site"
+        name="siteId"
+        :rules="[{ required: true, message: 'Please input device type!' }]"
+      >
+        <a-select
+          v-model:value="userUpdate.siteId"
+          show-search
+          placeholder="Select a Site"
+          :options="optionSites"
+          :filter-option="filterOption"
+        ></a-select>
+      </a-form-item>
+
       <a-form-item>
         <a-button
           type="primary"
@@ -99,6 +113,7 @@ import { defineComponent, ref } from 'vue';
 import {
   useCommonStore,
   useRoleManagementStore,
+  useSiteManagementStore,
   useUserManagementStore,
 } from '@/ui/store';
 
@@ -114,6 +129,13 @@ export default defineComponent({
 
     const roleStore = useRoleManagementStore();
     const { optionRoles } = storeToRefs(roleStore);
+
+    const siteStore = useSiteManagementStore();
+    const { optionSites } = storeToRefs(siteStore);
+
+    const filterOption = (input: string, option: any) => {
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
 
     const onClose = () => {
       common.setIsDrawerShow(false);
@@ -146,12 +168,13 @@ export default defineComponent({
 
     const onFinish = (values: any) => {
       common.setIsLoadingButton(true);
-      values.siteId = userUpdate.value.siteId;
       if (dataDetails?.value)
         store.updateUserById(dataDetails.value.id, values);
     };
 
     return {
+      filterOption,
+      optionSites,
       optionRoles,
       rules,
       userUpdate,

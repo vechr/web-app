@@ -142,6 +142,7 @@ import {
 import {
   useCommonStore,
   useRoleManagementStore,
+  useSiteManagementStore,
   useUserManagementStore,
 } from '@/ui/store';
 import {
@@ -174,6 +175,8 @@ export default defineComponent({
 
     const roles = useRoleManagementStore();
 
+    const site = useSiteManagementStore();
+
     const params = reactive<TQueryParamsFieldUsername>({
       filters: {
         pagination: {
@@ -203,6 +206,7 @@ export default defineComponent({
     };
 
     onBeforeMount(() => {
+      site.getOptionSites();
       roles.getOptionRole();
       store.getUserPagination(params);
     });
