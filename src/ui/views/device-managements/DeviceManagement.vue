@@ -56,7 +56,10 @@
           @change="onSearch"
         />
         <!-- Create Data -->
-        <FormCreate style="float: right; margin-bottom: 20px" />
+        <FormCreate
+          style="float: right; margin-bottom: 20px"
+          class="table-btn-create"
+        />
         <FormEdit />
       </a-col>
     </a-row>
@@ -183,7 +186,7 @@ import { defineComponent, onBeforeMount, reactive } from 'vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
-  useDeviceTypeStore,
+  useDeviceTypeManagementStore,
 } from '@/ui/store';
 import {
   ESortMode,
@@ -212,7 +215,7 @@ export default defineComponent({
     const { isLoadingActive } = storeToRefs(common);
 
     const store = useDeviceManagementStore();
-    const storeDeviceType = useDeviceTypeStore();
+    const storeDeviceType = useDeviceTypeManagementStore();
     const { deviceList, deviceColumns, deviceColumnsSort, meta } =
       storeToRefs(store);
 

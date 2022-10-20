@@ -35,20 +35,33 @@
           </a-menu-item>
         </router-link>
 
-        <!--
         <router-link to="/user" custom v-slot="{ navigate, href }">
           <a-menu-item key="5" @click="navigate" :href="href">
-            <user-outlined />
-            <span>User Management</span>
+            <user-add-outlined />
+            <span> User Management</span>
           </a-menu-item>
         </router-link>
 
         <router-link to="/role" custom v-slot="{ navigate, href }">
           <a-menu-item key="6" @click="navigate" :href="href">
-            <UserSwitchOutlined />
-            <span>Role Management</span>
+            <lock-outlined />
+            <span> Role Management</span>
           </a-menu-item>
-        </router-link>-->
+        </router-link>
+
+        <router-link to="/site" custom v-slot="{ navigate, href }">
+          <a-menu-item key="7" @click="navigate" :href="href">
+            <DatabaseOutlined />
+            <span> Site Management</span>
+          </a-menu-item>
+        </router-link>
+
+        <router-link to="/permission" custom v-slot="{ navigate, href }">
+          <a-menu-item key="8" @click="navigate" :href="href">
+            <security-scan-outlined />
+            <span> Permission List</span>
+          </a-menu-item>
+        </router-link>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -74,7 +87,7 @@
           </a-menu-item>
 
           <router-link to="/" custom v-slot="{ navigate, href }">
-            <a-menu-item key="6" @click="navigate" :href="href"
+            <a-menu-item key="9" @click="navigate" :href="href"
               >Home</a-menu-item
             >
           </router-link>
@@ -85,7 +98,7 @@
             >
           </router-link>-->
 
-          <a-sub-menu key="8" id="avatar">
+          <a-sub-menu key="10" id="avatar">
             <template #icon>
               <a-avatar size="small">
                 <setting-outlined />
@@ -121,40 +134,46 @@
 
 <script lang="ts">
 import {
-  UserOutlined,
+  UserAddOutlined,
   ApiOutlined,
   DashboardOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   ApartmentOutlined,
-  // UserSwitchOutlined,
+  LockOutlined,
   SettingOutlined,
   LogoutOutlined,
   CloseOutlined,
   MailOutlined,
+  DatabaseOutlined,
+  SecurityScanOutlined,
+  UserOutlined,
 } from '@ant-design/icons-vue';
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useCommonStore, useSessionStore } from '../store';
 import Loading from '@/ui/components/common/Loading.vue';
-import { confirmButtonLogout } from '@/utils/sweet_alert';
+import { confirmButtonLogout } from '@/utils/sweet-alert.util';
 
 export default defineComponent({
   name: 'DashboardLayout',
   components: {
-    UserOutlined,
+    UserAddOutlined,
     DashboardOutlined,
     ApiOutlined,
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     ApartmentOutlined,
-    // UserSwitchOutlined,
+    LockOutlined,
     SettingOutlined,
     LogoutOutlined,
     CloseOutlined,
     MailOutlined,
+    DatabaseOutlined,
     Loading,
+    SecurityScanOutlined,
+    UserOutlined,
   },
   setup() {
     const session = useSessionStore();

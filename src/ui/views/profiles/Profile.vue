@@ -85,7 +85,7 @@
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount } from 'vue';
 import { useCommonStore, useSessionStore } from '@/ui/store';
-import { useUserStore } from '@/ui/store/users/user';
+import { useUserManagementStore } from '@/ui/store';
 import { TUserFullInformation } from '@/domain';
 
 export default defineComponent({
@@ -93,7 +93,7 @@ export default defineComponent({
   setup() {
     const common = useCommonStore();
     const session = useSessionStore();
-    const user = useUserStore();
+    const user = useUserManagementStore();
     const { dataDetails } = storeToRefs(user);
     const { mySession } = storeToRefs(session);
     const { isLoadingActive } = storeToRefs(common);
