@@ -9,7 +9,7 @@
       }"
       class="responsive-text"
     >
-      Role Management
+      List of Permission
     </h2>
     <a-row>
       <a-col :span="24">
@@ -55,12 +55,6 @@
           class="table-filter"
           @change="onSearch"
         />
-        <!-- Create Data -->
-        <FormCreate
-          style="float: right; margin-bottom: 20px"
-          class="table-btn-create"
-        />
-        <FormEdit />
       </a-col>
     </a-row>
     <a-row>
@@ -116,17 +110,13 @@ import {
   sortMode,
   TQueryParamsFieldName,
 } from '@/domain';
-import FormCreate from '@/ui/components/role-managements/FormCreate.vue';
-import FormEdit from '@/ui/components/role-managements/FormEdit.vue';
 
 export default defineComponent({
-  name: 'RoleManagement',
+  name: 'PermissionManagement',
   components: {
     SortAscendingOutlined,
     SortDescendingOutlined,
     FieldTimeOutlined,
-    FormCreate,
-    FormEdit,
   },
   setup() {
     const store = usePermissionManagementStore();
