@@ -9,6 +9,7 @@
       title="Create Role"
       @ok="handleOk"
       :footer="null"
+      width="720px"
     >
       <a-form
         layout="vertical"
@@ -34,14 +35,20 @@
           label="Permission"
           name="permissions"
           :rules="[{ required: false }]"
+          class="transfer-form"
         >
-          <a-select
-            mode="tags"
-            style="width: 100%"
-            placeholder="Tags Mode"
-            :options="optionPermissions"
-            v-model:value="formState.permissions"
-          ></a-select>
+          <a-transfer
+            :list-style="{
+              width: '300px',
+              height: '300px',
+            }"
+            pagination
+            v-model:target-keys="formState.permissions"
+            :data-source="transferSourceData"
+            :titles="[' Available', ' Selected']"
+            show-search
+            :render="(item: any) => `${item.description} - ${item.title}`"
+          />
         </a-form-item>
 
         <a-form-item>
@@ -78,7 +85,7 @@ export default defineComponent({
     const { isModalShow, isLoadingButton } = storeToRefs(common);
 
     const permissionStore = usePermissionManagementStore();
-    const { optionPermissions } = storeToRefs(permissionStore);
+    const { transferSourceData } = storeToRefs(permissionStore);
 
     const showModal = () => {
       common.setIsModalShow(true);
@@ -104,7 +111,7 @@ export default defineComponent({
     };
 
     return {
-      optionPermissions,
+      transferSourceData,
       isLoadingButton,
       formState,
       isModalShow,

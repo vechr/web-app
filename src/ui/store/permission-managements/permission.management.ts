@@ -13,6 +13,7 @@ export const usePermissionManagementStore = defineStore(
         data: [],
         dataDetails: undefined,
         optionPermissions: [],
+        transferSourceData: [],
         success: true,
         error: {
           code: '',
@@ -89,6 +90,12 @@ export const usePermissionManagementStore = defineStore(
             this.optionPermissions = this.data.map((permission) => ({
               value: permission.id ? permission.id : '',
               label: permission.name ? permission.name : '',
+            }));
+            this.transferSourceData = this.data.map((permission) => ({
+              title: permission.alias ? permission.alias : '',
+              description: permission.name ? permission.name : '',
+              disabled: false,
+              key: permission.id ? permission.id : '',
             }));
             this.error = result.data?.error;
           }

@@ -6,7 +6,7 @@
     :footer-style="{ textAlign: 'right' }"
     @close="onClose"
     :width="720"
-    class="topic-event-drawer"
+    class="custom-drawer-mobile"
   >
     <a-form
       layout="vertical"

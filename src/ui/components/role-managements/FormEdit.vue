@@ -5,6 +5,8 @@
     :body-style="{ paddingBottom: '80px' }"
     :footer-style="{ textAlign: 'right' }"
     @close="onClose"
+    width="720"
+    class="custom-drawer-mobile"
   >
     <a-form
       layout="vertical"
@@ -29,14 +31,21 @@
         label="Permission"
         name="permissions"
         :rules="[{ required: false }]"
+        class="transfer-form"
       >
-        <a-select
-          mode="tags"
-          style="width: 100%"
-          placeholder="Tags Mode"
-          :options="optionPermissions"
-          v-model:value="updateRole.permissions"
-        ></a-select>
+        <a-transfer
+          :list-style="{
+            width: '300px',
+            height: '300px',
+          }"
+          pagination
+          v-model:selected-keys="selectedKeys"
+          v-model:target-keys="updateRole.permissions"
+          :data-source="transferSourceData"
+          :titles="[' Available', ' Selected']"
+          show-search
+          :render="(item: any) => `${item.description} - ${item.title}`"
+        />
       </a-form-item>
 
       <a-form-item>
@@ -54,7 +63,7 @@
 
 <script lang="ts">
 import { storeToRefs } from 'pinia';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import {
   useCommonStore,
   useRoleManagementStore,
@@ -71,7 +80,9 @@ export default defineComponent({
     const { updateRole, dataDetails } = storeToRefs(store);
 
     const permissionStore = usePermissionManagementStore();
-    const { optionPermissions } = storeToRefs(permissionStore);
+    const { transferSourceData } = storeToRefs(permissionStore);
+
+    const selectedKeys = ref<string[]>(updateRole.value.permissions);
 
     const onClose = () => {
       common.setIsDrawerShow(false);
@@ -84,7 +95,8 @@ export default defineComponent({
     };
 
     return {
-      optionPermissions,
+      selectedKeys,
+      transferSourceData,
       updateRole,
       isDrawerShow,
       isLoadingButton,
