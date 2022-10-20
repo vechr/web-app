@@ -10,6 +10,10 @@ export interface ICommonFiled<Q> {
   name: Q;
 }
 
+export interface IUsernameFiled<Q> {
+  username: Q;
+}
+
 export interface IModeQuery {
   createdAt: Date;
   updatedAt: Date;
@@ -42,6 +46,10 @@ export type TQueryParamsFieldName = IListRequestQuery<
   ICommonFiled<IOperatorQuery>
 >;
 
+export type TQueryParamsFieldUsername = IListRequestQuery<
+  IModeQuery,
+  IUsernameFiled<IOperatorQuery>
+>;
 export interface IListRequestQuery<E = any, F = any> {
   filters: {
     pagination: {

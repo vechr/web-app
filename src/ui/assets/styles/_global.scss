@@ -52,6 +52,8 @@
   transition: all 0.15s linear;
 }
 
+// Button Color
+// ####################################################
 .ant-btn, .swal2-confirm {
   border-radius: 20px !important;
   background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%) !important;
@@ -71,3 +73,29 @@
 .ant-btn-dangerous, .ant-btn-dangerous:hover, .ant-btn-dangerous:focus {
   background: red !important;
 }
+// ####################################################
+
+// Transfer 
+// ####################################################
+.transfer-form {
+  .ant-form-item-control {
+    .ant-form-item-control-input {
+      .ant-form-item-control-input-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .ant-transfer {
+    flex-direction: column;
+
+    .ant-transfer-operation {
+      margin: 10px
+    }
+  }
+}
+// ####################################################
