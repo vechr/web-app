@@ -46,6 +46,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('widgets:read@auth', 'any') &&
+          ability.can('dashboards:read@auth', 'any')
+        )
+      )
+        router.push('profile');
+    },
   },
   {
     path: '/dashboard/:dashboardId',
@@ -54,6 +63,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('widgets:read@auth', 'any') &&
+          ability.can('dashboards:read@auth', 'any')
+        )
+      )
+        router.push('profile');
+    },
   },
   {
     path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/logging',
@@ -61,6 +79,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Logging,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (!ability.can('topics:read@auth', 'any')) router.push('not-found');
     },
   },
   {
@@ -86,6 +107,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('devices:read@auth', 'any') &&
+          ability.can('dashboards:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
+    },
   },
   {
     path: '/device',
@@ -93,6 +123,15 @@ const routes: Array<RouteRecordRaw> = [
     component: DeviceManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('devices:read@auth', 'any') &&
+          ability.can('topics:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
     },
   },
   {
@@ -102,6 +141,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (!ability.can('email-notifications:read@auth', 'any'))
+        router.push('not-found');
+    },
   },
   {
     path: '/device/:deviceId/topic',
@@ -109,6 +152,15 @@ const routes: Array<RouteRecordRaw> = [
     component: TopicManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('topics:read@auth', 'any') &&
+          ability.can('topic-events:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
     },
   },
   {
@@ -118,6 +170,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('topic-events:read@auth', 'any') &&
+          ability.can('email-notifications:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
+    },
   },
   {
     path: '/device-type',
@@ -125,6 +186,10 @@ const routes: Array<RouteRecordRaw> = [
     component: DeviceTypeManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (!ability.can('device-types:read@auth', 'any'))
+        router.push('not-found');
     },
   },
   {
@@ -134,6 +199,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('users:read@auth', 'any') &&
+          ability.can('roles:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
+    },
   },
   {
     path: '/role',
@@ -141,6 +215,15 @@ const routes: Array<RouteRecordRaw> = [
     component: RoleManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('roles:read@auth', 'any') &&
+          ability.can('permissions:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
     },
   },
   {
@@ -150,6 +233,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (!ability.can('permissions:read@auth', 'any'))
+        router.push('not-found');
+    },
   },
   {
     path: '/site',
@@ -157,6 +244,9 @@ const routes: Array<RouteRecordRaw> = [
     component: SiteManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (!ability.can('sites:read@auth', 'any')) router.push('not-found');
     },
   },
 ];

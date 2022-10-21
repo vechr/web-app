@@ -68,8 +68,9 @@
         <FormCreate
           style="float: right; margin-bottom: 20px"
           class="table-btn-create"
+          v-if="can('topics:create@auth', 'any')"
         />
-        <FormEdit />
+        <FormEdit v-if="can('topics:update@auth', 'any')" />
       </a-col>
     </a-row>
     <a-row>
@@ -100,12 +101,18 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small" @click="onEdit(record)">
+                <a-button
+                  v-if="can('topics:update@auth', 'any')"
+                  type="primary"
+                  size="small"
+                  @click="onEdit(record)"
+                >
                   <template #icon>
                     <EditOutlined />
                   </template>
                 </a-button>
                 <a-button
+                  v-if="can('topics:delete@auth', 'any')"
                   type="primary"
                   size="small"
                   danger
@@ -196,6 +203,7 @@ import {
 import { defineComponent, onBeforeMount, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
+import { useAbility } from '@casl/vue';
 import FormCreate from '@/ui/components/topic-managements/FormCreate.vue';
 import FormEdit from '@/ui/components/topic-managements/FormEdit.vue';
 import { useCommonStore, useTopicManagementStore } from '@/ui/store';
@@ -219,6 +227,7 @@ export default defineComponent({
     FieldTimeOutlined,
   },
   setup() {
+    const ability = useAbility();
     const route = useRoute();
     const deviceId = String(route.params.deviceId);
 
@@ -271,6 +280,7 @@ export default defineComponent({
     };
 
     return {
+      can: ability.can.bind(ability),
       topicColumnsSort,
       onSearch,
       meta,

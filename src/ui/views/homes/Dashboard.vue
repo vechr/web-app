@@ -1,7 +1,10 @@
 <template>
   <a-row>
     <a-col :span="12">
-      <a-button type="primary" @click="showDrawer"
+      <a-button
+        type="primary"
+        v-if="can('widgets:create@auth', 'any')"
+        @click="showDrawer"
         ><PlusOutlined />Widget</a-button
       >
     </a-col>
@@ -13,11 +16,13 @@
     <a-col :span="24" class="option-dashboard">
       <a-space>
         <a-switch
+          v-if="can('widgets:update@auth', 'any')"
           v-model:checked="enableMove"
           checked-children="Draggable"
           un-checked-children="Undraggable"
         />
         <a-switch
+          v-if="can('widgets:update@auth', 'any')"
           v-model:checked="enableResize"
           checked-children="Resizeable"
           un-checked-children="Unresizeable"
@@ -235,6 +240,7 @@ import { useRoute } from 'vue-router';
 import L from 'leaflet';
 import { connect, NatsConnection, StringCodec } from 'nats.ws';
 import { message as notif } from 'ant-design-vue';
+import { useAbility } from '@casl/vue';
 import { useLoggingStore, useWidgetStore } from '@/ui/store';
 import uuid from '@/utils/uuid.util';
 import { EWidget, IFormWidget, IWidget } from '@/domain';
@@ -282,6 +288,8 @@ export default defineComponent({
     vueJsoneditor,
   },
   setup() {
+    const ability = useAbility();
+
     let nc: NatsConnection;
     const storeLogging = useLoggingStore();
     const { statusConnection } = storeToRefs(storeLogging);
@@ -728,6 +736,7 @@ export default defineComponent({
     }
 
     return {
+      can: ability.can.bind(ability),
       enableResize,
       dashboardId,
       dataFull,

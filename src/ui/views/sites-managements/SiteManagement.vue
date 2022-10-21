@@ -59,8 +59,9 @@
         <FormCreate
           style="float: right; margin-bottom: 20px"
           class="table-btn-create"
+          v-if="can('sites:create@auth', 'any')"
         />
-        <FormEdit />
+        <FormEdit v-if="can('sites:udpate@auth', 'any')" />
       </a-col>
     </a-row>
     <a-row>
@@ -82,12 +83,18 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small" @click="onEdit(record)">
+                <a-button
+                  v-if="can('sites:update@auth', 'any')"
+                  type="primary"
+                  size="small"
+                  @click="onEdit(record)"
+                >
                   <template #icon>
                     <EditOutlined />
                   </template>
                 </a-button>
                 <a-button
+                  v-if="can('sites:delete@auth', 'any')"
                   type="primary"
                   size="small"
                   danger
@@ -139,6 +146,7 @@ import {
   SortDescendingOutlined,
   FieldTimeOutlined,
 } from '@ant-design/icons-vue';
+import { useAbility } from '@casl/vue';
 import { useCommonStore, useSiteManagementStore } from '@/ui/store';
 import {
   ESortMode,
@@ -162,6 +170,7 @@ export default defineComponent({
     FormEdit,
   },
   setup() {
+    const ability = useAbility();
     const store = useSiteManagementStore();
     const { data, siteColumns, meta, siteColumnsSort } = storeToRefs(store);
 
@@ -210,6 +219,7 @@ export default defineComponent({
     };
 
     return {
+      can: ability.can.bind(ability),
       siteColumnsSort,
       onSearch,
       meta,

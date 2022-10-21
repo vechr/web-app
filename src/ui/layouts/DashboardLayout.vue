@@ -8,7 +8,7 @@
       <img alt="logo" src="@/ui/assets/logo.svg" />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <router-link
-          v-if="can('devices:read@auth', 'any')"
+          v-if="can('device-types:read@auth', 'any')"
           to="/device-type"
           custom
           v-slot="{ navigate, href }"
@@ -35,7 +35,10 @@
         </router-link>
 
         <router-link
-          v-if="can('devices:read@auth', 'any')"
+          v-if="
+            can('devices:read@auth', 'any') &&
+            can('device-types:read@auth', 'any')
+          "
           to="/device"
           custom
           v-slot="{ navigate, href }"
@@ -59,7 +62,7 @@
         </router-link>
 
         <router-link
-          v-if="can('users:read@auth', 'any')"
+          v-if="can('roles:read@auth', 'any') && can('users:read@auth', 'any')"
           to="/user"
           custom
           v-slot="{ navigate, href }"
@@ -71,7 +74,9 @@
         </router-link>
 
         <router-link
-          v-if="can('roles:read@auth', 'any')"
+          v-if="
+            can('roles:read@auth', 'any') && can('permissions:read@auth', 'any')
+          "
           to="/role"
           custom
           v-slot="{ navigate, href }"
@@ -130,7 +135,10 @@
           </a-menu-item>
 
           <router-link
-            v-if="can('dashboards:read@auth', 'any')"
+            v-if="
+              can('widgets:read@auth', 'any') &&
+              can('dashboards:read@auth', 'any')
+            "
             to="/"
             custom
             v-slot="{ navigate, href }"
