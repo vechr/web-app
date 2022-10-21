@@ -20,7 +20,10 @@
         </router-link>
 
         <router-link
-          v-if="can('dashboards:read@auth', 'any')"
+          v-if="
+            can('dashboards:read@auth', 'any') &&
+            can('devices:read@auth', 'any')
+          "
           to="/dashboard"
           custom
           v-slot="{ navigate, href }"
