@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { useSessionStore } from '../store';
+import { ref } from 'vue';
+import { usePermissionManagementStore, useSessionStore } from '../store';
 import DashboardManagement from '@/ui/views/dashboard-managements/DashboardManagement.vue';
 import DeviceManagement from '@/ui/views/device-managements/DeviceManagement.vue';
 import UserManagement from '@/ui/views/user-managements/UserManagament.vue';
@@ -19,6 +20,7 @@ import NotificationEmailManagement from '@/ui/views/notification-email-managemen
 import NotFound from '@/ui/views/common/NotFound.vue';
 import Session from '@/ui/views/session/Session.vue';
 import { EErrorJwtCode } from '@/domain';
+import ability, { permissionAbility, TPermission } from '@/utils/ability';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -44,6 +46,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('widgets:read@auth', 'any') &&
+          ability.can('dashboards:read@auth', 'any')
+        )
+      )
+        router.push('profile');
+    },
   },
   {
     path: '/dashboard/:dashboardId',
@@ -52,6 +63,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('widgets:read@auth', 'any') &&
+          ability.can('dashboards:read@auth', 'any')
+        )
+      )
+        router.push('profile');
+    },
   },
   {
     path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/logging',
@@ -59,6 +79,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Logging,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (!ability.can('topics:read@auth', 'any')) router.push('not-found');
     },
   },
   {
@@ -84,6 +107,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('devices:read@auth', 'any') &&
+          ability.can('dashboards:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
+    },
   },
   {
     path: '/device',
@@ -91,6 +123,15 @@ const routes: Array<RouteRecordRaw> = [
     component: DeviceManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('devices:read@auth', 'any') &&
+          ability.can('topics:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
     },
   },
   {
@@ -100,6 +141,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (!ability.can('email-notifications:read@auth', 'any'))
+        router.push('not-found');
+    },
   },
   {
     path: '/device/:deviceId/topic',
@@ -107,6 +152,15 @@ const routes: Array<RouteRecordRaw> = [
     component: TopicManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('topics:read@auth', 'any') &&
+          ability.can('topic-events:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
     },
   },
   {
@@ -116,6 +170,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('topic-events:read@auth', 'any') &&
+          ability.can('email-notifications:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
+    },
   },
   {
     path: '/device-type',
@@ -123,6 +186,10 @@ const routes: Array<RouteRecordRaw> = [
     component: DeviceTypeManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (!ability.can('device-types:read@auth', 'any'))
+        router.push('not-found');
     },
   },
   {
@@ -132,6 +199,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('users:read@auth', 'any') &&
+          ability.can('roles:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
+    },
   },
   {
     path: '/role',
@@ -139,6 +215,15 @@ const routes: Array<RouteRecordRaw> = [
     component: RoleManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (
+        !(
+          ability.can('roles:read@auth', 'any') &&
+          ability.can('permissions:read@auth', 'any')
+        )
+      )
+        router.push('not-found');
     },
   },
   {
@@ -148,6 +233,10 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
     },
+    beforeEnter: () => {
+      if (!ability.can('permissions:read@auth', 'any'))
+        router.push('not-found');
+    },
   },
   {
     path: '/site',
@@ -155,6 +244,9 @@ const routes: Array<RouteRecordRaw> = [
     component: SiteManagement,
     meta: {
       layout: 'dashboard-layout',
+    },
+    beforeEnter: () => {
+      if (!ability.can('sites:read@auth', 'any')) router.push('not-found');
     },
   },
 ];
@@ -165,6 +257,15 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, _from, next) => {
+  // Permission Variable
+  const permission = ref<TPermission>([]);
+
+  // Permission Store
+  const permissionStore = usePermissionManagementStore();
+  await permissionStore.getOptionPermission();
+  const { permissionSourceList } = storeToRefs(permissionStore);
+
+  // Sessions Store
   const session = useSessionStore();
   const { mySession } = storeToRefs(session);
   let authenticated = false;
@@ -182,6 +283,26 @@ router.beforeEach(async (to, _from, next) => {
   if (authenticated) {
     if (mySession?.value === undefined) {
       await session.userMe();
+    }
+  }
+
+  // Set permission List
+  if (mySession?.value) permission.value = permissionAbility(mySession?.value);
+
+  if (permission.value.length > 0) {
+    const intersecPermission = permissionSourceList.value.filter((t) =>
+      permission.value.some((p) => p.action === t.action),
+    );
+
+    if (intersecPermission.find((val) => val.action === 'root')) {
+      ability.update([
+        {
+          action: 'manage',
+          subject: 'all',
+        },
+      ]);
+    } else {
+      ability.update(intersecPermission);
     }
   }
 

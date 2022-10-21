@@ -14,6 +14,7 @@ export const usePermissionManagementStore = defineStore(
         dataDetails: undefined,
         optionPermissions: [],
         transferSourceData: [],
+        permissionSourceList: [],
         success: true,
         error: {
           code: '',
@@ -82,7 +83,6 @@ export const usePermissionManagementStore = defineStore(
         const result = await permissionController().getPermissionAll();
         if (result.data?.error) {
           this.error = result.data.error;
-          message.error(`${this.error.code} ${this.error.message}`);
         } else {
           if (result.status === 200) {
             this.message = result.data ? result.data.message : 'Success!';
@@ -96,6 +96,10 @@ export const usePermissionManagementStore = defineStore(
               description: permission.name ? permission.name : '',
               disabled: false,
               key: permission.id ? permission.id : '',
+            }));
+            this.permissionSourceList = this.data.map((permission) => ({
+              action: permission.alias ? permission.alias : '',
+              subject: 'any',
             }));
             this.error = result.data?.error;
           }

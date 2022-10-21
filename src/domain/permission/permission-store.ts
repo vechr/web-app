@@ -1,4 +1,5 @@
 import { IBaseResponse, Permission } from '@/domain';
+import { TPermission } from '@/utils/ability';
 
 export interface IPermissionData extends IBaseResponse {
   data: Partial<Permission>[];
@@ -10,4 +11,5 @@ export interface IPermissionData extends IBaseResponse {
     description: string;
     disabled: boolean;
   }[];
+  permissionSourceList: TPermission;
 }

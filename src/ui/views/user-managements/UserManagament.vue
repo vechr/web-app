@@ -59,8 +59,9 @@
         <FormCreate
           style="float: right; margin-bottom: 20px"
           class="table-btn-create"
+          v-if="can('users:create@auth', 'any')"
         />
-        <FormEdit />
+        <FormEdit v-if="can('users:update@auth', 'any')" />
       </a-col>
     </a-row>
     <a-row>
@@ -82,12 +83,18 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small" @click="onEdit(record)">
+                <a-button
+                  v-if="can('users:update@auth', 'any')"
+                  type="primary"
+                  size="small"
+                  @click="onEdit(record)"
+                >
                   <template #icon>
                     <EditOutlined />
                   </template>
                 </a-button>
                 <a-button
+                  v-if="can('users:delete@auth', 'any')"
                   type="primary"
                   size="small"
                   danger
@@ -139,6 +146,7 @@ import {
   SortDescendingOutlined,
   FieldTimeOutlined,
 } from '@ant-design/icons-vue';
+import { useAbility } from '@casl/vue';
 import {
   useCommonStore,
   useRoleManagementStore,
@@ -167,6 +175,7 @@ export default defineComponent({
     FormEdit,
   },
   setup() {
+    const ability = useAbility();
     const store = useUserManagementStore();
     const { data, userColumns, meta, userColumnsSort } = storeToRefs(store);
 
@@ -221,6 +230,7 @@ export default defineComponent({
     };
 
     return {
+      can: ability.can.bind(ability),
       userColumnsSort,
       onSearch,
       meta,

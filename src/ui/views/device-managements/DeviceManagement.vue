@@ -59,8 +59,9 @@
         <FormCreate
           style="float: right; margin-bottom: 20px"
           class="table-btn-create"
+          v-if="can('devices:create@auth', 'any')"
         />
-        <FormEdit />
+        <FormEdit v-if="can('devices:update@auth', 'any')" />
       </a-col>
     </a-row>
     <a-row>
@@ -91,12 +92,18 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small" @click="onEdit(record)">
+                <a-button
+                  v-if="can('devices:update@auth', 'any')"
+                  type="primary"
+                  size="small"
+                  @click="onEdit(record)"
+                >
                   <template #icon>
                     <EditOutlined />
                   </template>
                 </a-button>
                 <a-button
+                  v-if="can('devices:delete@auth', 'any')"
                   type="primary"
                   size="small"
                   danger
@@ -183,6 +190,7 @@ import {
 } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { defineComponent, onBeforeMount, reactive } from 'vue';
+import { useAbility } from '@casl/vue';
 import {
   useCommonStore,
   useDeviceManagementStore,
@@ -211,6 +219,7 @@ export default defineComponent({
     FieldTimeOutlined,
   },
   setup() {
+    const ability = useAbility();
     const common = useCommonStore();
     const { isLoadingActive } = storeToRefs(common);
 
@@ -262,6 +271,7 @@ export default defineComponent({
     };
 
     return {
+      can: ability.can.bind(ability),
       pageSizeOptions,
       meta,
       deviceColumnsSort,

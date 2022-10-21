@@ -1,6 +1,6 @@
 <template>
   <div v-if="!isLoadingActive">
-    <div v-if="dataDetails !== undefined">
+    <div v-if="mySession !== undefined">
       <h2
         :style="{
           display: 'flex',
@@ -10,10 +10,10 @@
         }"
         class="responsive-text"
       >
-        Hi, {{ dataDetails.fullName }}!
+        Hi, {{ mySession.fullName }}!
       </h2>
       <a-form
-        :model="dataDetails"
+        :model="mySession"
         name="basic"
         autocomplete="off"
         :label-col="{ span: 4 }"
@@ -27,7 +27,7 @@
         >
           <a-input
             placeholder="Type your username"
-            v-model:value="dataDetails.username"
+            v-model:value="mySession.username"
           >
           </a-input>
         </a-form-item>
@@ -39,7 +39,7 @@
         >
           <a-input
             placeholder="Type your fullname"
-            v-model:value="dataDetails.fullName"
+            v-model:value="mySession.fullName"
           >
           </a-input>
         </a-form-item>
@@ -53,7 +53,7 @@
         >
           <a-input
             placeholder="Type your Phone Number"
-            v-model:value="dataDetails.phoneNumber"
+            v-model:value="mySession.phoneNumber"
           >
           </a-input>
         </a-form-item>
@@ -61,21 +61,10 @@
         <a-form-item label="Description" name="description">
           <a-textarea
             placeholder="Type your Description"
-            v-model:value="dataDetails.description"
+            v-model:value="mySession.description"
           >
           </a-textarea>
         </a-form-item>
-
-        <!-- <a-form-item :wrapper-col="{ offset: 4, span: 28 }">
-          <a-button
-            class="btn-auth"
-            shape="round"
-            size="large"
-            type="primary"
-            html-type="submit"
-            >Save</a-button
-          >
-        </a-form-item> -->
       </a-form>
     </div>
   </div>
@@ -83,9 +72,8 @@
 
 <script lang="ts">
 import { storeToRefs } from 'pinia';
-import { defineComponent, onBeforeMount } from 'vue';
+import { defineComponent } from 'vue';
 import { useCommonStore, useSessionStore } from '@/ui/store';
-import { useUserManagementStore } from '@/ui/store';
 import { TUserFullInformation } from '@/domain';
 
 export default defineComponent({
@@ -93,22 +81,8 @@ export default defineComponent({
   setup() {
     const common = useCommonStore();
     const session = useSessionStore();
-    const user = useUserManagementStore();
-    const { dataDetails } = storeToRefs(user);
     const { mySession } = storeToRefs(session);
     const { isLoadingActive } = storeToRefs(common);
-
-    onBeforeMount(async () => {
-      if (dataDetails?.value === undefined) {
-        if (
-          mySession?.value !== undefined &&
-          mySession.value.id !== undefined
-        ) {
-          common.setIsLoading(true);
-          await user.getUserById(mySession.value.id);
-        }
-      }
-    });
 
     const onFinish = (values: TUserFullInformation) => {
       console.log(values);
@@ -117,7 +91,7 @@ export default defineComponent({
     return {
       isLoadingActive,
       onFinish,
-      dataDetails,
+      mySession,
     };
   },
 });

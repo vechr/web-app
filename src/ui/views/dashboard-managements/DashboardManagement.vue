@@ -59,8 +59,9 @@
         <FormCreate
           style="float: right; margin-bottom: 20px"
           class="table-btn-create"
+          v-if="can('dashboards:create@auth', 'any')"
         />
-        <FormEdit />
+        <FormEdit v-if="can('dashboards:update@auth', 'any')" />
       </a-col>
     </a-row>
     <a-row>
@@ -82,12 +83,18 @@
                   alignItems: 'center',
                 }"
               >
-                <a-button type="primary" size="small" @click="onEdit(record)">
+                <a-button
+                  v-if="can('dashboards:update@auth', 'any')"
+                  type="primary"
+                  size="small"
+                  @click="onEdit(record)"
+                >
                   <template #icon>
                     <EditOutlined />
                   </template>
                 </a-button>
                 <a-button
+                  v-if="can('dashboards:delete@auth', 'any')"
                   type="primary"
                   size="small"
                   danger
@@ -159,6 +166,7 @@ import {
   SortDescendingOutlined,
   FieldTimeOutlined,
 } from '@ant-design/icons-vue';
+import { useAbility } from '@casl/vue';
 import FormCreate from '@/ui/components/dashboard-managements/FormCreate.vue';
 import FormEdit from '@/ui/components/dashboard-managements/FormEdit.vue';
 import {
@@ -186,6 +194,7 @@ export default defineComponent({
   },
   name: 'DashboardManagement',
   setup() {
+    const ability = useAbility();
     const deviceStore = useDeviceManagementStore();
     const store = useDashboardManagementStore();
     const common = useCommonStore();
@@ -237,6 +246,7 @@ export default defineComponent({
     };
 
     return {
+      can: ability.can.bind(ability),
       dashboardColumnsSort,
       onSearch,
       meta,

@@ -4,12 +4,14 @@ import Antd from 'ant-design-vue';
 import L from 'leaflet';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import { abilitiesPlugin } from '@casl/vue';
 import App from './ui/App.vue';
 import router from './ui/router';
 import 'ant-design-vue/dist/antd.css';
 import './ui/assets/styles/app.scss';
 import 'gridstack/dist/gridstack.min.css';
 import 'leaflet/dist/leaflet.css';
+import ability from './utils/ability';
 
 // LEAFLET SETTING ICON
 L.Icon.Default.mergeOptions({
@@ -19,4 +21,12 @@ L.Icon.Default.mergeOptions({
 });
 
 const app = createApp(App);
-app.use(createPinia()).use(router).use(Antd).use(VueSweetalert2).mount('#app');
+app
+  .use(createPinia())
+  .use(router)
+  .use(Antd)
+  .use(VueSweetalert2)
+  .use(abilitiesPlugin, ability, {
+    useGlobalProperties: true,
+  })
+  .mount('#app');
