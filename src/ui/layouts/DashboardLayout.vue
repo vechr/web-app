@@ -1,62 +1,102 @@
 <template>
   <a-layout :style="{ minHeight: '100vh' }">
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null">
+    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="close-sidebar" @click="() => (collapsed = !collapsed)">
         <CloseOutlined />
       </div>
       <br />
       <img alt="logo" src="@/ui/assets/logo.svg" />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
-        <router-link to="/dashboard" custom v-slot="{ navigate, href }">
-          <router-link to="/device-type" custom v-slot="{ navigate, href }">
-            <a-menu-item key="1" @click="navigate" :href="href">
-              <ApartmentOutlined />
-              <span> Device Type Management</span>
-            </a-menu-item>
-          </router-link>
+        <router-link
+          v-if="can('devices:read@auth', 'any')"
+          to="/device-type"
+          custom
+          v-slot="{ navigate, href }"
+        >
+          <a-menu-item key="1" @click="navigate" :href="href">
+            <ApartmentOutlined />
+            <span> Device Type Management</span>
+          </a-menu-item>
+        </router-link>
 
+        <router-link
+          v-if="can('dashboards:read@auth', 'any')"
+          to="/dashboard"
+          custom
+          v-slot="{ navigate, href }"
+        >
           <a-menu-item key="2" @click="navigate" :href="href">
             <dashboard-outlined />
             <span> Dashboard Management</span>
           </a-menu-item>
         </router-link>
 
-        <router-link to="/device" custom v-slot="{ navigate, href }">
+        <router-link
+          v-if="can('devices:read@auth', 'any')"
+          to="/device"
+          custom
+          v-slot="{ navigate, href }"
+        >
           <a-menu-item key="3" @click="navigate" :href="href">
             <api-outlined />
             <span> Device Management</span>
           </a-menu-item>
         </router-link>
 
-        <router-link to="/email" custom v-slot="{ navigate, href }">
+        <router-link
+          v-if="can('email-notifications:read@auth', 'any')"
+          to="/email"
+          custom
+          v-slot="{ navigate, href }"
+        >
           <a-menu-item key="4" @click="navigate" :href="href">
             <mail-outlined />
             <span> Email Management</span>
           </a-menu-item>
         </router-link>
 
-        <router-link to="/user" custom v-slot="{ navigate, href }">
+        <router-link
+          v-if="can('users:read@auth', 'any')"
+          to="/user"
+          custom
+          v-slot="{ navigate, href }"
+        >
           <a-menu-item key="5" @click="navigate" :href="href">
             <user-add-outlined />
             <span> User Management</span>
           </a-menu-item>
         </router-link>
 
-        <router-link to="/role" custom v-slot="{ navigate, href }">
+        <router-link
+          v-if="can('roles:read@auth', 'any')"
+          to="/role"
+          custom
+          v-slot="{ navigate, href }"
+        >
           <a-menu-item key="6" @click="navigate" :href="href">
             <lock-outlined />
             <span> Role Management</span>
           </a-menu-item>
         </router-link>
 
-        <router-link to="/site" custom v-slot="{ navigate, href }">
+        <router-link
+          v-if="can('sites:read@auth', 'any')"
+          to="/site"
+          custom
+          v-slot="{ navigate, href }"
+        >
           <a-menu-item key="7" @click="navigate" :href="href">
             <DatabaseOutlined />
             <span> Site Management</span>
           </a-menu-item>
         </router-link>
 
-        <router-link to="/permission" custom v-slot="{ navigate, href }">
+        <router-link
+          v-if="can('permissions:read@auth', 'any')"
+          to="/permission"
+          custom
+          v-slot="{ navigate, href }"
+        >
           <a-menu-item key="8" @click="navigate" :href="href">
             <security-scan-outlined />
             <span> Permission List</span>
@@ -86,7 +126,12 @@
             />
           </a-menu-item>
 
-          <router-link to="/" custom v-slot="{ navigate, href }">
+          <router-link
+            v-if="can('dashboards:read@auth', 'any')"
+            to="/"
+            custom
+            v-slot="{ navigate, href }"
+          >
             <a-menu-item key="9" @click="navigate" :href="href"
               >Home</a-menu-item
             >
@@ -152,6 +197,7 @@ import {
 import { defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { useAbility } from '@casl/vue';
 import { useCommonStore, useSessionStore } from '../store';
 import Loading from '@/ui/components/common/Loading.vue';
 import { confirmButtonLogout } from '@/utils/sweet-alert.util';
@@ -176,6 +222,7 @@ export default defineComponent({
     UserOutlined,
   },
   setup() {
+    const ability = useAbility();
     const session = useSessionStore();
     const router = useRouter();
     const common = useCommonStore();
@@ -193,6 +240,7 @@ export default defineComponent({
     };
 
     return {
+      can: ability.can.bind(ability),
       mySession,
       logoutSession,
       selectedKeys: ref<string[]>(['6']),
