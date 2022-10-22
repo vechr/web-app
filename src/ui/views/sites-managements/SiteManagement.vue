@@ -116,7 +116,7 @@
             }"
           >
             <template #description>
-              <span> There's no users found! </span>
+              <span> There's no sites found! </span>
             </template>
           </a-empty>
         </div>

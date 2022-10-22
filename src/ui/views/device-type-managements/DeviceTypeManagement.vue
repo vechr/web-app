@@ -136,7 +136,7 @@
             }"
           >
             <template #description>
-              <span> There's no dashboard item found! </span>
+              <span> There's no device types item found! </span>
             </template>
           </a-empty>
         </div>

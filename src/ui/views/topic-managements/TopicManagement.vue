@@ -172,7 +172,7 @@
             }"
           >
             <template #description>
-              <span> There's no dashboard item found! </span>
+              <span> There's no topics item found! </span>
             </template>
           </a-empty>
         </div>

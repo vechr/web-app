@@ -75,7 +75,7 @@
             }"
           >
             <template #description>
-              <span> There's no users found! </span>
+              <span> There's no permissions found! </span>
             </template>
           </a-empty>
         </div>

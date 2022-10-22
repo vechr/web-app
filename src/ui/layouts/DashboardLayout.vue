@@ -254,7 +254,7 @@ export default defineComponent({
       can: ability.can.bind(ability),
       mySession,
       logoutSession,
-      selectedKeys: ref<string[]>(['6']),
+      selectedKeys: ref<string[]>(['9']),
       collapsed: ref<boolean>(true),
     };
   },
