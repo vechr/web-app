@@ -35,7 +35,7 @@
     "gridstack": "^7.1.1",
     "leaflet": "^1.9.2",
     "nats.ws": "^1.10.0",
-    "pinia": "^2.0.23",
+    "pinia": "^2.0.25",
     "uuid": "^9.0.0",
     "vue": "^3.2.45",
     "vue-codemirror": "^6.1.1",
@@ -47,7 +47,7 @@
   "devDependencies": {
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
-    "@typescript-eslint/parser": "^5.43.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
