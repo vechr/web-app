@@ -3,7 +3,7 @@ import { THttpResponse } from '@/domain';
 import { ICreateUser, IUpdateUser } from '@/domain';
 
 export function userController() {
-  const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+  const http = new AxiosHttpClient(import.meta.env.APP_BACKEND_SERVICE);
 
   async function getUsers(urlParams: Record<string, any>) {
     return await http.request({

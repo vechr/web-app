@@ -1,7 +1,7 @@
 import { AxiosHttpClient } from '@/applications/drivers';
 
 export function loggingController() {
-  const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+  const http = new AxiosHttpClient(import.meta.env.APP_BACKEND_SERVICE);
 
   async function getHistoricalData(payload: {
     dashboardId: string | string[];

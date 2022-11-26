@@ -2,7 +2,7 @@ import { AxiosHttpClient } from '@/applications/drivers';
 import { THttpResponse } from '@/domain';
 
 export function deviceTypeController() {
-  const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+  const http = new AxiosHttpClient(import.meta.env.APP_BACKEND_SERVICE);
 
   async function getDeviceTypeListV2(
     urlParams: Record<string, any>,

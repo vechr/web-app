@@ -2,7 +2,7 @@ import { THttpResponse } from '@/domain';
 import { AxiosHttpClient } from '@/applications/drivers';
 
 export function dashboardController() {
-  const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+  const http = new AxiosHttpClient(import.meta.env.APP_BACKEND_SERVICE);
 
   async function getDashboardFullList(): Promise<THttpResponse> {
     return await http.request({

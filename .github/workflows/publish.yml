@@ -63,3 +63,7 @@ jobs:
         file: docker/Dockerfile.prod
         push: true
         tags: zulfikar4568/web-app:latest
+        build-args: |
+          APP_NATS_WS=${{ secrets.APP_NATS_WS}}
+          APP_BACKEND_SERVICE=${{ secrets.APP_BACKEND_SERVICE}}
+          APP_SECRET_COOKIE=${{ secrets.SECRET_SECURE_COOKIE}}

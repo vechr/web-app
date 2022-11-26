@@ -14,6 +14,8 @@
     "lint": "eslint src/** --config ./.eslintrc.cjs",
     "lint:fix": "yarn lint --fix",
     "serve": "vite --host 0.0.0.0",
+    "env:write": "node $(pwd)/env-writer.js",
+    "env:remove": "rm .env.production",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "prepare": "husky install",

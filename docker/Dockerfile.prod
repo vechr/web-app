@@ -1,15 +1,25 @@
 # build stage
 FROM node:14-alpine AS build-stage
 
+ARG APP_NATS_WS
+ARG APP_BACKEND_SERVICE
+ARG APP_SECRET_COOKIE
+
+ENV APP_NATS_WS=${APP_NATS_WS}
+ENV APP_BACKEND_SERVICE=${APP_BACKEND_SERVICE}
+ENV APP_SECRET_COOKIE=${APP_SECRET_COOKIE}
+
 WORKDIR /vue_app
-
-COPY package.json ./
-
-RUN yarn install
 
 COPY . .
 
+RUN yarn env:write
+
+RUN yarn install
+
 RUN yarn build
+
+RUN yarn env:remove
 
 # production stage
 FROM nginx:alpine AS production-stage

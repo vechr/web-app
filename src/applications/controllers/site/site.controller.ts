@@ -2,7 +2,7 @@ import { AxiosHttpClient } from '@/applications/drivers';
 import { ICreateSite, IUpdateSite, THttpResponse } from '@/domain';
 
 export function siteController() {
-  const http = new AxiosHttpClient(import.meta.env.VUE_APP_SERVICE_THINGS);
+  const http = new AxiosHttpClient(import.meta.env.APP_BACKEND_SERVICE);
 
   async function getSites(urlParams: Record<string, any>) {
     return await http.request({

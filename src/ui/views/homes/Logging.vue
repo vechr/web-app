@@ -99,7 +99,7 @@ export default defineComponent({
       });
 
       try {
-        const server = { servers: [import.meta.env.VUE_APP_NATS_WS] };
+        const server = { servers: [import.meta.env.APP_NATS_WS] };
         nc = await connect(server);
         const sc = StringCodec();
 
