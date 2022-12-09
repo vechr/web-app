@@ -22,7 +22,7 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@casl/ability": "^6.3.2",
+    "@casl/ability": "^6.3.3",
     "@casl/vue": "^2.2.0",
     "@codemirror/lang-json": "^6.0.1",
     "@tinymce/tinymce-vue": "^5",
