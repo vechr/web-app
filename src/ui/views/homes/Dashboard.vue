@@ -50,16 +50,13 @@ import {
 import { GridStack, GridStackNode } from 'gridstack';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-import L from 'leaflet';
 import { connect, NatsConnection, StringCodec } from 'nats.ws';
 import { message as notif } from 'ant-design-vue';
 import { useAbility } from '@casl/vue';
 import { useLoggingStore, useWidgetStore } from '@/ui/store';
 import { EWidget, IWidget } from '@/domain';
 import { useDashboardManagementStore, useWidgetDrawerStore } from '@/ui/store';
-import { WidgetValidationService, afterDrawCallback } from '@/services';
-import { WidgetService } from '@/services';
-import { dataBuilder } from '@/services';
+import { widgetGenerator, widgetSubscription } from '@/services';
 import DrawerWidget from '@/ui/components/homes/DrawerWidget.vue';
 
 export default defineComponent({
@@ -111,35 +108,7 @@ export default defineComponent({
         .getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '')
         .then(async () => {
           data.value.forEach((element) => {
-            if (element.widgetType === EWidget.MAPS) {
-              WidgetService.generateMap(
-                grid.value as GridStack,
-                element.node,
-                element.nodeId,
-                element.name,
-              );
-            } else if (element.widgetType === EWidget.GAUGE) {
-              element.widgetData.plugins = [
-                {
-                  afterDraw: afterDrawCallback,
-                },
-              ];
-              WidgetService.generateChart(
-                grid.value as GridStack,
-                element.nodeId,
-                element.widgetData,
-                element.node,
-                element.name,
-              );
-            } else {
-              WidgetService.generateChart(
-                grid.value as GridStack,
-                element.nodeId,
-                element.widgetData,
-                element.node,
-                element.name,
-              );
-            }
+            widgetGenerator(grid.value as GridStack, element); // Generate Widget
           });
           try {
             const server = { servers: [import.meta.env.APP_NATS_WS] };
@@ -151,11 +120,17 @@ export default defineComponent({
             if (!dashboard) return;
             dashboard.devices?.forEach((device) => {
               device.topics?.forEach((topic) => {
-                console.log(
-                  `Vechr.DashboardID.${dashboardId}.DeviceID.${
-                    device.id
-                  }.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`,
-                );
+                // Print subject when in develpment mode
+                if (import.meta.env.MODE === 'development') {
+                  console.log(
+                    `Vechr.DashboardID.${dashboardId}.DeviceID.${
+                      device.id
+                    }.TopicID.${topic.id}.Topic${topic.name.replace(
+                      /\//g,
+                      '.',
+                    )}`,
+                  );
+                }
                 nc.subscribe(
                   `Vechr.DashboardID.${dashboardId}.DeviceID.${
                     device.id
@@ -171,70 +146,8 @@ export default defineComponent({
                             val.topic.deviceId === device.id,
                         )
                         .forEach((element) => {
-                          if (element.widgetType !== undefined) {
-                            if (
-                              validationTopic.validation(
-                                element.widgetType,
-                                sc.decode(msg.data),
-                              )
-                            ) {
-                              if (element.widgetType === EWidget.MAPS) {
-                                if (
-                                  WidgetService.componentWidget[
-                                    'map_' + element.nodeId
-                                  ] !== undefined
-                                ) {
-                                  const marker =
-                                    WidgetService.componentWidget[
-                                      'map_' + element.nodeId
-                                    ];
-                                  const newLatLng = new L.LatLng(
-                                    JSON.parse(sc.decode(msg.data)).latitude,
-                                    JSON.parse(sc.decode(msg.data)).longitude,
-                                  );
-                                  marker.setLatLng(newLatLng);
-                                }
-                              } else if (element.widgetType === EWidget.GAUGE) {
-                                if (
-                                  WidgetService.componentWidget[
-                                    'myChart_' + element.nodeId
-                                  ] !== undefined
-                                ) {
-                                  WidgetService.componentWidget[
-                                    'myChart_' + element.nodeId
-                                  ].data.datasets.forEach((dataset: any) => {
-                                    dataset.needleValue = JSON.parse(
-                                      sc.decode(msg.data),
-                                    );
-                                  });
-                                  WidgetService.componentWidget[
-                                    'myChart_' + element.nodeId
-                                  ].update();
-                                }
-                              } else {
-                                if (
-                                  WidgetService.componentWidget[
-                                    'myChart_' + element.nodeId
-                                  ] !== undefined
-                                ) {
-                                  WidgetService.componentWidget[
-                                    'myChart_' + element.nodeId
-                                  ].data.datasets.forEach((dataset: any) => {
-                                    dataset.data = dataBuilder(
-                                      dataset.data,
-                                      JSON.parse(sc.decode(msg.data)),
-                                      element.shiftData != undefined
-                                        ? element.shiftData
-                                        : true,
-                                    );
-                                  });
-                                  WidgetService.componentWidget[
-                                    'myChart_' + element.nodeId
-                                  ].update();
-                                }
-                              }
-                            }
-                          }
+                          // Widget doing subscription in here!
+                          widgetSubscription(element, msg);
                         });
                       if (err) notif.error(err);
                     },
@@ -264,8 +177,6 @@ export default defineComponent({
           }
         });
     });
-
-    const validationTopic = new WidgetValidationService();
 
     onBeforeUnmount(async () => {
       try {
