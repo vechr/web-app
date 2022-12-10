@@ -2,6 +2,23 @@ import { ChartType } from 'chart.js';
 
 const lineChartType: ChartType = 'bar';
 let delayed: any;
+
+export const barAnimation: {
+  onComplete: () => void;
+  delay: (context: any) => number;
+} = {
+  onComplete: () => {
+    delayed = true;
+  },
+  delay: (context: any) => {
+    let delay = 0;
+    if (context.type === 'data' && context.mode === 'default' && !delayed) {
+      delay = context.dataIndex * 300 + context.datasetIndex * 100;
+    }
+    return delay;
+  },
+};
+
 const data = {
   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
   datasets: [
@@ -33,18 +50,6 @@ export const barChartData = {
   data,
   options: {
     maintainAspectRatio: false,
-    animation: {
-      onComplete: () => {
-        delayed = true;
-      },
-      delay: (context: any) => {
-        let delay = 0;
-        if (context.type === 'data' && context.mode === 'default' && !delayed) {
-          delay = context.dataIndex * 300 + context.datasetIndex * 100;
-        }
-        return delay;
-      },
-    },
     scales: {
       y: {
         beginAtZero: true,

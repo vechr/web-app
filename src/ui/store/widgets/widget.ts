@@ -64,7 +64,7 @@ export const useWidgetStore = defineStore('widget', {
           (x) => x.id === result.data?.result.id,
         );
         this.data[index] = result.data?.result;
-        message.success(this.message);
+        // message.success(this.message);
       }
     },
     async deleteWidgetById(dashboardId: string, widgetId: string) {
@@ -74,7 +74,7 @@ export const useWidgetStore = defineStore('widget', {
       );
       if (result.data?.error) {
         this.error = result.data.error;
-        message.error(`${this.error.code} ${this.error.message}`);
+        // message.error(`${this.error.code} ${this.error.message}`);
       } else {
         this.dataDetails = result.data?.result;
         this.message = result.data ? result.data?.message : 'Success!';

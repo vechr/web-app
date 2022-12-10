@@ -115,7 +115,7 @@ export default defineComponent({
   setup() {
     const widgetDrawer = useWidgetDrawerStore();
     const activeKey = ref(['1', '2']);
-    const { configVisible, titleConfig, widgetSelection, formState, json } =
+    const { configVisible, titleConfig, widgetSelection, formState } =
       storeToRefs(widgetDrawer);
 
     function selectWidget(widget: string) {
@@ -132,7 +132,6 @@ export default defineComponent({
       // Set Data
       formState.value.widgetType = widgetType;
       formState.value.widgetData = widgetData;
-      json.value = widgetData;
     }
 
     return {

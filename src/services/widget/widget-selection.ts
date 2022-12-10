@@ -1,5 +1,7 @@
 import { GridStack } from 'gridstack';
 import {
+  afterDrawCallback,
+  barAnimation,
   barChartData,
   BarChartWidget,
   bubbleChartData,
@@ -45,6 +47,7 @@ export const createWidget = (
 
   switch (widgetType) {
     case EWidget.BAR: {
+      formState.widgetData.options.animation = barAnimation;
       bar.addChart(grid, uuid(), formState);
       break;
     }
@@ -61,6 +64,11 @@ export const createWidget = (
       break;
     }
     case EWidget.GAUGE: {
+      formState.widgetData.plugins = [
+        {
+          afterDraw: afterDrawCallback,
+        },
+      ];
       gauge.addChart(grid, uuid(), formState);
       break;
     }

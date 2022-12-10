@@ -45,11 +45,6 @@ export const afterDrawCallback = (chart: {
 
 export const gaugeChartData = {
   type: lineChartType,
-  plugins: [
-    {
-      afterDraw: afterDrawCallback,
-    },
-  ],
   data: {
     labels: ['Low', 'Medium', 'High'],
     datasets: [

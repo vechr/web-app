@@ -16,6 +16,38 @@
       @finishFailed="onFinishFailed"
     >
       <a-form-item
+        v-if="widgetSelection !== EWidget.MAPS"
+        label="Chart Configuration"
+        name="widgetData"
+        :rules="[
+          { required: true, message: 'Please input configuration Chart!' },
+        ]"
+      >
+        <vue-jsoneditor
+          height="600"
+          :mode="'tree'"
+          v-model:json="formState.widgetData"
+          :fullWidthButton="false"
+        />
+      </a-form-item>
+
+      <a-form-item
+        label="Shifted the Data"
+        name="shiftData"
+        v-if="
+          widgetSelection !== EWidget.GAUGE &&
+          widgetSelection !== EWidget.BAR &&
+          widgetSelection !== EWidget.LINE
+        "
+      >
+        <a-switch
+          v-model:checked="formState.shiftData"
+          checked-children="Shifted"
+          un-checked-children="Unshifted"
+        />
+      </a-form-item>
+
+      <a-form-item
         label="Name"
         name="name"
         :rules="[{ required: true, message: 'Please input name widget!' }]"
@@ -45,39 +77,6 @@
         ></a-select>
       </a-form-item>
 
-      <a-form-item
-        v-if="widgetSelection !== EWidget.MAPS"
-        label="Chart Configuration"
-        name="widgetData"
-        :rules="[
-          { required: true, message: 'Please input configuration Chart!' },
-        ]"
-      >
-        <vue-jsoneditor
-          height="600"
-          :mode="'text'"
-          v-model="formState.widgetData"
-          :fullWidthButton="false"
-          @change="onChange"
-        />
-      </a-form-item>
-
-      <a-form-item
-        label="Shifted the Data"
-        name="shiftData"
-        v-if="
-          widgetSelection !== EWidget.GAUGE &&
-          widgetSelection !== EWidget.BAR &&
-          widgetSelection !== EWidget.LINE
-        "
-      >
-        <a-switch
-          v-model:checked="formState.shiftData"
-          checked-children="Shifted"
-          un-checked-children="Unshifted"
-        />
-      </a-form-item>
-
       <a-form-item>
         <a-button type="primary" html-type="submit" :style="{ float: 'right' }"
           >Create Widget</a-button
@@ -95,7 +94,6 @@ import { storeToRefs } from 'pinia';
 import { GridStack } from 'gridstack';
 import { EWidget } from '@/domain';
 import { useDashboardManagementStore, useWidgetDrawerStore } from '@/ui/store';
-import { isJsonString } from '@/utils/json-check.util';
 import { createWidget } from '@/services/widget/widget-selection';
 
 export default defineComponent({
@@ -107,7 +105,6 @@ export default defineComponent({
     const widgetDrawer = useWidgetDrawerStore();
     const {
       configVisible,
-      json,
       titleConfig,
       visible,
       widgetSelection,
@@ -117,12 +114,6 @@ export default defineComponent({
     } = storeToRefs(widgetDrawer);
 
     const options = ref<SelectProps['options']>([]);
-
-    const onChange = (value: any) => {
-      if (isJsonString(value.text)) {
-        json.value = JSON.parse(value.text);
-      }
-    };
 
     // Dashboard Data
     const storeDashboard = useDashboardManagementStore();
@@ -157,9 +148,9 @@ export default defineComponent({
       formState.value.widgetType = '';
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-      console.log('Failed:', errorInfo);
-      clearForm();
+    const onFinishFailed = () => {
+      // Catch Exception when error submit
+      // console.log('Failed:', errorInfo);
     };
 
     const handleFocus = () => {
@@ -187,7 +178,6 @@ export default defineComponent({
       handleFocus,
       widgetSelection,
       EWidget,
-      onChange,
     };
   },
 });

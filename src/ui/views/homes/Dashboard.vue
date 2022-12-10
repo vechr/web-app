@@ -201,7 +201,7 @@ export default defineComponent({
         GridStack.init({
           float: false,
           cellHeight: '70px',
-          minRow: 7,
+          minRow: 24,
           removable: '.option-dashboard-trash',
           disableDrag: true,
           acceptWidgets: true,

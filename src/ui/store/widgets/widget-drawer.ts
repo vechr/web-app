@@ -8,7 +8,6 @@ interface IWidgetDrawer {
   titleConfig: string;
   widgetSelection: string;
   configVisible: boolean;
-  json: object;
   formState: IFormWidget;
   dashboardId: string | string[];
 }
@@ -20,7 +19,6 @@ export const useWidgetDrawerStore = defineStore('widgetDrawer', {
       titleConfig: '',
       widgetSelection: '',
       configVisible: false,
-      json: {},
       dashboardId: '',
       formState: {
         dashboardId: '',
