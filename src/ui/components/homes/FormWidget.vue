@@ -136,6 +136,7 @@ export default defineComponent({
     const onFinish = (values: { topicId: string }) => {
       // logic
       formState.value.topicId = values.topicId;
+      formState.value.dashboardId = dashboardId.value as string;
       // Create Widget
       createWidget(
         widgetSelection.value,
