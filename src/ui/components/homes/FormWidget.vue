@@ -56,8 +56,8 @@
         <vue-jsoneditor
           height="600"
           :mode="'text'"
-          :fullWidthButton="false"
           v-model="formState.widgetData"
+          :fullWidthButton="false"
           @change="onChange"
         />
       </a-form-item>
@@ -136,16 +136,16 @@ export default defineComponent({
     const onFinish = (values: { topicId: string }) => {
       // logic
       formState.value.topicId = values.topicId;
-      formState.value.dashboardId =
-        typeof dashboardId.value === 'string' ? dashboardId.value : '';
-
       // Create Widget
       createWidget(
         widgetSelection.value,
         grid.value as GridStack,
         formState.value,
       );
+      clearForm();
+    };
 
+    const clearForm = () => {
       configVisible.value = false;
       visible.value = false;
 
@@ -158,6 +158,7 @@ export default defineComponent({
 
     const onFinishFailed = (errorInfo: any) => {
       console.log('Failed:', errorInfo);
+      clearForm();
     };
 
     const handleFocus = () => {
