@@ -4,6 +4,15 @@
   background: #00D1FF;
   // background: linear-gradient(45deg, #FF67B9 42%, rgba(0,217,139,1) 100%);
   border-radius: 10px 10px 0px 0px;
+
+  .option-dashboard-trash {
+    float: right;
+    color: white;
+    font-size: 20px;
+    :hover {
+      font-size: 21.5px;
+    }
+  }
 }
 
 .grid-stack {

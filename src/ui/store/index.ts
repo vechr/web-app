@@ -12,3 +12,4 @@ export * from './user-managements/user.management';
 export * from './roles-managements/role.management';
 export * from './permission-managements/permission.management';
 export * from './site-managements/site.management';
+export * from './widgets/widget-drawer';
