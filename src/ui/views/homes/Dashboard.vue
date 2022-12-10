@@ -28,7 +28,9 @@
           un-checked-children="Unresizeable"
         />
       </a-space>
-      <delete-outlined class="option-dashboard-trash" />
+      <a-tooltip title="Drag widget here to remove" :color="'volcano'">
+        <delete-outlined class="option-dashboard-trash" />
+      </a-tooltip>
     </a-col>
   </a-row>
   <DrawerWidget />
