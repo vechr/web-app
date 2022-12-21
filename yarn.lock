@@ -6999,10 +6999,10 @@ nanopop@^2.1.0:
   resolved "https://registry.yarnpkg.com/nanopop/-/nanopop-2.1.0.tgz#23476513cee2405888afd2e8a4b54066b70b9e60"
   integrity sha512-jGTwpFRexSH+fxappnGQtN9dspgE2ipa1aOjtR24igG0pv6JCxImIAmrLRHX+zUF5+1wtsFVbKyfP51kIGAVNw==
 
-nats.ws@^1.10.2:
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/nats.ws/-/nats.ws-1.10.2.tgz#c63734b1b04d120489ceb72e8ff9c44ca1bf1c95"
-  integrity sha512-unaPGNB2KColxJPC3X7+I6FUfCNQjYwDAeBLGBTEfc9v1kBSaxSWkxCBOrascqEFmz/XuS4fiOEczCs3erCU6w==
+nats.ws@^1.11.1:
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/nats.ws/-/nats.ws-1.11.1.tgz#a10726b67efb31921320945f3a08d408e3df471f"
+  integrity sha512-k5fxqOay5AA1RjZFCNLal7Yz8LOqsz/qe7ZEow+RdmtDnpndcT7hO3S59q6lQ5Hai5Ei4SaukYZu9Rrxzew7ZA==
   optionalDependencies:
     nkeys.js "1.0.3"
 
