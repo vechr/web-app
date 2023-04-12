@@ -9669,10 +9669,10 @@ validate-npm-package-name@^4.0.0:
   dependencies:
     builtins "^5.0.0"
 
-vanilla-jsoneditor@^0.7.9:
-  version "0.7.9"
-  resolved "https://registry.yarnpkg.com/vanilla-jsoneditor/-/vanilla-jsoneditor-0.7.9.tgz#927352b2c31667b97b324d58eb18e9b28f187c9e"
-  integrity sha512-fJWXBWxYhODJrC6jLJ1E/PfQh1g07T5sZt6yf2p8tLPhk+412eS4WBMBfs6A9dZ3te9/cN5G/HhGs9Q6tx8Nlw==
+vanilla-jsoneditor@^0.16.0:
+  version "0.16.1"
+  resolved "https://registry.yarnpkg.com/vanilla-jsoneditor/-/vanilla-jsoneditor-0.16.1.tgz#0408c02cc377dce72bd719439750cf24b581843e"
+  integrity sha512-Wirg6DoCrJpYwMHxkwyvgQ16gr4kgH9zzueHSSSovzQDvlg/XSqpY/stVsI5lz1vqJW1RAtr0Ilyyg1AbokRXA==
 
 vary@~1.1.2:
   version "1.1.2"
@@ -9790,12 +9790,12 @@ vue3-cookies@^1.0.6:
   dependencies:
     vue "^3.0.0"
 
-vue3-ts-jsoneditor@^2.7.1:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/vue3-ts-jsoneditor/-/vue3-ts-jsoneditor-2.7.1.tgz#cd9914caf023d1375cbbc20847c38a899d13acab"
-  integrity sha512-u8dWSG21dK0+iwbY6yhpcyRstQEKbO53+4Ma4Qhf9ED/wbGURjLvX/GTMbVsU7xB4gJKEs1a01AxBIgIab+4uA==
+vue3-ts-jsoneditor@^2.8.6:
+  version "2.8.6"
+  resolved "https://registry.yarnpkg.com/vue3-ts-jsoneditor/-/vue3-ts-jsoneditor-2.8.6.tgz#558b1605c9172c076cdd12178d0e20655b665a50"
+  integrity sha512-sWH15XPppsfadM9KcvKpe4tVsu/DURQodjNeuktKXBXbtYPjDHt01UXUfBy4d8nUmKuRIrldpn+MOw1APRa22g==
   dependencies:
-    vanilla-jsoneditor "^0.7.9"
+    vanilla-jsoneditor "^0.16.0"
     vue "^3.2.37"
 
 vue@^3.0.0, vue@^3.2.37, vue@^3.2.45:
