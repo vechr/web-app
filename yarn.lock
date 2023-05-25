@@ -5349,10 +5349,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-gridstack@^7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/gridstack/-/gridstack-7.3.0.tgz#7b32395edcd885bc39b84068ac86f2831f7a2451"
-  integrity sha512-JKZgsHzm1ljkn1NnBZpf8j4NDOBCXTuw0m1ZC0sr6NKUh0BFWzXAONIxtX1hWGUVeKLj5l1VcmnTwCXw5ypDNw==
+gridstack@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/gridstack/-/gridstack-8.2.0.tgz#20bd295057d8a734b7ac0b90365fb988faba5e18"
+  integrity sha512-ojEFTbBsX7uklIdAo0yDiDy4uYTMcNwtHegCt9nfR03SMQThjhVgZpKBurCq3a1EmN/bQrtaX7V5vJK8qKYhjg==
 
 gzip-size@^6.0.0:
   version "6.0.0"
