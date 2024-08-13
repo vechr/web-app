@@ -59,8 +59,8 @@ const { listOfObjects, total, pageSize, pageSizeOptions } =
 const { subjectRole, fields, title, description, layout, disabled } =
   toRefs(propsUnReactive);
 
-const collapsedDomain = ref<boolean>(true);
-const collapsedObjects = ref<boolean>(true);
+const collapsedDomain = ref<boolean>(false);
+const collapsedObjects = ref<boolean>(false);
 
 defineEmits([
   'onSearch',

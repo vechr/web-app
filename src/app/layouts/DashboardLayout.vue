@@ -11,7 +11,6 @@ import {
   PartitionOutlined,
   HomeOutlined,
   DashboardOutlined,
-  HistoryOutlined,
 } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia';
 import { useAbility } from '@casl/vue';
@@ -78,18 +77,6 @@ const logoutSession = () => {
           <a-menu-item key="3" @click="navigate" :href="href">
             <DashboardOutlined />
             <span>Dashboard</span>
-          </a-menu-item>
-        </router-link>
-
-        <router-link
-          v-if="can('read', 'logging')"
-          to="/logging"
-          custom
-          v-slot="{ navigate, href }"
-        >
-          <a-menu-item key="4" @click="navigate" :href="href">
-            <HistoryOutlined />
-            <span>Logging</span>
           </a-menu-item>
         </router-link>
       </a-menu>

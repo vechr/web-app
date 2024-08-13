@@ -12,4 +12,13 @@ export class DashboardUsecase extends BaseUsecase<Dashboard> {
       Container.get(AxiosHttpClient<Dashboard>),
     );
   }
+
+  async getDashboardDetails(): Promise<Dashboard[]> {
+    const result = await this.http.request({
+      method: 'get',
+      url: `${this._baseUrl}/details`,
+    });
+
+    return result.data?.result as Dashboard[];
+  }
 }

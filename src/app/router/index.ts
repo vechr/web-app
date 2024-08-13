@@ -12,6 +12,9 @@ import ability, {
 import { AUTHENTICATION_ENABLED } from '@/core/base/domain/constant';
 import Login from '@/core/modules/sessions/views/Login.vue';
 import { EErrorJwtCode } from '@/core/modules/sessions/session.entity';
+import DashboardOverview from '@/modules/dashboards/views/DashboardOverview.vue';
+import Dashboard from '@/modules/dashboards/views/Dashboard.vue';
+import Logging from '@/modules/logging/views/Logging.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -48,6 +51,33 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'blank-layout',
       title: 'Not Found',
+    },
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard-overview',
+    component: DashboardOverview,
+    meta: {
+      layout: 'dashboard-layout',
+      title: 'Dashboard Overview',
+    },
+  },
+  {
+    path: '/dashboard/:dashboardId',
+    name: 'dashboard',
+    component: Dashboard,
+    meta: {
+      layout: 'dashboard-layout',
+      title: 'Dashboard',
+    },
+  },
+  {
+    path: '/dashboard/:dashboardId/device/:deviceId/topicId/:topicId/topic/:topicName/logging',
+    name: 'logging',
+    component: Logging,
+    meta: {
+      layout: 'dashboard-layout',
+      title: 'Logging',
     },
   },
 ];

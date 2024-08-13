@@ -1,37 +1,41 @@
 <template>
-  <a-breadcrumb>
-    <a-breadcrumb-item>
-      <router-link to="/" custom v-slot="{ navigate, href }">
-        <a @click="navigate" :href="href">Home</a>
-      </router-link>
-    </a-breadcrumb-item>
-    <a-breadcrumb-item
-      >(
-      <i>{{
-        typeof topicName == 'string' ? topicName.replace(/\./g, '/') : topicName
-      }}</i>
-      )</a-breadcrumb-item
+  <div style="padding: 20px">
+    <a-breadcrumb>
+      <a-breadcrumb-item>
+        <router-link to="/" custom v-slot="{ navigate, href }">
+          <a @click="navigate" :href="href">Home</a>
+        </router-link>
+      </a-breadcrumb-item>
+      <a-breadcrumb-item
+        >(
+        <i>{{
+          typeof topicName == 'string'
+            ? topicName.replace(/\./g, '/')
+            : topicName
+        }}</i>
+        )</a-breadcrumb-item
+      >
+    </a-breadcrumb>
+    <a-divider> Logging Page </a-divider>
+    <a-table
+      v-if="data.length > 0"
+      :dataSource="data"
+      :columns="columns"
+      :scroll="{ x: 1200 }"
     >
-  </a-breadcrumb>
-  <a-divider> Logging Page </a-divider>
-  <a-table
-    v-if="data.length > 0"
-    :dataSource="data"
-    :columns="columns"
-    :scroll="{ x: 1200 }"
-  >
-  </a-table>
-  <div v-else class="center-screen">
-    <a-empty
-      image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
-      :image-style="{
-        height: '60px',
-      }"
-    >
-      <template #description>
-        <span> There's no data being message! </span>
-      </template>
-    </a-empty>
+    </a-table>
+    <div v-else class="center-screen">
+      <a-empty
+        image="https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original"
+        :image-style="{
+          height: '60px',
+        }"
+      >
+        <template #description>
+          <span> There's no data being message! </span>
+        </template>
+      </a-empty>
+    </div>
   </div>
 </template>
 
