@@ -5,13 +5,15 @@ import L from 'leaflet';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { abilitiesPlugin } from '@casl/vue';
-import App from './ui/App.vue';
-import router from './ui/router';
-import 'ant-design-vue/dist/antd.css';
-import './ui/assets/styles/app.scss';
+import router from './app/router';
+import App from '@/app/App.vue';
+import 'ant-design-vue/dist/reset.css';
+import '@/app/assets/styles/main.scss';
 import 'gridstack/dist/gridstack.min.css';
 import 'leaflet/dist/leaflet.css';
-import ability from './utils/ability';
+import BlankLayout from '@/app/layouts/BlankLayout.vue';
+import DashboardLayout from '@/app/layouts/DashboardLayout.vue';
+import ability from '@/core/base/frameworks/utils/ability.util';
 
 // LEAFLET SETTING ICON
 L.Icon.Default.mergeOptions({
@@ -22,9 +24,11 @@ L.Icon.Default.mergeOptions({
 
 const app = createApp(App);
 app
-  .use(createPinia())
+  .component('blank-layout', BlankLayout)
+  .component('dashboard-layout', DashboardLayout)
   .use(router)
   .use(Antd)
+  .use(createPinia())
   .use(VueSweetalert2)
   .use(abilitiesPlugin, ability, {
     useGlobalProperties: true,

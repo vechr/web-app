@@ -1,0 +1,124 @@
+/**********************List of Domain CSS Desktop****************************/
+.modeling-layout-1 {
+  border-radius: 10px;
+  
+  .modeling-sidebar-1 {
+    background: white !important;
+    border-radius: 10px 0px 0px 10px;
+
+    .ant-layout-sider-trigger {
+      height: 96px;
+      min-width: 50px !important;
+      max-width: 250px !important;
+      width: 250px !important;
+      background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%) !important;
+      color: white;
+      vertical-align: middle;
+      border-radius: 5px 5px 0px 0px;
+    }
+
+    .ant-layout-sider-children {
+      .modeling-sidebar-list-1 {
+        padding: 14px;
+      }
+    }
+  }
+
+  .modeling-content-1 {
+    background: white;
+    padding: 10px;
+    border-radius: 0px 10px 10px 0px;
+    background: #f5f5f5;
+    min-height: 100vh;
+
+    .modeling-content-1-1 {
+      border-radius: 10px;
+      background: white;
+      padding-top: 7px;
+      padding-right: 7px;
+      padding-bottom: 7px;
+
+      /**********************List of Objects CSS Desktop****************************/
+      .modeling-layout-2 {
+        border-radius: 10px;
+        
+        .modeling-sidebar-2 {
+          background: white !important;
+          border-radius: 10px 0px 0px 10px;
+      
+          .ant-layout-sider-trigger {
+            min-width: 50px !important;
+            max-width: 250px !important;
+            width: 250px !important;
+            background: rgba(0,148,95,1) 100%;
+            color: white;
+            border-radius: 5px 5px 0px 0px;
+          }
+      
+          .ant-layout-sider-children {
+            .modeling-sidebar-list-2 {
+              padding: 14px;
+            }
+          }
+        }
+      
+        .modeling-content-2 {
+          background: white;
+          padding: 10px;
+          border-radius: 0px 10px 10px 0px;
+          background: #f5f5f5;
+          min-height: 100vh;
+
+          .empty-form {
+            min-height: 100vh;
+            background-color: white;
+
+            .ant-empty {
+              padding-top: 30vh;
+            }
+          }
+        }
+      
+        .ant-layout-sider-collapsed {
+          .ant-layout-sider-children {
+            display: none;
+          }
+      
+          .ant-layout-sider-trigger {
+            width: 50px !important;
+          }
+        }
+      }
+    }
+  }
+
+  .ant-layout-sider-collapsed {
+    .ant-layout-sider-children {
+      display: none;
+    }
+
+    .ant-layout-sider-trigger {
+      width: 50px !important;
+    }
+  }
+}
+
+/**********************List of Domain CSS Mobile****************************/
+@media (max-width: 992px) {
+  .modeling-layout-1 {
+    .modeling-content-1 {
+      padding: 0px;
+
+      .modeling-content-1-1 {
+        padding: 0px;
+
+        /**********************List of Objects CSS Mobile****************************/
+        .modeling-layout-2 {
+          .modeling-content-2 {
+            padding: 0px;
+          }
+        }
+      }
+    }
+  }
+}

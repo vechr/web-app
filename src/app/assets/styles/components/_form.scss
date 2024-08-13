@@ -1,0 +1,37 @@
+.form-header {
+  margin-bottom: 10px;
+  border-radius: 10px;
+  border: 1px solid #eeeeee;
+  background: white !important;
+}
+
+.form-layout {
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  padding: 30px;
+  background: white;
+  min-height: 100vh;
+}
+
+.form-title {
+  font-style: italic;
+  .ant-divider-inner-text {
+    .ant-typography {
+      text-wrap: none;
+    }
+  }
+}
+
+// Mobile Mode
+@media (max-width: 992px) {
+  .form-layout {
+    padding: 10px;
+  }
+  .form-title {
+    .ant-divider-inner-text {
+      .ant-typography {
+        text-wrap: wrap;
+      }
+    }
+  }
+}

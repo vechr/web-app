@@ -1,0 +1,91 @@
+// Default Button
+.ant-btn, .ant-float-btn-body {
+  background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%);
+  // box-shadow: 0 2px 5px 0 #3183e2;
+  border: none;
+  color: white;
+  height: 35px;
+  background-size: 400% 100%;
+  transform: scale(1.015);
+  transition: all 0.4s linear;
+
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+.ant-btn:focus {
+  outline: none;
+}
+
+// Use this if you want add minimum width of button
+.btn-min-width {
+  min-width: 100px;
+}
+
+// Default button when doing hover
+.ant-btn:hover, .ant-float-btn-body:hover {
+  background-position: 100% 0%;
+  box-shadow: 0 2px 7px 0 #00D1FF;
+  color: white !important;
+  border: 0px solid transparent;
+  
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+// Info Button
+.btn-info {
+  background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+  // box-shadow: 0 2px 5px 0 #4b6cb7;
+  background-size: 400% 100%;
+}
+
+// Info Button when doing hover
+.btn-info:hover {
+  box-shadow: 0 2px 5px 0 #182848 !important;
+}
+
+// Success Button
+.btn-success {
+  background: linear-gradient(45deg, #12b33d 50%, rgba(0,148,4,1) 100%);
+  // box-shadow: 0 2px 5px 0 rgb(8,170,181);
+  background-size: 400% 100%;
+}
+
+// Success Button when doing hover
+.btn-success:hover {
+  box-shadow: 0 2px 5px 0 rgba(0,148,4,1) !important;
+}
+
+// Warning Button
+.btn-warning {
+  // box-shadow: 0 2px 5px 0 rgb(230, 184, 0);
+  background: linear-gradient(45deg,rgb(230, 184, 0) 50%, rgba(253,151,29,1) 100%, );
+  background-size: 400% 100%;
+}
+
+// Warning Button when doing hover
+.btn-warning:hover {
+  box-shadow: 0 2px 5px 0 rgba(253,151,29,1) !important;
+}
+
+// Danger Button
+.ant-btn-dangerous {
+  // box-shadow: 0 2px 5px 0 rgb(253, 14, 106) !important;
+  background: linear-gradient(45deg,rgb(253, 14, 106) 50%, rgb(255, 0, 0) 100%);
+  background-size: 400% 100%;
+}
+
+// Danger Button when doing hover
+.ant-btn-dangerous:hover {
+  box-shadow: 0 2px 5px 0 rgba(255, 0, 0);
+}
+
+.pull-right {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+  margin-right: 0;
+}
