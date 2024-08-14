@@ -90,7 +90,7 @@ const validationTopic = new WidgetValidationService();
 urlTopic.value = `Vechr.DashboardID.${dashboardId}.DeviceID.${deviceId}.TopicID.${topicId}.Topic${topicName}`;
 
 onBeforeMount(async () => {
-  topicStore.usecase.getHistoricalData({
+  data.value = await topicStore.usecase.getHistoricalData({
     dashboardId,
     deviceId,
     topicId,
@@ -104,7 +104,6 @@ onBeforeMount(async () => {
 
     nc.subscribe(urlTopic.value, {
       callback: (_err: any, msg: any) => {
-        console.log(sc.decode(msg.data));
         if (topicData.widgetType !== undefined) {
           if (
             validationTopic.validation(
