@@ -1,0 +1,48 @@
+.dashboard-panel {
+  width: 100%;
+  .ant-col {
+    padding: 0px !important;
+  }
+
+  .dashboard-panel-widget {
+    .ant-collapse-content {
+      .ant-collapse-content-box {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+
+    .ant-card-bordered {
+      background: rgb(0,209,255);
+      background: linear-gradient(45deg, rgba(0,209,255,1) 42%, rgba(0,217,139,1) 100%);
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      margin: 5px 5px 5px 5px;
+      transition: all 0.5s;
+      width: 150px;
+  
+      .ant-card-body {
+        span {
+          font-size: 70px;
+        }
+      }
+    }
+  
+    .ant-card-bordered:hover {
+      margin: 4px 4px 4px 4px;
+      background: rgb(0,148,181);
+      background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%);
+    }
+  }
+}
+
+.ant-drawer-content-wrapper {
+  width: 600px !important;
+}
+@media (max-width: 992px) {
+  .ant-drawer-content-wrapper {
+    width: 400px !important;
+  }
+}

@@ -57,6 +57,29 @@ export abstract class BaseUsecase<T extends Record<string, any>> {
     return takeAllResponse ? result.data : (result.data?.result as T);
   }
 
+  public async updateById<B>(
+    id: string,
+    body?: B,
+    takeAllResponse?: boolean,
+    title?: string,
+  ): Promise<T | TResponseData<T>> {
+    // You can do some logic in here!
+
+    const result = await this.http.request({
+      method: 'patch',
+      url: `${this._baseUrl}/${id}`,
+      data: body,
+    });
+
+    notificationSuccessOrFail(
+      result.status === EHttpStatusCode.OK || result.data?.success === true,
+      title,
+      result.data?.message ?? '',
+    );
+
+    return takeAllResponse ? result.data : (result.data?.result as T);
+  }
+
   public async create<B>(
     body?: B,
     takeAllResponse?: boolean,

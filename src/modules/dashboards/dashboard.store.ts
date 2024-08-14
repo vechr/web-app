@@ -13,6 +13,7 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
 
   const title = ref('Dashboard');
   const description = ref('Dashboard modeling');
+  const dashboards = ref<Dashboard[]>([]);
 
   const fields = reactive<TDashboardForm>({
     id: {
@@ -94,5 +95,6 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
     description,
     fields,
     usecase,
+    dashboards,
   };
 });

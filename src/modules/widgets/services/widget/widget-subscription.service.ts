@@ -5,6 +5,11 @@ import { WidgetValidationService } from './widget-validation.service';
 import { WidgetService } from './widget.service';
 import { dataBuilder } from './data-builder.service';
 
+/**
+ * This function is to write messages from nats into the widget!
+ * @param element Widget
+ * @param msg any
+ */
 export const widgetSubscription = (element: Widget, msg: any) => {
   const validationTopic = new WidgetValidationService();
   const sc = StringCodec();

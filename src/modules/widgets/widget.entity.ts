@@ -1,4 +1,4 @@
-import { GridStackNode } from 'gridstack';
+import { GridStack } from 'gridstack';
 import { Dashboard } from '../dashboards/dashboard.entity';
 import { Topic } from '../topics/topic.entity';
 import { BaseEntity } from '@/core/base/domain/entities';
@@ -43,8 +43,10 @@ export interface INode {
   content?: string;
 }
 
-export interface IWidgetData {
-  data: Widget[];
-  dataDetails: Widget | null;
-  node: GridStackNode[];
-}
+export type CreateMap = (
+  grid: GridStack,
+  nodeId: string,
+  body: TCreateWidgetRequestBody,
+  node: INode,
+) => void;
+export type CreateChart = CreateMap;

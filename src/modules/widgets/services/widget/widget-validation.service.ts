@@ -1,6 +1,4 @@
-import { IBubble } from '../../chart/bubble-type';
-import { IScatter } from '../../chart/scatter-type';
-import { IMaps } from '../../data-widget.entity';
+import { IBubble, IMaps, IScatter } from '../../data-widget.entity';
 import { EWidget } from '../../widget.entity';
 
 export class WidgetValidationService {

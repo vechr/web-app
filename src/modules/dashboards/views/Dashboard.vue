@@ -1,73 +1,69 @@
 <template>
-  <div>
-    <h1>Hi</h1>
+  <div class="dashboard">
+    <a-row>
+      <a-col :span="12">
+        <a-button
+          type="primary"
+          v-if="can('widgets:create@auth', 'any')"
+          @click="showDrawer"
+          ><PlusOutlined />Widget</a-button
+        >
+      </a-col>
+      <a-col style="text-align: right" :span="12">
+        <h2 class="title-dashboard">
+          {{ dashboards.find((val) => val.id === dashboardId)?.name }}
+        </h2>
+      </a-col>
+      <a-col :span="24" class="option-dashboard">
+        <a-space>
+          <a-switch
+            v-if="can('widgets:update@auth', 'any')"
+            v-model:checked="enableMove"
+            checked-children="Draggable"
+            un-checked-children="Undraggable"
+          />
+          <a-switch
+            v-if="can('widgets:update@auth', 'any')"
+            v-model:checked="enableResize"
+            checked-children="Resizeable"
+            un-checked-children="Unresizeable"
+          />
+        </a-space>
+        <a-tooltip title="Drag widget here to remove" :color="'volcano'">
+          <delete-outlined class="option-dashboard-trash" />
+        </a-tooltip>
+      </a-col>
+    </a-row>
+    <DrawerWidget
+      ref="panelWidgetRef"
+      :dashboard-id="dashboardId"
+      :grid="grid"
+    />
+    <section class="grid-stack"></section>
   </div>
-</template>
-<!-- <template>
-  <a-row>
-    <a-col :span="12">
-      <a-button
-        type="primary"
-        v-if="can('widgets:create@auth', 'any')"
-        @click="showDrawer"
-        ><PlusOutlined />Widget</a-button
-      >
-    </a-col>
-    <a-col style="text-align: right" :span="12">
-      <h2 class="title-dashboard">
-        {{ dataFull.find((val) => val.id === dashboardId)?.name }}
-      </h2>
-    </a-col>
-    <a-col :span="24" class="option-dashboard">
-      <a-space>
-        <a-switch
-          v-if="can('widgets:update@auth', 'any')"
-          v-model:checked="enableMove"
-          checked-children="Draggable"
-          un-checked-children="Undraggable"
-        />
-        <a-switch
-          v-if="can('widgets:update@auth', 'any')"
-          v-model:checked="enableResize"
-          checked-children="Resizeable"
-          un-checked-children="Unresizeable"
-        />
-      </a-space>
-      <a-tooltip title="Drag widget here to remove" :color="'volcano'">
-        <delete-outlined class="option-dashboard-trash" />
-      </a-tooltip>
-    </a-col>
-  </a-row>
-  <DrawerWidget />
-  <section class="grid-stack"></section>
 </template>
 
 <script lang="ts" setup>
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue';
-import {
-  onBeforeMount,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from 'vue';
+import { onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { GridStack, GridStackNode } from 'gridstack';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
 import { connect, NatsConnection, StringCodec } from 'nats.ws';
 import { message as notif } from 'ant-design-vue';
 import { useAbility } from '@casl/vue';
+import { useDashboardStore } from '../dashboard.store';
 import {
   widgetGenerator,
   widgetSubscription,
 } from '@/modules/widgets/services';
-import DrawerWidget from '@/ui/components/homes/DrawerWidget.vue';
+import DrawerWidget from '@/modules/dashboards/components/PanelWidget.vue';
 import { useLoggingStore } from '@/modules/logging/logging.store';
-import { useDashboardStore } from '../dashboard.store';
 import { useWidgetStore } from '@/modules/widgets/widget.store';
 import { Widget } from '@/modules/widgets/widget.entity';
 
-const ability = useAbility();
+const can = useAbility().can;
+const panelWidgetRef = ref();
 
 let nc: NatsConnection;
 const storeLogging = useLoggingStore();
@@ -76,77 +72,81 @@ const { statusConnection } = storeToRefs(storeLogging);
 const enableMove = ref<boolean>(false);
 const enableResize = ref<boolean>(false);
 
-const widgetDrawer = useWidgetDrawerStore();
-const { grid, visible } = storeToRefs(widgetDrawer);
+const grid = ref<GridStack>();
 
 // Dashboard Data
-const storeDashboard = useDashboardStore();
-const { dataFull } = storeToRefs(storeDashboard);
+const dashboardStore = useDashboardStore();
+const { dashboards } = storeToRefs(dashboardStore);
 
 // Widget Data
-const storeWidget = useWidgetStore();
-const { data } = storeToRefs(storeWidget);
+const widgetStore = useWidgetStore();
+const { widgets } = storeToRefs(widgetStore);
 
 // Get Dashboard
 const route = useRoute();
-const dashboardId = route.params.dashboardId;
-widgetDrawer.setDashboardId(dashboardId);
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo);
-};
+const dashboardId = route.params.dashboardId as string;
 
 const showDrawer = () => {
-  visible.value = true;
+  panelWidgetRef.value.showPanelWidget();
 };
 
-const activeKey = ref(['1', '2']);
-
 onBeforeMount(async () => {
-  await storeDashboard.getDashboardFullList();
-  await storeWidget
-    .getAllWidgets(typeof dashboardId === 'string' ? dashboardId : '')
-    .then(async () => {
-      data.value.forEach((element) => {
-        widgetGenerator(grid.value as GridStack, element); // Generate Widget
+  dashboards.value = await dashboardStore.usecase.getDashboardDetails();
+  await widgetStore.usecase
+    .getAllWidgetByDashboardId(
+      typeof dashboardId === 'string' ? dashboardId : '',
+    )
+    .then(async (data) => {
+      // set the result!
+      widgets.value = data;
+
+      // Generate Widget
+      widgets.value.forEach((element) => {
+        widgetGenerator(grid.value as GridStack, element);
       });
+
       try {
         const server = { servers: [import.meta.env.APP_NATS_WS] };
         nc = await connect(server);
         const sc = StringCodec();
-        const dashboard = dataFull.value.find(
+        const dashboard = dashboards.value.find(
           (val) => val.id === dashboardId,
         );
         if (!dashboard) return;
-        dashboard.devices?.forEach((device) => {
-          device.topics?.forEach((topic) => {
-            // Print subject when in develpment mode
+        dashboard.devices?.forEach((deviceDashboard) => {
+          deviceDashboard.device.topics?.forEach((topic) => {
+            /**
+             * Print subject when in develpment mode
+             */
             if (import.meta.env.MODE === 'development') {
               console.log(
                 `Vechr.DashboardID.${dashboardId}.DeviceID.${
-                  device.id
-                }.TopicID.${topic.id}.Topic${topic.name.replace(
-                  /\//g,
-                  '.',
-                )}`,
+                  deviceDashboard.device.id
+                }.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`,
               );
             }
+
+            /**
+             * Subscribes to the subject nats!
+             */
             nc.subscribe(
               `Vechr.DashboardID.${dashboardId}.DeviceID.${
-                device.id
+                deviceDashboard.device.id
               }.TopicID.${topic.id}.Topic${topic.name.replace(/\//g, '.')}`,
               {
                 callback: (err: any, msg: any) => {
-                  if (data.value.length === 0) return;
-                  data.value
+                  if (data.length === 0) return;
+                  data
                     .filter(
                       (val) =>
                         val.dashboardId === dashboard?.id &&
                         val.topicId === topic.id &&
-                        val.topic.deviceId === device.id,
+                        val.topic.deviceId === deviceDashboard.device.id,
                     )
                     .forEach((element) => {
-                      // Widget doing subscription in here!
+                      /**
+                       * Widget doing subscription in here!
+                       */
                       widgetSubscription(element, msg);
                     });
                   if (err) notif.error(err);
@@ -188,65 +188,62 @@ onBeforeUnmount(async () => {
 });
 
 watch(enableMove, () => {
-  grid.value.enableMove(enableMove.value);
+  grid.value?.enableMove(enableMove.value);
 });
 
 watch(enableResize, () => {
-  grid.value.enableResize(enableResize.value);
+  grid.value?.enableResize(enableResize.value);
 });
 
-const info = ref('');
 onMounted(() => {
-  widgetDrawer.setGrid(
-    GridStack.init({
-      float: false,
-      cellHeight: '70px',
-      minRow: 24,
-      removable: '.option-dashboard-trash',
-      disableDrag: true,
-      acceptWidgets: true,
-    }),
-  );
+  grid.value = GridStack.init({
+    float: false,
+    cellHeight: '70px',
+    minRow: 24,
+    removable: '.option-dashboard-trash',
+    disableDrag: true,
+    acceptWidgets: true,
+  });
 
   grid.value.enableResize(false);
 
   grid.value.on('removed', (_: Event, items: any) => {
     items.forEach(async (node: GridStackNode) => {
-      const preDelete: Widget | undefined = data.value.find(
+      const preDelete: Widget | undefined = widgets.value.find(
         (val) => val.nodeId === node.id,
       );
       if (preDelete !== undefined) {
-        await storeWidget.usecase.delete(preDelete.id);
+        await widgetStore.deleteById(preDelete.id);
       }
     });
   });
 
   grid.value.on('change', (_: Event, items: any) => {
     items.forEach(async (node: GridStackNode) => {
-      const preDelete: Widget | undefined = data.value.find(
+      const preUpdate: Widget | undefined = widgets.value.find(
         (val) => val.nodeId === node.id,
       );
-      if (preDelete !== undefined) {
-        await storeWidget.usecase.(
-          typeof dashboardId === 'string' ? dashboardId : '',
-          preDelete.id,
-          {
-            name: preDelete.name,
-            description: preDelete.description,
-            node: {
-              x: node.x !== undefined ? node.x : 0,
-              y: node.y !== undefined ? node.y : 0,
-              w: node.w !== undefined ? node.w : 0,
-              h: node.h !== undefined ? node.h : 0,
-              id: preDelete.node.id,
-              content: preDelete.node.content,
-            },
-            widgetData: preDelete.widgetData,
-            shiftData: preDelete.shiftData,
+      if (preUpdate !== undefined) {
+        await widgetStore.updateById(preUpdate.id, {
+          name: preUpdate.name,
+          description: preUpdate.description,
+          node: {
+            x: node.x !== undefined ? node.x : 0,
+            y: node.y !== undefined ? node.y : 0,
+            w: node.w !== undefined ? node.w : 0,
+            h: node.h !== undefined ? node.h : 0,
+            id: preUpdate.node.id,
+            content: preUpdate.node.content,
           },
-        );
+          widgetData: preUpdate.widgetData,
+          shiftData: preUpdate.shiftData,
+          dashboardId: preUpdate.dashboardId,
+          nodeId: preUpdate.nodeId,
+          topicId: preUpdate.topicId,
+          widgetType: preUpdate.widgetType,
+        });
       }
     });
   });
 });
-</script> -->
+</script>

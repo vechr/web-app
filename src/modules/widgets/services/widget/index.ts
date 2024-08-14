@@ -1,4 +1,3 @@
-export * from './chart';
 export * from './widget.service';
 export * from './widget-validation.service';
 export * from './data-builder.service';

@@ -1,66 +1,63 @@
 import { GridStack } from 'gridstack';
 import { EWidget, TCreateWidgetRequestBody } from '../../widget.entity';
-import { MapWidget } from './map/map-widget.service';
+import { initialDataNode } from './data/widget.data';
 import {
   afterDrawCallback,
   barAnimation,
   barChartData,
-  BarChartWidget,
   bubbleChartData,
-  BubbleChartWidget,
-  DoughnutChartWidget,
   doughnutPieChartData,
   gaugeChartData,
-  GaugeChartWidget,
   lineChartData,
-  LineChartWidget,
-  PieChartWidget,
   polarAreaChartData,
-  PolarChartWidget,
   radarChartData,
-  RadarChartWidget,
   scatterChartData,
-  ScatterChartWidget,
-} from '.';
+} from './data';
 import uuid from '@/core/base/frameworks/utils/uuid.util';
+import { useWidgetStore } from '@/modules/widgets/widget.store';
 
 interface IWidgetSelectionData {
   widgetData: any;
   widgetType: EWidget;
 }
 
-export const createWidget = (
+export const createWidget = async (
   widgetType: string,
   grid: GridStack,
   body: TCreateWidgetRequestBody,
 ) => {
-  const bar = new BarChartWidget();
-  const doughnut = new DoughnutChartWidget();
-  const gauge = new GaugeChartWidget();
-  const bubble = new BubbleChartWidget();
-  const line = new LineChartWidget();
-  const pie = new PieChartWidget();
-  const polar = new PolarChartWidget();
-  const radar = new RadarChartWidget();
-  const scatter = new ScatterChartWidget();
-  const map = new MapWidget();
+  const widgetStore = useWidgetStore();
+  body.nodeId = uuid();
 
   switch (widgetType) {
     case EWidget.BAR: {
       body.widgetData.options.animation = barAnimation;
-      bar.addChart(grid, uuid(), body);
+
+      // Create Node
+      body.node = initialDataNode.bar;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.BUBBLE: {
-      bubble.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.bubble;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.DOUGHNUT: {
-      doughnut.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.doughtnut;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.PIE: {
-      pie.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.pie;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.GAUGE: {
@@ -69,27 +66,45 @@ export const createWidget = (
           afterDraw: afterDrawCallback,
         },
       ];
-      gauge.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.gauge;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.LINE: {
-      line.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.line;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.POLAR: {
-      polar.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.polar;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.RADAR: {
-      radar.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.radar;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.SCATTER: {
-      scatter.addChart(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.scatter;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createChart(grid, body);
       break;
     }
     case EWidget.MAPS: {
-      map.addMap(grid, uuid(), body);
+      // Create Node
+      body.node = initialDataNode.map;
+      body.node.id = body.node.content = body.nodeId;
+      await widgetStore.createMap(grid, body);
       break;
     }
   }

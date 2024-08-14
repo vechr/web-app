@@ -5,6 +5,7 @@ import L from 'leaflet';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import { abilitiesPlugin } from '@casl/vue';
+import { Chart, registerables } from 'chart.js';
 import router from './app/router';
 import App from '@/app/App.vue';
 import 'ant-design-vue/dist/reset.css';
@@ -15,7 +16,14 @@ import BlankLayout from '@/app/layouts/BlankLayout.vue';
 import DashboardLayout from '@/app/layouts/DashboardLayout.vue';
 import ability from '@/core/base/frameworks/utils/ability.util';
 
-// LEAFLET SETTING ICON
+/**
+ * Register Chart Js
+ */
+Chart.register(...registerables);
+
+/**
+ * LEAFLET SETTING ICON
+ */
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'marker-icon-2x.png',
   iconUrl: 'marker-icon.png',

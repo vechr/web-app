@@ -1,6 +1,7 @@
 import { GridStack } from 'gridstack';
 import { EWidget, Widget } from '../../widget.entity';
-import { afterDrawCallback, barAnimation, WidgetService } from '.';
+import { afterDrawCallback, barAnimation } from './data';
+import { WidgetService } from './widget.service';
 
 export const widgetGenerator = (grid: GridStack, element: Widget) => {
   // Logic how to gerate map from Element Widget
