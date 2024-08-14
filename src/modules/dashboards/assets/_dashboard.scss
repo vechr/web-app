@@ -15,7 +15,7 @@
     .option-dashboard {
       margin-top: 15px;
       padding: 10px;
-      background: #00D1FF;
+      background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%);
       // background: linear-gradient(45deg, #FF67B9 42%, rgba(0,217,139,1) 100%);
       border-radius: 10px 10px 0px 0px;
     
@@ -32,8 +32,7 @@
   .grid-stack {
     margin-left: 15px;
     margin-right: 5px;
-    background: rgb(0,209,255);
-    background: linear-gradient(45deg, rgba(0,209,255,1) 42%, rgba(0,217,139,1) 100%);
+    background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%);
     border-radius: 0px 0px 10px 10px;
 
     .grid-stack-item {
