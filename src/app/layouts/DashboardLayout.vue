@@ -79,6 +79,10 @@ const logoutSession = () => {
             <span>Dashboard</span>
           </a-menu-item>
         </router-link>
+        <a-menu-item key="4" @click="logoutSession">
+          <template #icon><logout-outlined /></template>
+          Logout
+        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout id="layout-main">
