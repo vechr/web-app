@@ -8,10 +8,7 @@ export default defineConfig({
   server: {
     host: true,
     port: 8080,
-    hmr: {
-      host: '0.0.0.0',
-      port: 3031,
-    },
+    strictPort: true,
   },
   plugins: [vue()],
   resolve: {

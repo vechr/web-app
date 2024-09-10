@@ -60,7 +60,7 @@ const { subjectRole, fields, title, description, layout, disabled } =
   toRefs(propsUnReactive);
 
 const collapsedDomain = ref<boolean>(false);
-const collapsedObjects = ref<boolean>(false);
+const collapsedObjects = ref<boolean>(true);
 
 defineEmits([
   'onSearch',
