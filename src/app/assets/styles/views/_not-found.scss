@@ -1,0 +1,25 @@
+#not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+
+  .text-center {
+    text-align: center;
+    h1 {
+      font-size: 180px;
+      font-weight: 800;
+      margin-bottom: 0;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  #not-found {
+    .text-center {
+      h1 {
+        font-size: 70px;
+      }
+    }
+  }
+}

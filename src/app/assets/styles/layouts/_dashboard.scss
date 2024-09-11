@@ -1,0 +1,190 @@
+// Mobile and Default Mode
+.ant-layout {
+
+  // Use this class to enable gradient animation
+  .sidebar-animation {
+    background-size: 400% 400%;
+    animation: sidebar-gradient 5s ease infinite;
+  }
+
+  #layout-sider {
+    z-index: 1001 !important;
+  }
+
+  .ant-layout-sider-dark {
+    flex: 0 0 250px !important;
+    max-width: 250px !important;
+    min-width: 250px !important;
+    width: 250px !important;
+    position: fixed;
+    z-index: 999;
+    height: -webkit-fill-available;
+    background: linear-gradient(45deg, rgba(0,148,181,1) 42%, rgba(0,148,95,1) 100%) !important;
+    // background: #00D1FF;
+  }
+  
+  .ant-layout-sider-collapsed {
+    flex: 0 0 50px !important;
+    max-width: 50px !important;
+    min-width: 0px !important;
+    width: 0px !important;
+
+    // hide when collapsed the Sidebar
+    .ant-layout-sider-children {
+      .text-center {
+        .full {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  #layout-sider {
+    .ant-layout-sider-children {
+      
+      // Style for Button Close
+      .close-sidebar {
+        z-index: 1000;
+        color: white;
+        font-size: medium;
+        cursor: pointer;
+        float: right;
+        margin: 10px 10px 0 0;
+      }
+
+      // Styling for Color Menu List
+      .ant-menu.ant-menu-dark {
+        background: none;
+        .ant-menu-item {
+          color: #fff;
+        }
+        .ant-menu-item-selected, .ant-menu-item-active {
+          background: rgba(0,148,95,1) 100%;
+        }
+      }
+
+      // Styling for Logo
+      .text-center {
+        text-align: center;
+        height: 55px;
+
+        .full {
+          display: block;
+        }
+
+        .collapse {
+          display: none;
+        }
+
+        h1 {
+          font-size: 22px;
+          font-weight: 800;
+          margin-bottom: 0;
+          color: white;
+          margin-top: 27.5px;
+          margin-bottom: 27.5px;
+        }
+      }
+
+      /*
+      * Use this if we want to use image logo
+      */
+      img {
+        height: 40px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+    }
+  }
+
+  #layout-main {
+    #layout-content {
+      border-radius: 20px;
+      margin: 24px 16px 0px;
+      padding: 0px 0px 0px 0px;
+      background: #fff;
+      min-height: 100vh;
+    }
+  
+    #layout-header {
+      background: #fff !important; 
+      padding: 0px;
+
+      #toggle {
+        margin-left: 40px;
+        padding: 0;
+      }
+
+      #avatar {
+        margin-left: auto;
+
+        .ant-menu-submenu-title {
+          .ant-avatar {
+            background: transparent;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Desktop Mode
+@media (min-width: 992px) {
+  .ant-layout {
+    #layout-main {
+      #layout-content {
+        padding: 10px 10px 10px 0px;
+      }
+    }
+    .ant-layout-sider-collapsed {
+      min-width: 50px !important;
+      width: 50px !important;
+
+      // hide when collapsed the Sidebar
+      .ant-layout-sider-children {
+        .text-center {
+          .collapse {
+            display: block !important;
+            width: 100%;
+            font-size: 35px !important;
+            padding-left: 3px;
+          }
+        }
+      }
+    }
+
+    .ant-layout-sider-dark {
+      position: static !important;
+      z-index: 999 !important;
+      height: auto !important;
+    }
+
+    #layout-sider {
+      .ant-layout-sider-children {
+          // Style for Button Close and Hide
+          .close-sidebar {
+            visibility: hidden;
+          }
+      }
+    }
+  }
+
+}
+
+@keyframes sidebar-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+};

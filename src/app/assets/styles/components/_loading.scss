@@ -1,0 +1,84 @@
+#loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 80vh;
+
+  svg {
+    width: 300px;
+
+    #watch {
+
+      // Man
+      #man {
+        animation: man 5s linear infinite;
+        transform-origin: center;
+        transform-box: fill-box;
+      }
+      
+      @keyframes man {
+        0% {
+          transform: translate(0%, 0%);
+        }
+        50% {
+          transform: translate(7%, -7%);
+        }
+        100% {
+          transform: translate(0%, 0%);
+        }
+      }
+
+      // Item
+      #item {
+        animation: item 15s linear infinite;
+        transform-origin: center;
+        transform-box: fill-box;
+      }
+      
+      @keyframes item {
+        0% {
+          transform: translate(0%, 0%);
+        }
+        50% {
+          transform: translate(10%, 10%);
+        }
+        100% {
+          transform: translate(0%, 0%);
+        }
+      }
+
+      // Second
+      #second {
+        animation: second 1s linear infinite;
+        transform-origin: center;
+        transform-box: fill-box;
+      }
+
+      @keyframes second {
+        from {
+          transform: rotateZ(0deg);
+        }
+        to {
+          transform: rotateZ(360deg);
+        }
+      }
+
+      // Minute
+      #minute {
+        animation: minute 3s linear infinite;
+        transform-origin: center;
+        transform-box: fill-box;
+      }
+      
+      @keyframes minute {
+        from {
+          transform: rotateZ(0deg);
+        }
+        to {
+          transform: rotateZ(360deg);
+        }
+      }
+    }
+  }
+}

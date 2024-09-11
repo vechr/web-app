@@ -1,0 +1,21 @@
+.home-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 70vh;
+
+  .home-screen-block {
+    display: block;
+
+    svg {
+      width: 500px;
+    }
+
+    h1 {
+      color: #3183e2;
+      font-size: xx-large;
+      font-weight: 100;
+    }
+  }
+}
