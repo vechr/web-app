@@ -49,7 +49,12 @@ import { onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { GridStack, GridStackNode } from 'gridstack';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
-import { connect, NatsConnection, StringCodec } from 'nats.ws';
+import {
+  connect,
+  ConnectionOptions,
+  NatsConnection,
+  StringCodec,
+} from 'nats.ws';
 import { message as notif } from 'ant-design-vue';
 import { useAbility } from '@casl/vue';
 import { useDashboardStore } from '../dashboard.store';
@@ -106,7 +111,11 @@ onBeforeMount(async () => {
       });
 
       try {
-        const server = { servers: [import.meta.env.APP_NATS_WS] };
+        const server: ConnectionOptions = {
+          servers: [import.meta.env.APP_NATS_WS],
+          user: import.meta.env.APP_NATS_USER,
+          pass: import.meta.env.APP_NATS_PASS,
+        };
         nc = await connect(server);
         const sc = StringCodec();
         const dashboard = dashboards.value.find(

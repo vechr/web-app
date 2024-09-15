@@ -40,7 +40,12 @@
 </template>
 
 <script lang="ts" setup>
-import { connect, NatsConnection, StringCodec } from 'nats.ws';
+import {
+  connect,
+  ConnectionOptions,
+  NatsConnection,
+  StringCodec,
+} from 'nats.ws';
 import { onBeforeMount, onBeforeUnmount } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
@@ -98,7 +103,11 @@ onBeforeMount(async () => {
   });
 
   try {
-    const server = { servers: [import.meta.env.APP_NATS_WS] };
+    const server: ConnectionOptions = {
+      servers: [import.meta.env.APP_NATS_WS],
+      user: import.meta.env.APP_NATS_USER,
+      pass: import.meta.env.APP_NATS_PASS,
+    };
     nc = await connect(server);
     const sc = StringCodec();
 
