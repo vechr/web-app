@@ -54,6 +54,7 @@ import { useLoggingStore } from '../logging.store';
 import { WidgetValidationService } from '@/modules/widgets/services';
 import { useTopicStore } from '@/modules/topics/topic.store';
 import { Topic } from '@/modules/topics/topic.entity';
+import { SessionUsecase } from '@/core/modules/sessions/session.usecase';
 
 type TableDataType = {
   no: number;
@@ -104,9 +105,12 @@ onBeforeMount(async () => {
 
   try {
     const server: ConnectionOptions = {
-      servers: [import.meta.env.APP_NATS_WS],
-      user: import.meta.env.APP_NATS_USER,
-      pass: import.meta.env.APP_NATS_PASS,
+      servers: [
+        SessionUsecase.getSettingLocalStorage().natsProtocol +
+          SessionUsecase.getSettingLocalStorage().natsServer,
+      ],
+      user: SessionUsecase.getSettingLocalStorage().natsUsername,
+      pass: SessionUsecase.getSettingLocalStorage().natsPassword,
     };
     nc = await connect(server);
     const sc = StringCodec();

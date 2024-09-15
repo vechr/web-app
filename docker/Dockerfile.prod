@@ -13,13 +13,13 @@ WORKDIR /vue_app
 
 COPY . .
 
-RUN yarn env:write
+# RUN yarn env:write
 
 RUN yarn install
 
 RUN yarn build
 
-RUN yarn env:remove
+# RUN yarn env:remove
 
 # production stage
 FROM nginx:alpine AS production-stage

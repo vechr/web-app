@@ -24,6 +24,15 @@ export type TCreateSessionRequestBody = Pick<User, 'password'> & {
   username: string;
 };
 
+export type TSettingBody = {
+  backedServer: string;
+  backendProtocol: 'https://' | 'http://';
+  natsProtocol: 'wss://' | 'ws://';
+  natsServer: string;
+  natsUsername: string;
+  natsPassword: string;
+};
+
 export type TSessionForm = {
   username: TFieldInputUsername;
   password: TFieldInputPassword;

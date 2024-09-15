@@ -1,11 +1,21 @@
 import Container, { Service } from 'typedi';
-import { Session, TCreateSessionRequestBody } from './session.entity';
+import { message } from 'ant-design-vue';
+import {
+  Session,
+  TSettingBody,
+  TCreateSessionRequestBody,
+} from './session.entity';
 import { BaseUsecase } from '@/core/base/domain/usecase/base.usecase';
 import { AxiosHttpClient } from '@/core/base/frameworks/drivers';
 import { TCompactAuthUser } from '@/core/base/domain/entities';
 import { notificationSuccessOrFail } from '@/core/base/frameworks/utils';
 import { EHttpStatusCode, IError } from '@/core/base/domain/entities/protocol';
 import router from '@/app/router';
+import {
+  decryptedDataString,
+  encryptedDDataString,
+} from '@/core/base/frameworks/utils';
+import { SECRET } from '@/core/base/domain/constant';
 
 @Service()
 export class SessionUsecase extends BaseUsecase<Session> {
@@ -19,7 +29,99 @@ export class SessionUsecase extends BaseUsecase<Session> {
     );
   }
 
-  async login(body: TCreateSessionRequestBody): Promise<void> {
+  saveSettingLocalStorage(body: TSettingBody): void {
+    for (const key in body) {
+      localStorage.setItem(
+        key,
+        encryptedDDataString(body[key as keyof TSettingBody], SECRET),
+      );
+    }
+
+    message.success('Setting saved successfully!');
+  }
+
+  static getSettingLocalStorage(): TSettingBody {
+    const dataSetting = {
+      backedServer: '',
+      backendProtocol: 'https://',
+      natsProtocol: 'wss://',
+      natsServer: '',
+      natsUsername: '',
+      natsPassword: '',
+    };
+
+    for (const key in dataSetting) {
+      const value: string = decryptedDataString(
+        localStorage.getItem(key) ?? '',
+        SECRET,
+      );
+      dataSetting[key as keyof TSettingBody] = value;
+    }
+
+    return dataSetting as TSettingBody;
+  }
+
+  getSessionLocalStorage(): {
+    sessionBody: TCreateSessionRequestBody;
+    isRemember: boolean;
+  } {
+    const dataSession: TCreateSessionRequestBody = {
+      username: '',
+      password: '',
+    };
+
+    dataSession.username = decryptedDataString(
+      localStorage.getItem('user-sec') ?? '',
+      SECRET,
+    );
+    dataSession.password = decryptedDataString(
+      localStorage.getItem('pass-sec') ?? '',
+      SECRET,
+    );
+
+    return {
+      sessionBody: dataSession,
+      isRemember: Boolean(localStorage.getItem('remember') ?? false),
+    };
+  }
+
+  async login(
+    body: TCreateSessionRequestBody,
+    isRemember: boolean,
+  ): Promise<void> {
+    if (isRemember) {
+      localStorage.setItem(
+        'user-sec',
+        encryptedDDataString(body.username, SECRET),
+      );
+      localStorage.setItem(
+        'pass-sec',
+        encryptedDDataString(body.password, SECRET),
+      );
+      localStorage.setItem('remember', String(isRemember));
+    } else {
+      localStorage.removeItem('user-sec');
+      localStorage.removeItem('pass-sec');
+      localStorage.removeItem('remember');
+    }
+
+    // validation before login
+    if (
+      SessionUsecase.getSettingLocalStorage().backedServer === '' ||
+      (SessionUsecase.getSettingLocalStorage().backendProtocol !== 'http://' &&
+        SessionUsecase.getSettingLocalStorage().backendProtocol !==
+          'https://') ||
+      SessionUsecase.getSettingLocalStorage().natsServer === '' ||
+      (SessionUsecase.getSettingLocalStorage().natsProtocol !== 'ws://' &&
+        SessionUsecase.getSettingLocalStorage().natsProtocol !== 'wss://') ||
+      SessionUsecase.getSettingLocalStorage().natsUsername === '' ||
+      SessionUsecase.getSettingLocalStorage().natsPassword === ''
+    ) {
+      message.error('please do settings or configuration before login!');
+      return;
+    }
+
+    // create login session
     const result = await this.create(body, false, 'authentication status!');
     if (result) {
       router.push('/');

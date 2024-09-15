@@ -66,6 +66,7 @@ import DrawerWidget from '@/modules/dashboards/components/PanelWidget.vue';
 import { useLoggingStore } from '@/modules/logging/logging.store';
 import { useWidgetStore } from '@/modules/widgets/widget.store';
 import { Widget } from '@/modules/widgets/widget.entity';
+import { SessionUsecase } from '@/core/modules/sessions/session.usecase';
 
 const can = useAbility().can;
 const panelWidgetRef = ref();
@@ -112,9 +113,12 @@ onBeforeMount(async () => {
 
       try {
         const server: ConnectionOptions = {
-          servers: [import.meta.env.APP_NATS_WS],
-          user: import.meta.env.APP_NATS_USER,
-          pass: import.meta.env.APP_NATS_PASS,
+          servers: [
+            SessionUsecase.getSettingLocalStorage().natsProtocol +
+              SessionUsecase.getSettingLocalStorage().natsServer,
+          ],
+          user: SessionUsecase.getSettingLocalStorage().natsUsername,
+          pass: SessionUsecase.getSettingLocalStorage().natsPassword,
         };
         nc = await connect(server);
         const sc = StringCodec();

@@ -7251,13 +7251,6 @@ vue-types@^3.0.0:
   dependencies:
     is-plain-object "3.0.1"
 
-vue3-cookies@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/vue3-cookies/-/vue3-cookies-1.0.6.tgz#c1da41f1f3d6bbea8e75157d49d09dfc2a18ca8a"
-  integrity sha512-a1UvVD0qIgxyOqjlSOwnLnqAnz8ASltugEv8yX+96i/WGZAN9fEDci7xO4HIWZE1uToUnRq9JnFhvfDCSo45OA==
-  dependencies:
-    vue "^3.0.0"
-
 vue3-ts-jsoneditor@^2.7.1:
   version "2.11.2"
   resolved "https://registry.yarnpkg.com/vue3-ts-jsoneditor/-/vue3-ts-jsoneditor-2.11.2.tgz#20326d1b1bd5f874d42aff3b92da318ce267a4bd"
@@ -7267,7 +7260,7 @@ vue3-ts-jsoneditor@^2.7.1:
     vanilla-jsoneditor "^0.21.6"
     vue "^3.4.5"
 
-vue@^3.0.0, vue@^3.4.37, vue@^3.4.5:
+vue@^3.4.37, vue@^3.4.5:
   version "3.4.37"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.4.37.tgz#64ce0eeb8de16a29fb74e504777ee8c0c1cf229e"
   integrity sha512-3vXvNfkKTBsSJ7JP+LyR7GBuwQuckbWvuwAid3xbqK9ppsKt/DUvfqgZ48fgOLEfpy1IacL5f8QhUVl77RaI7A==

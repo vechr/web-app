@@ -43,6 +43,18 @@
     padding: 30px;
     background-color: white;
 
+    .btn-setting {
+      background: transparent;
+      color: #434343;
+      float: right;
+    }
+    
+    .btn-setting:hover {
+      background: transparent !important;
+      color: #434343 !important;
+      box-shadow: none;
+    }
+
     .auth-title {
       font-size: 30px;
       margin-left: 40%;
@@ -63,10 +75,6 @@
 
     .input-auth {
       border-bottom: 1px solid  rgba(0,148,95,1);
-    }
-
-    .ant-btn {
-      width: 100%;
     }
     
     .btn-auth {

@@ -8,13 +8,16 @@ import {
   THttpRequest,
   TResponseData,
 } from '@/core/base/domain/entities/protocol';
+import { SessionUsecase } from '@/core/modules/sessions/session.usecase';
 
 @Service()
 export class AxiosHttpClient<T = any> implements IHttpClient<T> {
   private myAxios = axios;
 
   constructor() {
-    this.myAxios.defaults.baseURL = import.meta.env.APP_BACKEND_SERVICE;
+    this.myAxios.defaults.baseURL =
+      SessionUsecase.getSettingLocalStorage().backendProtocol +
+      SessionUsecase.getSettingLocalStorage().backedServer;
     this.myAxios.defaults.headers.post['Content-Type'] = 'application/json';
     this.myAxios.defaults.headers.post['Accept'] = 'application/json';
   }
