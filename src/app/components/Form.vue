@@ -8,6 +8,7 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons-vue';
 import { useAbility } from '@casl/vue';
+import { message } from 'ant-design-vue';
 import FormRecursive from './FormRecursive.vue';
 import { TFormLayout } from '@/core/base/domain/entities/protocol';
 import { transformFormtoBodyRequest } from '@/core/base/frameworks/utils';
@@ -53,7 +54,9 @@ const onSave = () => {
       emit('onSave');
       formRef.value.resetFields();
     })
-    .catch(() => {});
+    .catch(() => {
+      message.error('please fill the required fields!');
+    });
 };
 
 const onCopy = () => {
@@ -63,7 +66,9 @@ const onCopy = () => {
       emit('onCopy');
       formRef.value.resetFields();
     })
-    .catch(() => {});
+    .catch(() => {
+      message.error('please fill the required fields!');
+    });
 };
 </script>
 

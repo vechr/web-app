@@ -5,6 +5,7 @@ import { useSessionStore } from '@/core/modules/sessions/session.store';
 import NotFound from '@/app/views/NotFound.vue';
 import Home from '@/app/views/Home.vue';
 import Modeling from '@/app/views/Modeling.vue';
+import Profile from '@/modules/users/views/Profile.vue';
 import { permissionAbility } from '@/core/base/frameworks/utils';
 import ability, {
   TPermissionAbilities,
@@ -33,6 +34,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       layout: 'dashboard-layout',
       title: 'Home Page',
+    },
+  },
+  {
+    path: '/Profile',
+    name: 'profile',
+    component: Profile,
+    meta: {
+      layout: 'dashboard-layout',
+      title: 'My Profile',
     },
   },
   {
